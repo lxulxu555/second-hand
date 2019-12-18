@@ -1,18 +1,27 @@
 import React,{Component} from 'react'
+import PropTypes from 'prop-types'
 import {Upload,Icon,message} from 'antd'
 
 export default class UpLoadImage extends Component{
 
-
+    static propTypes = {
+        sendProduct : PropTypes.object.isRequired
+    }
 
     state = {
         loading: false,
         imageUrl:'', //存放图片地址
     };
 
+
+
     //为了向父组件发送当前上传的头像地址
     sendImageUrl(url){
         this.props.UpLoadImage(url)
+    }
+
+    componentWillMount(){
+        this.sendImageUrl(this.props.sendProduct.cover)
     }
 
     handleChange = (info) => {
@@ -43,12 +52,14 @@ export default class UpLoadImage extends Component{
     };
 
     render () {
-        const uploadButton = (
-            <div>
-                <Icon type={this.state.loading ? 'loading' : 'plus'} />
-                <div className="ant-upload-text">Upload</div>
-            </div>
-        );
+
+        const uploadButton = this.props.sendProduct.cover ? (
+            <img src={this.props.sendProduct.cover} alt='img'/>
+
+        ) : ( <div>
+            <Icon type={this.state.loading ? 'loading' : 'plus'} />
+            <div className="ant-upload-text">Upload</div>
+        </div>)
 
         return (
             <Upload

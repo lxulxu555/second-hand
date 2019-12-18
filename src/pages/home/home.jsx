@@ -78,15 +78,21 @@ class Home extends Component {
             <Carousel autoplay className='Carousel-image'>
                 <p>
                     <img data-v-7bfb6d44
-                         src="https://api.youzixy.com/public/uploads/attach/2019/09/16/5d7f9df01b29f.jpg"/>
+                         src="https://api.youzixy.com/public/uploads/attach/2019/09/16/5d7f9df01b29f.jpg"
+                         alt='img'
+                    />
                 </p>
                 <p>
                     <img data-v-7bfb6d44
-                         src="https://api.youzixy.com/public/uploads/attach/2019/09/16/5d7f9df9c8ffd.jpg"/>
+                         src="https://api.youzixy.com/public/uploads/attach/2019/09/16/5d7f9df9c8ffd.jpg"
+                         alt='img'
+                    />
                 </p>
                 <p>
                     <img data-v-7bfb6d44
-                         src="https://api.youzixy.com/public/uploads/attach/2019/09/16/5d7f9de20f273.jpg"/>
+                         src="https://api.youzixy.com/public/uploads/attach/2019/09/16/5d7f9de20f273.jpg"
+                         alt='img'
+                    />
                 </p>
             </Carousel>
             </span>

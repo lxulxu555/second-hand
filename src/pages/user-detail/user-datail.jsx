@@ -43,7 +43,7 @@ export default class UserDetail extends Component{
             message.success(Item.state === 0 ? '下架成功' : '上架成功')
         }else{
             message.error(Item.state === 1 ? '下架失败' : '上架失败')
-            console.log(result)
+           // console.log(result)
         }
         this.getUserAllProduct()
     }
@@ -53,9 +53,10 @@ export default class UserDetail extends Component{
         return UserProduct.map(Item => {
             return (
             <Card
+                key={Item.id}
                 hoverable
                 style={{ width: 240 ,marginRight : 30,marginBottom:20,marginLeft:30}}
-                cover={<img alt="picture" src={Item.cover} />}
+                cover={<img alt="img" src={Item.cover} />}
                 actions={[
                     <Icon
                         type="setting"
@@ -94,6 +95,7 @@ export default class UserDetail extends Component{
         })
         this.form.validateFields(async (err,values) => {
             if(!err){
+                this.form.resetFields()
                 const product = this.state.product
                 product.id = this.state.ProductId
                 product.name = values.name
@@ -147,7 +149,6 @@ export default class UserDetail extends Component{
     }
 
     render () {
-        console.log(this.state.sendProduct)
         const {ShowUpdate,UserProduct,sendProduct} = this.state
 
         return (

@@ -1,4 +1,4 @@
-import React,{Component} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import { Upload, Icon, Modal,message } from 'antd';
 
@@ -29,6 +29,25 @@ export class PictureWall extends React.Component {
     }
 
 
+    constructor(props){
+        super(props)
+        let fileList = []
+        const images = this.props.sendProduct.images
+        if(images && images.length > 0){
+            fileList = images.map((file, index) => ({
+                uid: -index, // 每个file都有自己唯一的id
+                name : file.url.substring(37),
+                status: 'done', // 图片状态: done-已上传, uploading: 正在上传中, removed: 已删除
+                url:  file.url
+            })
+        )
+        }
+        this.state={
+            previewVisible: false,
+            previewImage: '',
+            fileList,
+        }
+    }
 
 
     handleCancel = () => this.setState({ previewVisible: false });
@@ -48,6 +67,9 @@ export class PictureWall extends React.Component {
         this.props.PictureWall(fileList)
     }
 
+    componentWillMount(){
+        this.sendFileList(this.state.fileList)
+    }
     /*
     file:当前操作的图片文件
     fileList:所有已上传图片文件对象的数组
@@ -68,15 +90,6 @@ export class PictureWall extends React.Component {
                 message.error('上传图片失败')
             }
         }
-        /* else if(file.status==='removed'){
-             const result = await reqDeleteImage(file.name)
-             if(result.status===0){
-                 message.success('删除成功')
-             }else{
-                 message.error('删除失败')
-             }
-         }*/
-        //在操作(上传/删除)过程中更新fileList状态
         this.setState({
             fileList
         },() => {
@@ -85,7 +98,6 @@ export class PictureWall extends React.Component {
     }
 
     render() {
-        console.log('哈哈哈哈哈哈哈',this.props.sendProduct.images)
 
         const { previewVisible, previewImage, fileList } = this.state;
         const uploadButton = (

@@ -55,8 +55,9 @@ class Product extends Component{
                 return (
                     <Link to={{
                         pathname : '/product-detail',
-                        state : product.id
-                    }}>
+                        state : product.id,
+                    }}                         key={product.id}
+                    >
                     <Card
                         hoverable = {true}
                         style={{ width: 220,margin:'0 13px 10px 10px'}}
@@ -70,7 +71,7 @@ class Product extends Component{
             })
         }else{
            return <span style={{margin:"auto auto"}}>
-               <img src='https://www.youzixy.com/img/noGoods.cc45e087.png'/>
+               <img src='https://www.youzixy.com/img/noGoods.cc45e087.png' alt='img'/>
            </span>
         }
 

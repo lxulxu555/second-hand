@@ -55,7 +55,9 @@ export default class WantBuy extends Component{
                 </span>
             )
             return (
-            <Card title={title} bordered={false} style={{margin : '1% 10% 3% 10%'}}>
+            <Card title={title} bordered={false} style={{margin : '1% 10% 3% 10%'}}
+                  key={Item.id}
+            >
                 <p style={{fontWeight:'bold',fontSize : '20px'}}>{Item.title}</p>
                 <p>{Item.intro}</p>
                 <p>

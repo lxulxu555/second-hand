@@ -1,10 +1,9 @@
 import React, {Component} from 'react'
 import {Form, Input,Button,message,Cascader} from "antd";
-import {withRouter} from 'react-router-dom'
 
 import './put-product.less'
 import UpLoadImage from './upload-image'
-import {reqAddProduct,reqGetOneList,reqGetTwoList,reqFindOne} from '../../api/index'
+import {reqAddProduct,reqFindOne} from '../../api/index'
 import {PictureWall} from "./picture-wall";
 import memoryUtils from "../../utils/memoryUtils";
 

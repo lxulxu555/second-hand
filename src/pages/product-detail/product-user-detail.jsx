@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Card, Icon, Pagination} from "antd";
+import {Card,  Pagination} from "antd";
 import {withRouter,Link} from 'react-router-dom'
 
 import {reqAllProduct} from '../../api/index'
@@ -37,7 +37,7 @@ class ProductUserDetail extends Component{
                     <Card
                         hoverable
                         style={{ width: 240 ,marginRight : 30,marginBottom:20,marginLeft:30}}
-                        cover={<img alt="picture" src={Item.cover} />}
+                        cover={<img alt="img" src={Item.cover} />}
                         actions={[
                     <span>
                         {

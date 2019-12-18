@@ -38,6 +38,8 @@ class ProductDetail extends Component{
                     <img src={Item.url}
                          onClick={() => this.BigImage(Item.url)}
                          style={{paddingRight:20,width:100,height:80}}
+                         alt='img'
+                         key={Item.id}
                     />
                 )
             })
@@ -59,8 +61,8 @@ class ProductDetail extends Component{
                     <span className='image-wall'>
                         <span>
                             {BigImageUrl
-                                ?    <img src={BigImageUrl}  style={{width:300,height:300,border:'1px solid'}}/>
-                                :    <img src={ProductDetail.cover}  style={{width:300,height:300,border:'1px solid'}}/>
+                                ?    <img src={BigImageUrl}  style={{width:300,height:300,border:'1px solid'}}  alt='img' />
+                                :    <img src={ProductDetail.cover}  style={{width:300,height:300,border:'1px solid'}}   alt='img'/>
                             }
                         </span>
                 <span className='image-small'>

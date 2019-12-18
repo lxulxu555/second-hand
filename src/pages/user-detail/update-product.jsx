@@ -34,6 +34,7 @@ class UpdateProduct extends Component{
 
     render () {
 
+
         const formItemLayout = {
             labelCol: { span: 6},
             wrapperCol: { span: 10 },
@@ -84,6 +85,7 @@ class UpdateProduct extends Component{
                 <Form.Item label='背景图片：' {...formItemLayout}>
                     <UpLoadImage
                         UpLoadImage = {(url) => this.getImageUrl(url)}
+                        sendProduct = {this.props.sendProduct}
                     />
                 </Form.Item>
             </Form>

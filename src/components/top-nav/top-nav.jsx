@@ -20,9 +20,6 @@ class TopNav extends Component{
         image : ''
     }
 
-    constructor(props){
-        super(props)
-    }
 
     GoLogin = () => {
         this.props.history.replace('/login')
@@ -81,6 +78,7 @@ class TopNav extends Component{
         let path = this.props.location.pathname
         const user = memoryUtils.user
         const {ShowUpdate} = this.state
+        //console.log('测试',path)
 
         return (
             <div>

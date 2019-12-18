@@ -7,7 +7,6 @@ import {Avatar, Card, Icon, message, Pagination, Button, Modal} from "antd";
 import UpdateWantBuy from './update-want-buy'
 
 
-const { confirm } = Modal;
 
 export default class UserBuyDetail extends Component{
 
@@ -77,7 +76,7 @@ export default class UserBuyDetail extends Component{
 
 
             return (
-                <Card title={title} bordered={false} style={{margin : '1% 10% 3% 10%'}}>
+                <Card title={title} bordered={false} style={{margin : '1% 10% 3% 10%'}} key={Item.id}>
                     <p style={{fontWeight:'bold',fontSize : '20px'}}>{Item.title}</p>
                     <p>{Item.intro}</p>
                     <p>
