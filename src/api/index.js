@@ -23,11 +23,11 @@ export const reqFindIdProduct = (id) => ajax(BASE + '/goods/findById',{id})
 //更新商品
 export const reqUpdateProduct = (product) => ajax(BASE + '/goods/update',product,'PUT')
 //分页展示所有求购信息
-export const reqBuyProduct = (token,page,rows,userid) => ajax('/user' + BASE + '/buy/findByPage',{token,page,rows,userid})
+export const reqBuyProduct = (token,page,rows,userid) => ajax( BASE + '/token/buy/findByPage',{token,page,rows,userid})
 //添加求购信息
 //post请求设置Params请求头
 export const reqAddBuyProduct = (buyProduct) =>
-    axios.post('/user' + BASE + '/buy/add', buyProduct, { params: {
+    axios.post(BASE + '/token/buy/add', buyProduct, { params: {
             token : memoryUtils.token
         }})
         .then(response => response.data)
@@ -36,12 +36,12 @@ export const reqAddBuyProduct = (buyProduct) =>
 export const reqDeleteProduct =(id) => ajax(BASE + '/goods/deleteGoods',{id})
 //更新求购信息
 export const reqUpdateBuyProduct = (buyProduct) =>
-    axios.put('/user' + BASE + '/buy/update', buyProduct, { params: {
+    axios.put( BASE + '/token/buy/update', buyProduct, { params: {
             token : memoryUtils.token
         }})
         .then(response => response.data)
         .catch(err => console.warn(err));
 //根据求购ID删除求购信息
-export const reqDeleteBuyProduct = (token,id) => ajax('/user' + BASE + '/buy/delete',{token,id},'DELETE')
+export const reqDeleteBuyProduct = (token,id) => ajax(BASE + '/token/buy/delete',{token,id},'DELETE')
 
 
