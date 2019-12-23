@@ -1,11 +1,10 @@
 import React,{Component} from 'react'
 import {withRouter,Link} from 'react-router-dom'
 import './product-detail.less'
-import {Avatar,Icon} from 'antd'
+import {Avatar,Icon,Modal} from 'antd'
 
 import {reqFindIdProduct} from '../../api/index'
 import LinkButton from "../../components/link-button/link-button";
-import noproduct from '../../utils/8a52be7f15d4576ce96c64703d98abd4.png'
 
 class ProductDetail extends Component{
 
@@ -14,6 +13,7 @@ class ProductDetail extends Component{
         ProductDetail : '',
         UserInfo : '',
         BigImageUrl : '',
+        visible : false
     }
 
     getProductDetail = async () => {
@@ -50,13 +50,12 @@ class ProductDetail extends Component{
     }
 
 
-
     componentDidMount(){
         this.getProductDetail()
     }
 
     render () {
-        const {BigImageUrl,ProductDetail,UserInfo} = this.state
+        const {BigImageUrl,ProductDetail,UserInfo,visible} = this.state
 
 
 
@@ -75,7 +74,9 @@ class ProductDetail extends Component{
                 <span className='detail'>
                     <span className='image-wall'>
                         {
-                        <span>
+                        <span onClick={() => this.setState({
+                            visible : true
+                        })}>
                             {BigImageUrl  ?    <img src={BigImageUrl}  style={{width:300,height:300,border:'1px solid'}}  alt='img' />
                                 :
                                 <img src={ProductDetail.cover}
@@ -130,6 +131,18 @@ class ProductDetail extends Component{
                         </span>
                     </span>
                 </span>
+                <Modal
+                    visible={visible}
+                    onCancel={() => {
+                        this.setState({
+                            visible : false
+                        })
+                    }}
+                    footer = {null}
+                >
+                    {BigImageUrl ?   <img src={BigImageUrl} style={{width:500,height:500}}/> : <img src={ProductDetail.cover}  style={{width:500,height:500}}/>}
+
+                </Modal>
             </div>
         )
     }
