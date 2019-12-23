@@ -3,7 +3,7 @@ import memoryUtils from "../../utils/memoryUtils";
 import {reqBuyProduct,reqUpdateBuyProduct,reqDeleteBuyProduct} from "../../api";
 import storageUtils from "../../utils/storageUtils";
 import storageUtilsToken from "../../utils/storageUtils-token";
-import {Avatar, Card, Icon, message, Pagination, Button, Modal} from "antd";
+import {Avatar, Card, Icon, message, Pagination, Button, Modal, BackTop} from "antd";
 import UpdateWantBuy from './update-want-buy'
 
 
@@ -124,7 +124,6 @@ export default class UserBuyDetail extends Component{
                     this.getBuyProduct(1)
                 }else{
                     message.error('更新失败')
-                    console.log(result)
                 }
                 this.form.resetFields()
             }
@@ -138,20 +137,28 @@ export default class UserBuyDetail extends Component{
     }
 
     render () {
-        const ShowUpdate = this.state.ShowUpdate
+        const {ShowUpdate,BuyProduct} = this.state
+
         return (
             <div>
-            <div>
-                {this.getBuyProductList()}
-            </div>
-                <Pagination
+                <div>
+                    {
+                        BuyProduct.length !== 0 ?  this.getBuyProductList() : (<span style={{margin:"5% 5% 0 30%"}}>
+               <img src='https://www.youzixy.com/img/noGoods.cc45e087.png' alt='img'/>
+           </span>)
+                    }
+                </div>
+
+                {
+                    BuyProduct.length !== 0 ? (<Pagination
                     current= {this.page}
                     defaultPageSize= {this.state.defaultPageSize}
                     showQuickJumper
                     total={this.state.total}
                     onChange={this.getBuyProduct}
                     style={{textAlign:'center',marginTop:20}}
-                />
+                />) : ''}
+
                 <Modal
                     title="我的求购信息"
                     visible={ShowUpdate}
@@ -167,8 +174,14 @@ export default class UserBuyDetail extends Component{
                         product ={this.state.product}
                         setForm = {(form) => {this.form = form}}
                     />
+
                 </Modal>
+
+                <div>
+                    <BackTop />
+                </div>
             </div>
+
         )
     }
 }

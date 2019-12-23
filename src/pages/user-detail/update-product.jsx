@@ -21,6 +21,8 @@ class UpdateProduct extends Component{
 
     getFileList = (fileList) => {
         this.props.PictureWall(fileList)
+        console.log('接受的url',fileList)
+
     }
 
     getImageUrl = (url) => {
@@ -42,8 +44,10 @@ class UpdateProduct extends Component{
 
         const { getFieldDecorator } = this.props.form;
 
+
+
         return (
-            <Form>
+            <Form onSubmit={this.handleSubmit}>
                 <Form.Item label='产品名称：' {...formItemLayout} style={{paddingTop:30}}>
                     {getFieldDecorator('name', {
                         initialValue : this.props.sendProduct.name,
@@ -79,10 +83,10 @@ class UpdateProduct extends Component{
                 <Form.Item label='产品图片：' {...formItemLayout}>
                     <PictureWall
                         PictureWall = {(fileList) => this.getFileList(fileList)}
-                        sendProduct = {this.props.sendProduct}
+                        images = {this.props.sendProduct.images}
                     />
                 </Form.Item>
-                <Form.Item label='背景图片：' {...formItemLayout}>
+                <Form.Item label='封面图片：' {...formItemLayout}>
                     <UpLoadImage
                         UpLoadImage = {(url) => this.getImageUrl(url)}
                         sendProduct = {this.props.sendProduct}

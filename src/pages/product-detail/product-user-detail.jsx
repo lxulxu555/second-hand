@@ -1,8 +1,9 @@
 import React,{Component} from 'react'
-import {Card,  Pagination} from "antd";
+import {BackTop, Card, Icon, Pagination,Col,Row} from "antd";
 import {withRouter,Link} from 'react-router-dom'
 
 import {reqAllProduct} from '../../api/index'
+import LinkButton from "../../components/link-button/link-button";
 
 const { Meta } = Card;
 
@@ -16,7 +17,7 @@ class ProductUserDetail extends Component{
 
     getUserAllProduct = async (page) => {
         this.page = page
-        const result = await reqAllProduct('',page,this.state.defaultPageSize,this.props.location.state)
+        const result = await reqAllProduct('',page,this.state.defaultPageSize,this.props.location.state.id,'create_time desc')
         const total = result.total
         this.setState({
             UserProduct : result.data,
@@ -30,14 +31,14 @@ class ProductUserDetail extends Component{
 
         return UserProduct.map(Item => {
                 return (
+                    <Col xs={12} md={6}  xxl={4} style={{height:350,width:250,margin:'0 20px 80px 10px'}} >
                     <Link to={{
                         pathname : '/product-detail',
                         state : Item.id
                     }}>
                     <Card
                         hoverable
-                        style={{ width: 240 ,marginRight : 30,marginBottom:20,marginLeft:30}}
-                        cover={<img alt="img" src={Item.cover} />}
+                        cover={<img alt="img" src={Item.cover} style={{height:218}} />}
                         actions={[
                     <span>
                         {
@@ -52,6 +53,7 @@ class ProductUserDetail extends Component{
                         />
                     </Card>
                     </Link>
+                    </Col>
                 )
             }
         )
@@ -63,10 +65,26 @@ class ProductUserDetail extends Component{
 
     render () {
         return (
-            <div>
-            <div style={{display:'flex', flexWrap:'wrap'}}>
+            <div style={{paddingTop: '40px'}}>
+                <Row>
+
+                  <span style={{float:'left'}}>
+                    <LinkButton>
+                    <Icon
+                        type='arrow-left'
+                        style={{fontSize: 25, marginRight: 10,marginLeft:10,zIndex:'2'}}
+                        onClick={() => this.props.history.goBack()}
+                    />
+                    </LinkButton>
+                     <span style={{fontSize:15}}>
+                         {this.props.location.state.username}的商品列表
+                     </span>
+                </span>
+
+            <div style={{display:'flex', flexWrap:'wrap',marginTop:50}}>
                 {this.getUserAllProductList()}
             </div>
+                </Row>
                 <Pagination
                     current= {this.page}
                     defaultPageSize= {this.state.defaultPageSize}
@@ -75,6 +93,10 @@ class ProductUserDetail extends Component{
                     onChange={this.getUserAllProduct}
                     style={{textAlign:'center',marginTop:20}}
                 />
+
+                <div>
+                    <BackTop />
+                </div>
             </div>
         )
     }

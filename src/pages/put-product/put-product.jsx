@@ -38,8 +38,8 @@ class PutProduct extends Component{
                 product.phone = values.phone
                 product.cover = this.state.cover
                 product.image = this.pw.current.GetImgs()
-                console.log(product)
-                if(this.state.valueId){
+               // console.log(product)
+                if(this.state.valueId && this.state.cover){
                     product.classify2_id = this.state.valueId
                     const result = await reqAddProduct(product)
                     if(result.code===0){
@@ -47,10 +47,14 @@ class PutProduct extends Component{
                         this.props.history.replace('/home')
                     }else{
                         message.error('返回失败')
-                        console.log(result)
+                       // console.log(result)
                     }
                 }else{
-                    message.error('请选择二级分类')
+                    if(!this.state.cover){
+                        message.error('请上传封面')
+                    }else if(!this.state.valueId){
+                        message.error('请选择二级分类')
+                    }
                 }
             }
         });
@@ -124,14 +128,18 @@ class PutProduct extends Component{
                         {getFieldDecorator('price', {
                             rules: [{ required: true, message: '请输入产品价格' }],
                         })(
-                            <Input placeholder='请输入商品价格'/>
+                            <Input placeholder='请输入商品价格' addonAfter='元'/>
                         )}
                     </Form.Item>
                     <Form.Item label='手机号：' {...formItemLayout}>
                         {getFieldDecorator('phone', {
-                            rules: [{ required: true, message: '请输入卖家手机号' }],
+                            rules: [ {required: true,whiteSpace: true,message:'手机号必须输入'},
+                                {min:11,message:'手机号最少为11位'},
+                                {max:11,message:'手机号最多为11位'},
+                                {pattern:/^[0-9_]+$/,message:'手机号必须为数字'}
+                                ],
                         })(
-                            <Input placeholder='请输入联系手机号'/>
+                            <Input placeholder='请输入联系手机号' addonBefore= '+86'/>
                         )}
                     </Form.Item>
                     <Form.Item label='产品分类' {...formItemLayout}>
@@ -147,7 +155,7 @@ class PutProduct extends Component{
                             ref={this.pw}
                         />
                     </Form.Item>
-                    <Form.Item label='背景图片：' {...formItemLayout}>
+                    <Form.Item label='封面图片：' {...formItemLayout}>
                         <UpLoadImage
                             callBack = {(url) => this.getImageUrl(url)}
                         />

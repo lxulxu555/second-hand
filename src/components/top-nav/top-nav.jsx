@@ -29,39 +29,40 @@ class TopNav extends Component{
         Modal.confirm ({
             title: '确认退出吗',
             onOk :() => {
-                console.log('ok',this);
+                //console.log('ok',this);
                 storageUtils.RemoveUser()
                 memoryUtils.user = {}
                 storageUtilsToken.RemoveToken()
                 memoryUtils.token = {}
-                window.location.reload()
                 message.success('退出成功')
+                this.props.history.replace('/home')
+                window.location.reload()
             },
         })
     }
 
     UpdateUser = () => {
-        this.setState({
-            ShowUpdate : false
-        })
+
         this.form.validateFields(async (err, values) => {
             if (!err) {
+                this.setState({
+                    ShowUpdate : false
+                })
                 const user = this.state.user
                 user.id = memoryUtils.user.id
                 user.img = this.state.image
+                user.password = values.password
                 user.username = values.username
                 user.phone = values.phone
-                user.password = values.password
                 const result = await reqUpdateUser(user)
                 memoryUtils.user = user
                 storageUtils.SaveUser(user)
-                console.log(result);
-                //alert(JSON.stringify(user))
                 if(result.id){
                     message.success('更新成功')
-                    window.location.reload()
+                    this.props.history.replace('/home')
+                    this.form.resetFields()
                 }else{
-                    message.error('更新失败')
+                    message.error(result.msg)
                 }
             }
         });
@@ -69,7 +70,6 @@ class TopNav extends Component{
 
 
     getHeaderUrl(url){
-        //console.log("最后一层" + url)
         this.setState({
             image : url
         })
@@ -78,7 +78,7 @@ class TopNav extends Component{
         let path = this.props.location.pathname
         const user = memoryUtils.user
         const {ShowUpdate} = this.state
-        //console.log('测试',path)
+        console.log(path)
 
         return (
             <div>
@@ -145,8 +145,8 @@ class TopNav extends Component{
                             mode="horizontal"
                             style={{ lineHeight: '64px' ,float:'right',marginRight:30}}
                         >
-                            <SubMenu key="/user" title="个人中心">
-                                <Menu.Item key="/user-detail">
+                            <SubMenu key="/user" title="个人中心" >
+                                <Menu.Item key="/user-detail" >
                                     <Link to='/user-detail'>
                                         我的商品
                                     </Link>
@@ -167,7 +167,7 @@ class TopNav extends Component{
                             mode="horizontal"
                             style={{ lineHeight: '64px' ,float:'right',marginRight:30}}
                         >
-                            <SubMenu key="/product" title="发布">
+                            <SubMenu key="/product" title="发布" >
                                 <Menu.Item key="product">
                                     <Link to='/product'>
                                         发布商品
@@ -190,6 +190,7 @@ class TopNav extends Component{
                         this.setState({
                             ShowUpdate : false
                         })
+                        this.form.resetFields()
                     }}
                 >
 

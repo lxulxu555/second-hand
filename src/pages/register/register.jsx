@@ -33,8 +33,9 @@ class Register extends Component{
                 const result = await reqRegister(user)
                 if(result.success===1){
                     message.success('注册成功')
+                    this.props.history.replace('/login')
                 }else{
-                    message.error('注册失败 ')
+                    message.error(result.msg)
                 }
                 }
         });
@@ -68,7 +69,7 @@ class Register extends Component{
                                     initialValue:'',
                                     rules : [
                                         {required:true,whiteSpace:true,message:'用户名必须输入'},
-                                        {min:2,message:'用户名最少为4位'},
+                                        {min:4,message:'用户名最少为4位'},
                                         {max:12,message:'用户名最多为12位'},
                                         {pattern:/^[a-zA-Z0-9_]+$/,message:'用户名必须是英文数字和下划线组成'}
                                     ]
@@ -86,7 +87,7 @@ class Register extends Component{
                                 getFieldDecorator('password',{
                                     rules: [
                                         {required: true,whiteSpace: true,message:'密码必须输入'},
-                                        {min:2,message:'密码最少为四位'},
+                                        {min:4,message:'密码最少为四位'},
                                         {max:12,message:'密码最多为十二位'},
                                         {pattern: /^[a-zA-Z0-9_]+$/,message:'密码必须是英文字母数字下划线组成'}
                                     ]
@@ -112,6 +113,7 @@ class Register extends Component{
                                     <Input
                                         prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />}
                                         placeholder="Phone"
+                                        addonBefore='+86'
                                     />,
                                 )
                             }
@@ -152,6 +154,8 @@ class Register extends Component{
 
 const WrapLogin = Form.create()(Register)
 export default withRouter(WrapLogin)
+
+
 
 
 

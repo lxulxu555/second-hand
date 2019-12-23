@@ -25,14 +25,15 @@ export class PictureWall extends React.Component {
 
 
     static propTypes = {
-        sendProduct : PropTypes.object.isRequired
+        images : PropTypes.array.isRequired
     }
 
 
     constructor(props){
+        //为什么只执行了一次？？？
         super(props)
         let fileList = []
-        const images = this.props.sendProduct.images
+        const images = this.props.images
         if(images && images.length > 0){
             fileList = images.map((file, index) => ({
                 uid: -index, // 每个file都有自己唯一的id
@@ -47,7 +48,9 @@ export class PictureWall extends React.Component {
             previewImage: '',
             fileList,
         }
+        console.log('执行次数')
     }
+
 
 
     handleCancel = () => this.setState({ previewVisible: false });
@@ -70,6 +73,7 @@ export class PictureWall extends React.Component {
     componentWillMount(){
         this.sendFileList(this.state.fileList)
     }
+
     /*
     file:当前操作的图片文件
     fileList:所有已上传图片文件对象的数组
@@ -98,6 +102,7 @@ export class PictureWall extends React.Component {
     }
 
     render() {
+        console.log('第三层',this.props.images)
 
         const { previewVisible, previewImage, fileList } = this.state;
         const uploadButton = (

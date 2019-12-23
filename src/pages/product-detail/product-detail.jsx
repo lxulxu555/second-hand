@@ -4,6 +4,8 @@ import './product-detail.less'
 import {Avatar,Icon} from 'antd'
 
 import {reqFindIdProduct} from '../../api/index'
+import LinkButton from "../../components/link-button/link-button";
+import noproduct from '../../utils/8a52be7f15d4576ce96c64703d98abd4.png'
 
 class ProductDetail extends Component{
 
@@ -32,12 +34,13 @@ class ProductDetail extends Component{
 
     imageList = () => {
         const {images} = this.state.ProductDetail
-        if(images){
+        console.log('图片',images)
+        if(images && images.length>0){
             return images.map(Item => {
                 return (
                     <img src={Item.url}
                          onClick={() => this.BigImage(Item.url)}
-                         style={{paddingRight:20,width:100,height:80}}
+                         style={{width:100,height:80,marginLeft:5}}
                          alt='img'
                          key={Item.id}
                     />
@@ -55,16 +58,34 @@ class ProductDetail extends Component{
     render () {
         const {BigImageUrl,ProductDetail,UserInfo} = this.state
 
+
+
         return (
             <div className='small-background'>
+                 <span style={{float:'left'}}>
+                    <LinkButton>
+                    <Icon
+                        type='arrow-left'
+                        style={{fontSize: 25, marginRight: 10,marginLeft:10}}
+                        onClick={() => this.props.history.goBack()}
+                    />
+                    </LinkButton>
+                     <span style={{fontSize:15}}>商品详情</span>
+                </span>
                 <span className='detail'>
                     <span className='image-wall'>
+                        {
                         <span>
-                            {BigImageUrl
-                                ?    <img src={BigImageUrl}  style={{width:300,height:300,border:'1px solid'}}  alt='img' />
-                                :    <img src={ProductDetail.cover}  style={{width:300,height:300,border:'1px solid'}}   alt='img'/>
+                            {BigImageUrl  ?    <img src={BigImageUrl}  style={{width:300,height:300,border:'1px solid'}}  alt='img' />
+                                :
+                                <img src={ProductDetail.cover}
+                                     style={{width:300,height:300,border:'1px solid'}}
+                                     alt='img'
+                                />
                             }
                         </span>
+                        }
+
                 <span className='image-small'>
                     {this.imageList()}
                 </span>
@@ -79,7 +100,7 @@ class ProductDetail extends Component{
                                 卖家账号：
                                 <Link to={{
                                     pathname : '/product-user-detail',
-                                    state : this.state.UserInfo.id
+                                    state : this.state.UserInfo
                                 }}>
                                 {UserInfo.username}
                                 </Link>

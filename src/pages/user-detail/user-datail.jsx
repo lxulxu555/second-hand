@@ -1,9 +1,10 @@
 import React,{Component} from 'react'
-import {Card, Icon, Modal, message, Pagination} from 'antd'
+import {Card, Icon, Modal, message, Pagination, BackTop,Row,Col} from 'antd'
 
-import {reqAllProduct,reqUpdateProduct,reqDeleteProduct} from '../../api/index'
+import {reqAllProduct, reqUpdateProduct, reqDeleteProduct} from '../../api/index'
 import memoryUtils from "../../utils/memoryUtils";
 import UpdateProduct from './update-product'
+import noProduct from '../../utils/8a52be7f15d4576ce96c64703d98abd4.png'
 
 const { Meta } = Card;
 
@@ -26,7 +27,7 @@ export default class UserDetail extends Component{
 
     getUserAllProduct = async (page) => {
         this.page = page
-        const result = await reqAllProduct('',page,this.state.defaultPageSize,memoryUtils.user.id)
+        const result = await reqAllProduct('',page,this.state.defaultPageSize,memoryUtils.user.id,'create_time desc')
         const total = result.total
         this.setState({
             UserProduct : result.data,
@@ -43,20 +44,20 @@ export default class UserDetail extends Component{
             message.success(Item.state === 0 ? '下架成功' : '上架成功')
         }else{
             message.error(Item.state === 1 ? '下架失败' : '上架失败')
-           // console.log(result)
         }
         this.getUserAllProduct()
     }
+
 
     getUserAllProductList = () => {
         const UserProduct = this.state.UserProduct
         return UserProduct.map(Item => {
             return (
+                <Col  xs={12} md={6}  xxl={4} style={{height:350,width:240,margin:'0 30px 40px 30px'}}    key={Item.id}
+                >
             <Card
-                key={Item.id}
-                hoverable
-                style={{ width: 240 ,marginRight : 30,marginBottom:20,marginLeft:30}}
-                cover={<img alt="img" src={Item.cover} />}
+                    hoverable
+                cover = {Item.cover ? <img alt="img" src={Item.cover} /> :<img alt="img" src={noProduct} />}
                 actions={[
                     <Icon
                         type="setting"
@@ -75,7 +76,7 @@ export default class UserDetail extends Component{
                     <Icon
                         type="delete"
                         key="delete"
-                        onClick = {() => this.deleteProduct(Item.id)}
+                        onClick = {() => this.deleteProduct(Item)}
                     />
                 ]}
             >
@@ -84,17 +85,19 @@ export default class UserDetail extends Component{
                     description={Item.intro}
                 />
             </Card>
+                </Col>
             )
         }
         )
     }
 
     Updateproduct = () => {
-        this.setState({
-            ShowUpdate : false
-        })
+
         this.form.validateFields(async (err,values) => {
             if(!err){
+                this.setState({
+                    ShowUpdate : false
+                })
                 this.form.resetFields()
                 const product = this.state.product
                 product.id = this.state.ProductId
@@ -106,6 +109,9 @@ export default class UserDetail extends Component{
                 product.image = this.state.FileUrl
                 const result = await reqUpdateProduct(product)
                 if(result.code===0){
+                    if(!product.cover){
+                        message.error('请上传封面图片')
+                    }
                     message.success('更新成功')
                     this.getUserAllProduct(1)
                 }else{
@@ -134,14 +140,20 @@ export default class UserDetail extends Component{
         })
     }
 
-    deleteProduct = async (id) => {
-        const result = await reqDeleteProduct(id)
-        if(result.code === -1){
-            message.success('删除成功')
-        }else{
-            message.error('删除失败')
-        }
-        this.getUserAllProduct(1)
+    deleteProduct = async (Item) => {
+
+        Modal.confirm ({
+            title: `确认删除${Item.name}吗`,
+            onOk :async () => {
+                const result = await reqDeleteProduct(Item.id)
+                if(result.code === -1){
+                    message.success('删除成功')
+                }else{
+                    message.error('删除失败')
+                }
+                this.getUserAllProduct(1)
+            },
+        })
     }
 
     componentDidMount(){
@@ -154,9 +166,13 @@ export default class UserDetail extends Component{
         return (
             <div>
 
+                <Row>
              <div style={{display:'flex', flexWrap:'wrap'}}>
-                {this.getUserAllProductList()}
+                { UserProduct ? this.getUserAllProductList() : (<span style={{margin:"5% 5% 0 30%"}}    >
+               <img src='https://www.youzixy.com/img/noGoods.cc45e087.png' alt='img'/>
+           </span>)}
             </div>
+                </Row>
                 <Modal
                     title="更新商品信息"
                     visible={ShowUpdate}
@@ -166,6 +182,7 @@ export default class UserDetail extends Component{
                         this.setState({
                             ShowUpdate : false
                         })
+                        window.location.reload()
                     }}
                 >
                     <UpdateProduct
@@ -176,14 +193,17 @@ export default class UserDetail extends Component{
                         sendProduct = {sendProduct}
                     />
                 </Modal>
-                <Pagination
+                {UserProduct ? (<Pagination
                     current= {this.page}
                     defaultPageSize= {this.state.defaultPageSize}
                     showQuickJumper
                     total={this.state.total}
                     onChange={this.getUserAllProduct}
                     style={{textAlign:'center',marginTop:20}}
-                />
+                />) : ''}
+                <div>
+                    <BackTop />
+                </div>
             </div>
         )
     }

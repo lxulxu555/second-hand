@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Carousel,Menu} from 'antd'
+import {Carousel,Menu,Row,Col} from 'antd'
 import {withRouter} from 'react-router-dom'
 
 
@@ -65,36 +65,46 @@ class Home extends Component {
         return (
             <div>
             <span className="ParentFather">
-            <div style={{marginBottom:10}}>
+                <Row>
+                    <Col xs={24} md={4} xxl={5}>
+            <div style={{marginBottom:10}} >
                 <Menu
                     onClick={(item,key) => this.handleClick({item,key})}
-                    style={{width: 220}}
                     mode="vertical"
                     theme={"dark"}
+                    className='menu'
                 >
                     {this.getOneList()}
               </Menu>
             </div>
+                    </Col>
+
+                    <Col xs={24} md={20} xxl={19} style={{paddingLeft:10}}>
             <Carousel autoplay className='Carousel-image'>
                 <p>
                     <img data-v-7bfb6d44
                          src="https://api.youzixy.com/public/uploads/attach/2019/09/16/5d7f9df01b29f.jpg"
                          alt='img'
+                         className='s'
                     />
                 </p>
                 <p>
                     <img data-v-7bfb6d44
                          src="https://api.youzixy.com/public/uploads/attach/2019/09/16/5d7f9df9c8ffd.jpg"
                          alt='img'
+                         className='s'
                     />
                 </p>
                 <p>
                     <img data-v-7bfb6d44
                          src="https://api.youzixy.com/public/uploads/attach/2019/09/16/5d7f9de20f273.jpg"
                          alt='img'
+                         className='s'
                     />
                 </p>
             </Carousel>
+                    </Col>
+                </Row>
             </span>
                 <span>
                     <Product currentKey={currentKey}/>

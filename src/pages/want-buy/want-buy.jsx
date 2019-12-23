@@ -74,11 +74,14 @@ export default class WantBuy extends Component{
     }
 
     render () {
+        const BuyProduct = this.state.BuyProduct
         return (
             <div>
                 <div>
                     {
-                        this.getBuyProductList()
+                        BuyProduct ?  this.getBuyProductList() : (<span style={{margin:"auto auto"}}>
+               <img src='https://www.youzixy.com/img/noGoods.cc45e087.png' alt='img'/>
+           </span>)
                     }
                 </div>
                 <Pagination

@@ -13,27 +13,15 @@ class UpdateUser extends Component{
         setForm : PropTypes.func.isRequired,
     }
 
-   /* constructor(props){
-        super(props)
-        this.pw = React.createRef()
-    }*/
-
 
     componentWillMount () {
         this.props.setForm(this.props.form)
     }
 
-   /* componentDidMount () {
-        const images = this.pw.current.GetImgs()
-        this.setState({
-            images
-        })
-        console.log('ssss',this.state.images)
-    }*/
+
 
 
     getImageUrl = (url) =>  {
-        console.log("121333"+url)
         this.props.callBack(url)
     }
 
@@ -47,9 +35,8 @@ class UpdateUser extends Component{
         const { getFieldDecorator } = this.props.form;
         return (
             <div>
-            <Form>
+            <Form onSubmit={this.handleSubmit}  >
                 <Form.Item label='我的头像: ' {...formItemLayout}>
-                  {/*  <UpdateImage callBack={this.getImageUrl.bind(this)}/>*/}
                     <UpdateImage
                         callBack = {(url) => this.getImageUrl(url)}
                     />
@@ -57,25 +44,33 @@ class UpdateUser extends Component{
                 <Form.Item label='用户名' {...formItemLayout}>
                     {getFieldDecorator('username', {
                         initialValue : memoryUtils.user.username,
-                        rules: [{ required: true, message: 'Please input your username!' }],
                     })(
-                        <Input placeholder='password'/>
+                        <Input placeholder='UserName' disabled/>
                     )}
                 </Form.Item>
                 <Form.Item label='密码' {...formItemLayout}>
                     {getFieldDecorator('password', {
                         initialValue : memoryUtils.user.password,
-                        rules: [{ required: true, message: 'Please input your username!' }],
+                        rules: [
+                            {required: true,whiteSpace: true,message:'密码必须输入'},
+                            {min:4,message:'密码最少为四位'},
+                            {max:12,message:'密码最多为十二位'},
+                            {pattern: /^[a-zA-Z0-9_]+$/,message:'密码必须是英文字母数字下划线组成'}
+                        ]
                     })(
-                        <Input type='password' placeholder='password'/>
+                        <Input type='password' placeholder='PassWord'/>
                     )}
                 </Form.Item>
                 <Form.Item label='手机号' {...formItemLayout}>
                     {getFieldDecorator('phone', {
                         initialValue : memoryUtils.user.phone,
-                        rules: [{ required: true, message: 'Please input your username!' }],
+                        rules : [
+                            {min:11,message:'手机号最少为11位'},
+                            {max:11,message:'手机号最多为11位'},
+                            {pattern:/^[0-9_]+$/,message:'手机号必须为数字'}
+                        ]
                     })(
-                        <Input placeholder='phone'/>
+                        <Input placeholder='Phone' addonBefore='+86'/>
                     )}
                 </Form.Item>
             </Form>

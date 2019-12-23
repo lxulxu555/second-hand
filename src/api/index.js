@@ -11,7 +11,7 @@ export const reqUpdateUser = (user) => ajax(BASE + '/user/update',user,'PUT')
 //获取所有分类接口
 export const reqFindOne = () => ajax(BASE + '/classify1/findAll')
 //获取所有商品
-export const reqAllProduct = (id,page,rows,userid) => ajax(BASE + '/goods/findByPage',{id,page,rows,userid})
+export const reqAllProduct = (id,page,rows,userid,orderBy) => ajax(BASE + '/goods/findByPage',{id,page,rows,userid,orderBy})
 //添加商品
 export const reqAddProduct = (product) => ajax(BASE + '/goods/add',product,'POST')
 //获取所有一级分类

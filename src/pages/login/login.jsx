@@ -38,7 +38,7 @@ class Login extends Component{
                     message.success('登录成功')
                     this.props.history.replace('/home')
                 }else{
-                    message.error('登陆失败')
+                    message.error(result.msg)
                 }
             }
         });
