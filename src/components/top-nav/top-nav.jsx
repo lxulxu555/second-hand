@@ -144,6 +144,7 @@ class TopNav extends Component{
                             theme="dark"
                             mode="horizontal"
                             style={{ lineHeight: '64px' ,float:'right',marginRight:30}}
+                            selectedKeys={[path]}
                         >
                             <SubMenu key="/user" title="个人中心" >
                                 <Menu.Item key="/user-detail" >
@@ -166,9 +167,10 @@ class TopNav extends Component{
                             theme="dark"
                             mode="horizontal"
                             style={{ lineHeight: '64px' ,float:'right',marginRight:30}}
+                            selectedKeys={[path]}
                         >
-                            <SubMenu key="/product" title="发布" >
-                                <Menu.Item key="product">
+                            <SubMenu key="/productHome" title="发布" >
+                                <Menu.Item key="/product">
                                     <Link to='/product'>
                                         发布商品
                                     </Link>

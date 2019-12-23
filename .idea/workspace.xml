@@ -2,27 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6da94bb1-4401-438c-b307-097e4525965f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/pages/register/yanzhengma.jsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/8a52be7f15d4576ce96c64703d98abd4.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/utils/heade.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/api/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/api/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/top-nav/top-nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/top-nav/top-nav.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/home/home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home/home.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/home/home.less" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home/home.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/home/product.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home/product.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/login/login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/login.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/product-detail/product-detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product-detail/product-detail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/product-detail/product-detail.less" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product-detail/product-detail.less" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/product-detail/product-user-detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product-detail/product-user-detail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/put-product/put-product.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/put-product/put-product.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/register/register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/register/register.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/update-user/update-user.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/update-user/update-user.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/user-buy-detail/user-buy-detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/user-buy-detail/user-buy-detail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/user-detail/PictureWall.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/user-detail/PictureWall.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/user-detail/update-product.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/user-detail/update-product.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/user-detail/user-datail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/user-detail/user-datail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/want-buy/want-buy.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/want-buy/want-buy.jsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -89,7 +70,7 @@
           <entry key="html" value="2223" />
           <entry key="js" value="2584" />
           <entry key="json" value="44" />
-          <entry key="jsx" value="39916" />
+          <entry key="jsx" value="39924" />
           <entry key="less" value="1727" />
           <entry key="txt" value="30" />
           <entry key="vmoptions" value="8" />
@@ -99,7 +80,7 @@
         <counts>
           <entry key="HTML" value="2223" />
           <entry key="JSON" value="44" />
-          <entry key="JSX Harmony" value="39916" />
+          <entry key="JSX Harmony" value="39924" />
           <entry key="JavaScript" value="2584" />
           <entry key="Less" value="1727" />
           <entry key="PLAIN_TEXT" value="46" />
@@ -130,8 +111,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/components/top-nav/top-nav.jsx">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="80" column="24" selection-start-line="80" selection-start-column="24" selection-end-line="80" selection-end-column="24" />
+            <state relative-caret-position="646">
+              <caret line="172" column="49" selection-start-line="172" selection-start-column="49" selection-end-line="172" selection-end-column="49" />
               <folding>
                 <element signature="e#0#37#0" expanded="true" />
               </folding>
@@ -325,7 +306,7 @@
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1577069101364" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1577069521743" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../guiguhoutai" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
@@ -400,7 +381,7 @@
       <workItem from="1576632396339" duration="23681000" />
       <workItem from="1576719027010" duration="33974000" />
       <workItem from="1576814015650" duration="4314000" />
-      <workItem from="1577067321648" duration="1759000" />
+      <workItem from="1577067321648" duration="2192000" />
     </task>
     <task id="LOCAL-00001" summary="fix product-update images">
       <created>1576648032105</created>
@@ -416,11 +397,18 @@
       <option name="project" value="LOCAL" />
       <updated>1576653926046</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="fix">
+      <created>1577069162534</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1577069162534</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="328374000" />
+    <option name="totallyTimeSpent" value="328807000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="735" extended-state="6" />
@@ -500,7 +488,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix product-update images" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix product-update images" />
+    <MESSAGE value="fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/pages/login/login.less">
@@ -709,6 +698,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="66">
           <caret line="91" column="4" selection-start-line="91" selection-start-column="4" selection-end-line="104" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -716,6 +708,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="76">
           <caret line="35" column="13" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#27#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -747,6 +742,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1323">
           <caret line="56" column="21" selection-start-line="56" selection-start-column="21" selection-end-line="56" selection-end-column="21" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -754,6 +752,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="39">
           <caret line="35" column="40" selection-start-line="35" selection-start-column="40" selection-end-line="35" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#25#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -761,6 +762,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="411">
           <caret line="94" lean-forward="true" selection-start-line="94" selection-end-line="94" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -810,8 +814,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/components/top-nav/top-nav.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="80" column="24" selection-start-line="80" selection-start-column="24" selection-end-line="80" selection-end-column="24" />
+        <state relative-caret-position="646">
+          <caret line="172" column="49" selection-start-line="172" selection-start-column="49" selection-end-line="172" selection-end-column="49" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
           </folding>
