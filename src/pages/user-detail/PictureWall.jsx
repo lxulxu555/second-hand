@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { Upload, Icon, Modal,message } from 'antd';
+import {reqDeleteProductImage} from '../../api/index'
 
 
 
@@ -25,33 +26,51 @@ export class PictureWall extends React.Component {
 
 
     static propTypes = {
-        images : PropTypes.array.isRequired
+        images : PropTypes.string.isRequired
     }
 
+//只渲染了一次
+     constructor(props){
+         super(props)
+         let fileList = []
+         const image = this.props.images
+         const images = image.split(",")
 
-    constructor(props){
-        //为什么只执行了一次？？？
-        super(props)
+         if(images && images.length > 0){
+             fileList = images.map((file, index) => ({
+                 uid: -index, // 每个file都有自己唯一的id
+                 status: 'done', // 图片状态: done-已上传, uploading: 正在上传中, removed: 已删除
+                 url:  file
+             })
+         )
+         }
+         this.state={
+             previewVisible: false,
+             previewImage: '',
+             fileList,
+         }
+     }
+
+   /* componentWillReceiveProps(nextProps){
+        const image = nextProps.images
         let fileList = []
-        const images = this.props.images
+        const images = image.split(",")
         if(images && images.length > 0){
+            console.log('1',name)
             fileList = images.map((file, index) => ({
-                uid: -index, // 每个file都有自己唯一的id
-                name : file.url.substring(37),
-                status: 'done', // 图片状态: done-已上传, uploading: 正在上传中, removed: 已删除
-                url:  file.url
-            })
+                    uid: -index, // 每个file都有自己唯一的id
+                    status: 'done', // 图片状态: done-已上传, uploading: 正在上传中, removed: 已删除
+                    url:  file
+                })
+
         )
         }
-        this.state={
-            previewVisible: false,
-            previewImage: '',
-            fileList,
-        }
-        console.log('执行次数')
+        this.setState({
+            fileList
+        })
+        console.log(fileList)
     }
-
-
+*/
 
     handleCancel = () => this.setState({ previewVisible: false });
 
@@ -79,7 +98,7 @@ export class PictureWall extends React.Component {
     fileList:所有已上传图片文件对象的数组
      */
 
-    handleChange =  ({ fileList,file }) => {
+    handleChange =  async ({ fileList,file }) => {
 
         //一旦上传成功，将当前上传的file的信息修正(name,url)
         if(file.status==='done') {
@@ -93,7 +112,14 @@ export class PictureWall extends React.Component {
             } else {
                 message.error('上传图片失败')
             }
-        }
+        }/*else if(file.status==='removed'){
+            const result = await reqDeleteProductImage(name)
+            if(result.status===0){
+                message.success('删除成功')
+            }else{
+                message.error('删除失败')
+            }
+        }*/
         this.setState({
             fileList
         },() => {
@@ -102,7 +128,6 @@ export class PictureWall extends React.Component {
     }
 
     render() {
-        console.log('第三层',this.props.images)
 
         const { previewVisible, previewImage, fileList } = this.state;
         const uploadButton = (
@@ -123,7 +148,7 @@ export class PictureWall extends React.Component {
                     onPreview={this.handlePreview}
                     onChange={this.handleChange}
                 >
-                    {fileList.length >= 3 ? null : uploadButton}
+                    {fileList.length >= 4 ? null : uploadButton}
                 </Upload>
                 <Modal visible={previewVisible} footer={null} onCancel={this.handleCancel}>
                     <img alt="example" style={{ width: '100%' }} src={previewImage} />

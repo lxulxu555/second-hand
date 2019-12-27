@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Carousel,Menu,Row,Col} from 'antd'
+import {Carousel, Menu, Row, Col, Input, Icon,Button} from 'antd'
 import {withRouter} from 'react-router-dom'
 
 
@@ -11,10 +11,15 @@ const { SubMenu } = Menu;
 
 class Home extends Component {
 
+
+
     state = {
         One : [],
         success : false,
-        currentKey : ''
+        currentKey : '',
+        searchName:'',
+        searchname : '',
+        isSearchname: true
     }
 
     getOne = async ()=> {
@@ -51,17 +56,32 @@ class Home extends Component {
     handleClick = ({item,key}) => {
         this.setState({
             currentKey : item.key,
+            searchname: ''
         })
     }
 
+    SearchName = () => {
+        const searchname = this.state.searchName
+        this.setState({
+            searchname,
+            isSearchname: true,
+            searchName : ''
+        })
+    }
 
+    cleanSearchName = () => {
+        this.setState({
+            searchname : ''
+        })
+    }
 
     componentDidMount() {
         this.getOne()
     }
 
     render() {
-        const currentKey = this.state.currentKey
+
+        const {currentKey,searchname,searchName} = this.state
         return (
             <div>
             <span className="ParentFather">
@@ -79,7 +99,7 @@ class Home extends Component {
             </div>
                     </Col>
 
-                    <Col xs={24} md={20} xxl={19} style={{paddingLeft:10}}>
+                    <Col xs={24} md={20} xxl={19} style={{paddingLeft:10,display:'flex',flexDirection : 'column'}}>
             <Carousel autoplay className='Carousel-image'>
                 <p>
                     <img data-v-7bfb6d44
@@ -103,11 +123,32 @@ class Home extends Component {
                     />
                 </p>
             </Carousel>
+                        <div>
+
+                           <Input
+                               id='input'
+                               value={searchName}
+                               placeholder='请输入关键字'
+                               style={{width:300,height:40,marginTop:12,marginLeft:'20%'}}
+                               addonBefore={<Icon type='search'/>}
+                               onChange={(event) => this.setState({
+                                   searchName : event.target.value
+                               })}
+                           />
+
+                        <Button
+                            type='primary'
+                            style={{width:63,marginTop:13,height:30,textAlign:'center',borderRadius:0,borderBottomRightRadius:'5px',borderTopRightRadius:'5px'}}
+                            onClick={() => this.SearchName()}
+                        >
+                            搜索
+                        </Button>
+                        </div>
                     </Col>
                 </Row>
             </span>
                 <span>
-                    <Product currentKey={currentKey}/>
+                    <Product currentKey={currentKey} searchname={searchname} cleanSearchName={this.cleanSearchName}/>
                 </span>
             </div>
         )

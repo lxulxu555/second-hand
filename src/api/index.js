@@ -43,5 +43,9 @@ export const reqUpdateBuyProduct = (buyProduct) =>
         .catch(err => console.warn(err));
 //根据求购ID删除求购信息
 export const reqDeleteBuyProduct = (token,id) => ajax(BASE + '/token/buy/delete',{token,id},'DELETE')
+//根据商品名称查询商品
+export const reqLookUpProduct = (goodsName,page,rows) => ajax(BASE + '/goods/findByLike',{goodsName})
+//删除商品图片
+export const reqDeleteProductImage = (name) => ajax(BASE + '/goods/deleteFile',{name},'POST')
 
 

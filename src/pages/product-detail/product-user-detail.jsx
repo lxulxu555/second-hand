@@ -30,6 +30,8 @@ class ProductUserDetail extends Component{
         const UserProduct = this.state.UserProduct
 
         return UserProduct.map(Item => {
+            const img = Item.images
+            const cover = img.split(",")[0]
                 return (
                     <Col xs={12} md={6}  xxl={4} style={{height:350,width:250,margin:'0 20px 80px 10px'}} >
                     <Link to={{
@@ -38,7 +40,7 @@ class ProductUserDetail extends Component{
                     }}>
                     <Card
                         hoverable
-                        cover={<img alt="img" src={Item.cover} style={{height:218}} />}
+                        cover={<img alt="img" src={cover} style={{height:218}} />}
                         actions={[
                     <span>
                         {

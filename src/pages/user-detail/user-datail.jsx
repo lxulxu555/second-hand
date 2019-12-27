@@ -4,7 +4,6 @@ import {Card, Icon, Modal, message, Pagination, BackTop,Row,Col} from 'antd'
 import {reqAllProduct, reqUpdateProduct, reqDeleteProduct} from '../../api/index'
 import memoryUtils from "../../utils/memoryUtils";
 import UpdateProduct from './update-product'
-import noProduct from '../../utils/8a52be7f15d4576ce96c64703d98abd4.png'
 
 const { Meta } = Card;
 
@@ -52,12 +51,15 @@ export default class UserDetail extends Component{
     getUserAllProductList = () => {
         const UserProduct = this.state.UserProduct
         return UserProduct.map(Item => {
+                const images = Item.images
+                const cover = images.split(",")[0]
             return (
                 <Col  xs={12} md={6}  xxl={4} style={{height:350,width:240,margin:'0 30px 40px 30px'}}    key={Item.id}
                 >
             <Card
                     hoverable
-                cover = {Item.cover ? <img alt="img" src={Item.cover} /> :<img alt="img" src={noProduct} />}
+                cover = {<img alt="img" src={cover} onClick={() => this.setState({ShowUpdate : true,ProductId : Item.id,
+                    sendProduct : Item})}/> }
                 actions={[
                     <Icon
                         type="setting"
@@ -83,6 +85,7 @@ export default class UserDetail extends Component{
                 <Meta
                     title={Item.name}
                     description={Item.intro}
+                    style={{textOverflow:'ellipsis',whiteSpace:'nowrap',overflow:'hidden'}}
                 />
             </Card>
                 </Col>
@@ -94,6 +97,7 @@ export default class UserDetail extends Component{
     Updateproduct = () => {
 
         this.form.validateFields(async (err,values) => {
+            const images = this.state.FileUrl.toString()
             if(!err){
                 this.setState({
                     ShowUpdate : false
@@ -105,13 +109,9 @@ export default class UserDetail extends Component{
                 product.intro = values.intro
                 product.price1 = values.price1
                 product.phone = values.phone
-                product.cover = this.state.ImageUrl
-                product.image = this.state.FileUrl
+                product.images = images
                 const result = await reqUpdateProduct(product)
                 if(result.code===0){
-                    if(!product.cover){
-                        message.error('请上传封面图片')
-                    }
                     message.success('更新成功')
                     this.getUserAllProduct(1)
                 }else{
@@ -182,7 +182,7 @@ export default class UserDetail extends Component{
                         this.setState({
                             ShowUpdate : false
                         })
-                        window.location.reload()
+                        //window.location.reload()
                     }}
                 >
                     <UpdateProduct

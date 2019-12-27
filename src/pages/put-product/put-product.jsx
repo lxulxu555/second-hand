@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {Form, Input,Button,message,Cascader} from "antd";
 
 import './put-product.less'
-import UpLoadImage from './upload-image'
 import {reqAddProduct,reqFindOne} from '../../api/index'
 import {PictureWall} from "./picture-wall";
 import memoryUtils from "../../utils/memoryUtils";
@@ -29,6 +28,8 @@ class PutProduct extends Component{
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields(async (err, values) => {
+            let image = this.pw.current.GetImgs()
+            const a = image.toString()
             if (!err) {
                 const product = this.state.product
                 product.name = values.name
@@ -36,10 +37,8 @@ class PutProduct extends Component{
                 product.intro = values.intro
                 product.price1 = values.price
                 product.phone = values.phone
-                product.cover = this.state.cover
-                product.image = this.pw.current.GetImgs()
-               // console.log(product)
-                if(this.state.valueId && this.state.cover){
+                product.images = a
+                if(this.state.valueId){
                     product.classify2_id = this.state.valueId
                     const result = await reqAddProduct(product)
                     if(result.code===0){
@@ -47,12 +46,9 @@ class PutProduct extends Component{
                         this.props.history.replace('/home')
                     }else{
                         message.error('返回失败')
-                       // console.log(result)
                     }
                 }else{
-                    if(!this.state.cover){
-                        message.error('请上传封面')
-                    }else if(!this.state.valueId){
+                   if(!this.state.valueId){
                         message.error('请选择二级分类')
                     }
                 }
@@ -153,11 +149,6 @@ class PutProduct extends Component{
                     <Form.Item label='产品图片：' {...formItemLayout}>
                         <PictureWall
                             ref={this.pw}
-                        />
-                    </Form.Item>
-                    <Form.Item label='封面图片：' {...formItemLayout}>
-                        <UpLoadImage
-                            callBack = {(url) => this.getImageUrl(url)}
                         />
                     </Form.Item>
                     <Button type='primary' htmlType='submit' style={{marginBottom:10}}>提交</Button>

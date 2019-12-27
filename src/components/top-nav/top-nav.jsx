@@ -17,7 +17,7 @@ class TopNav extends Component{
     state = {
         ShowUpdate : false,
         user : {},
-        image : ''
+        image : '',
     }
 
 
@@ -74,17 +74,17 @@ class TopNav extends Component{
             image : url
         })
     }
+
+
+
     render () {
         let path = this.props.location.pathname
         const user = memoryUtils.user
         const {ShowUpdate} = this.state
-        console.log(path)
 
         return (
             <div>
-                <Link to='/home'>
-                <div className="logo"/>
-                </Link>
+                <div className="logo" onClick={() => this.props.history.replace('/')} style={{cursor:'pointer'}}/>
                 <Menu
                     theme="dark"
                     mode="horizontal"
@@ -102,6 +102,7 @@ class TopNav extends Component{
                         </Link>
                     </Menu.Item>
                 </Menu>
+
                 {
                     user ? (
                         <span>
@@ -161,6 +162,7 @@ class TopNav extends Component{
                         </Menu> : ''
                 }
 
+
                 {
                     memoryUtils.user
                         ?    <Menu
@@ -184,6 +186,10 @@ class TopNav extends Component{
                         </Menu> : ''
                 }
 
+
+
+
+
                 <Modal
                     title="个人信息"
                     visible={ShowUpdate}
@@ -195,6 +201,7 @@ class TopNav extends Component{
                         this.form.resetFields()
                     }}
                 >
+
 
 
                     <UpdateUser

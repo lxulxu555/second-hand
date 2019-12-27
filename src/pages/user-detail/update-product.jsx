@@ -2,7 +2,6 @@ import React,{Component} from 'react'
 import PropTypes from 'prop-types'
 import { Form, Input} from 'antd'
 import {PictureWall} from "./PictureWall";
-import UpLoadImage from "./UpLoadImage";
 
 const {TextArea} = Input
 
@@ -21,13 +20,8 @@ class UpdateProduct extends Component{
 
     getFileList = (fileList) => {
         this.props.PictureWall(fileList)
-        console.log('接受的url',fileList)
-
     }
 
-    getImageUrl = (url) => {
-        this.props.UpLoadImage(url)
-    }
 
 
     componentWillMount () {
@@ -84,12 +78,6 @@ class UpdateProduct extends Component{
                     <PictureWall
                         PictureWall = {(fileList) => this.getFileList(fileList)}
                         images = {this.props.sendProduct.images}
-                    />
-                </Form.Item>
-                <Form.Item label='封面图片：' {...formItemLayout}>
-                    <UpLoadImage
-                        UpLoadImage = {(url) => this.getImageUrl(url)}
-                        sendProduct = {this.props.sendProduct}
                     />
                 </Form.Item>
             </Form>

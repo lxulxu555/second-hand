@@ -19,9 +19,12 @@ const { Header, Content, Footer } = Layout;
 
 export default class HomePage extends Component {
 
+
+
+
+
+
     render() {
-
-
         return (
             <Layout className="layout"  style={{minHeight:'100%'}}>
                 <Header>
@@ -29,7 +32,7 @@ export default class HomePage extends Component {
                 </Header>
                 <Content style={{margin : 20}}>
                     <Switch>
-                        <Route path='/home' component={Home}/>
+                        <Route path='/home' component={Home}  />
                         <Route path='/wantbuy' component={WantBuy}/>
                         <Route path='/product' component={PutProduct}/>
                         <Route path='/putbuy' component={PutBuy}/>
