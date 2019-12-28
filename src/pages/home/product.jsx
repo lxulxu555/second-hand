@@ -71,7 +71,6 @@ class Product extends Component {
                         >
                             <Card
                                 hoverable={true}
-
                                 cover={<img alt={product.name} src={cover} style={{height: 218}}/>}
                             >
                                 <Meta title={product.name} description={"￥" + product.price1} style={{fontSize: 20}}/>

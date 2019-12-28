@@ -33,7 +33,7 @@ class ProductUserDetail extends Component{
             const img = Item.images
             const cover = img.split(",")[0]
                 return (
-                    <Col xs={12} md={6}  xxl={4} style={{height:350,width:250,margin:'0 20px 80px 10px'}} >
+                    <Col xs={12} md={6}  xxl={4} style={{height:350,width:220,margin: '10px 14px 40px 10px'}} >
                     <Link to={{
                         pathname : '/product-detail',
                         state : Item.id
@@ -52,6 +52,7 @@ class ProductUserDetail extends Component{
                         <Meta
                             title={Item.name}
                             description={Item.intro}
+                            style={{textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}
                         />
                     </Card>
                     </Link>

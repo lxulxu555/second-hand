@@ -2,16 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6da94bb1-4401-438c-b307-097e4525965f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/pages/product-detail/product-comment.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/top-nav/top-nav.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/top-nav/top-nav.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/home/home.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home/home.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/home/product.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/home/product.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/login/login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/login/login.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/product-detail/product-detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product-detail/product-detail.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/product-detail/product-detail.less" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product-detail/product-detail.less" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/product-detail/product-user-detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/product-detail/product-user-detail.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/put-product/put-product.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/put-product/put-product.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/user-buy-detail/user-buy-detail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/user-buy-detail/user-buy-detail.jsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/pages/user-detail/PictureWall.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/user-detail/PictureWall.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/pages/user-detail/update-product.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/user-detail/update-product.jsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pages/user-detail/user-datail.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/pages/user-detail/user-datail.jsx" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -25,12 +24,13 @@
     <session id="1338305769">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="21" />
+          <entry key="project.closed" value="22" />
           <entry key="project.open.time.0" value="1" />
           <entry key="project.open.time.1" value="5" />
           <entry key="project.open.time.11" value="1" />
           <entry key="project.open.time.131" value="1" />
           <entry key="project.open.time.27" value="1" />
+          <entry key="project.open.time.28" value="1" />
           <entry key="project.open.time.3" value="1" />
           <entry key="project.open.time.38" value="1" />
           <entry key="project.open.time.39" value="2" />
@@ -43,7 +43,7 @@
           <entry key="project.open.time.78" value="1" />
           <entry key="project.open.time.8" value="1" />
           <entry key="project.open.time.82" value="1" />
-          <entry key="project.opened" value="26" />
+          <entry key="project.opened" value="27" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -53,8 +53,8 @@
           <entry key="html" value="10" />
           <entry key="js" value="85" />
           <entry key="json" value="35" />
-          <entry key="jsx" value="381" />
-          <entry key="less" value="47" />
+          <entry key="jsx" value="395" />
+          <entry key="less" value="48" />
           <entry key="png" value="3" />
           <entry key="properties" value="1" />
           <entry key="ts" value="7" />
@@ -67,9 +67,9 @@
           <entry key="HTML" value="10" />
           <entry key="Image" value="3" />
           <entry key="JSON" value="35" />
-          <entry key="JSX Harmony" value="381" />
+          <entry key="JSX Harmony" value="395" />
           <entry key="JavaScript" value="85" />
-          <entry key="Less" value="47" />
+          <entry key="Less" value="48" />
           <entry key="PLAIN_TEXT" value="2" />
           <entry key="Properties" value="1" />
           <entry key="TypeScript" value="7" />
@@ -81,9 +81,9 @@
           <entry key="html" value="2223" />
           <entry key="js" value="2742" />
           <entry key="json" value="46" />
-          <entry key="jsx" value="48612" />
-          <entry key="less" value="1775" />
-          <entry key="txt" value="72" />
+          <entry key="jsx" value="50242" />
+          <entry key="less" value="1784" />
+          <entry key="txt" value="90" />
           <entry key="vmoptions" value="8" />
         </counts>
       </usages-collector>
@@ -91,10 +91,10 @@
         <counts>
           <entry key="HTML" value="2223" />
           <entry key="JSON" value="46" />
-          <entry key="JSX Harmony" value="48612" />
+          <entry key="JSX Harmony" value="50242" />
           <entry key="JavaScript" value="2742" />
-          <entry key="Less" value="1775" />
-          <entry key="PLAIN_TEXT" value="88" />
+          <entry key="Less" value="1784" />
+          <entry key="PLAIN_TEXT" value="106" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.js.language.service.starts">
@@ -106,7 +106,42 @@
     </session>
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/pages/product-detail/product-comment.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="216">
+              <caret line="32" column="42" lean-forward="true" selection-start-line="32" selection-start-column="42" selection-end-line="32" selection-end-column="43" />
+              <folding>
+                <element signature="e#0#38#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pages/user-detail/user-datail.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="299">
+              <caret line="129" column="34" selection-start-line="129" selection-start-column="34" selection-end-line="129" selection-end-column="34" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/pages/product-detail/product-detail.jsx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="916">
+              <caret line="158" column="47" selection-start-line="158" selection-start-column="47" selection-end-line="158" selection-end-column="47" />
+              <folding>
+                <element signature="e#0#37#0" expanded="true" />
+                <element signature="e#2265#5859#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -134,7 +169,6 @@
       <find>Link</find>
       <find>.state</find>
       <find>cursor</find>
-      <find>reduce</find>
       <find>搜索</find>
       <find>AllProduct</find>
       <find>this.props.cleanSearchName()</find>
@@ -147,6 +181,7 @@
       <find>cleanSearchName</find>
       <find>searchnames</find>
       <find>console.log</find>
+      <find>reduce</find>
     </findStrings>
     <dirStrings>
       <dir>E:\ideaProjects\second-hand\src\pages\product-detail</dir>
@@ -174,7 +209,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$APPLICATION_CONFIG_DIR$/idea64.exe.vmoptions" />
         <option value="$PROJECT_DIR$/config-overrides.js" />
         <option value="$PROJECT_DIR$/index.js" />
         <option value="$PROJECT_DIR$/public/index.html" />
@@ -212,19 +246,20 @@
         <option value="$PROJECT_DIR$/src/pages/register/register.jsx" />
         <option value="$PROJECT_DIR$/src/pages/update-user/update-user.jsx" />
         <option value="$PROJECT_DIR$/src/pages/HomePage/HomePage.jsx" />
-        <option value="$PROJECT_DIR$/src/pages/user-detail/update-product.jsx" />
         <option value="$PROJECT_DIR$/src/pages/put-product/picture-wall.jsx" />
-        <option value="$PROJECT_DIR$/src/pages/product-detail/product-detail.less" />
-        <option value="$PROJECT_DIR$/src/pages/product-detail/product-user-detail.jsx" />
         <option value="$PROJECT_DIR$/src/api/index.js" />
-        <option value="$PROJECT_DIR$/src/pages/home/product.jsx" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/src/pages/home/home.jsx" />
         <option value="$PROJECT_DIR$/src/pages/user-detail/PictureWall.jsx" />
         <option value="$PROJECT_DIR$/src/components/top-nav/top-nav.jsx" />
+        <option value="$PROJECT_DIR$/src/pages/product-detail/product-detail.less" />
         <option value="$PROJECT_DIR$/src/pages/put-product/put-product.jsx" />
+        <option value="$PROJECT_DIR$/src/pages/user-detail/update-product.jsx" />
         <option value="$PROJECT_DIR$/src/pages/user-detail/user-datail.jsx" />
+        <option value="$PROJECT_DIR$/src/pages/home/product.jsx" />
+        <option value="$PROJECT_DIR$/src/pages/product-detail/product-user-detail.jsx" />
         <option value="$PROJECT_DIR$/src/pages/product-detail/product-detail.jsx" />
+        <option value="$PROJECT_DIR$/src/pages/product-detail/product-comment.jsx" />
       </list>
     </option>
   </component>
@@ -257,8 +292,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
-      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -266,17 +299,44 @@
               <item name="second-hand" type="b2602c69:ProjectViewProjectNode" />
               <item name="second-hand" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="second-hand" type="b2602c69:ProjectViewProjectNode" />
+              <item name="second-hand" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="second-hand" type="b2602c69:ProjectViewProjectNode" />
+              <item name="second-hand" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="second-hand" type="b2602c69:ProjectViewProjectNode" />
+              <item name="second-hand" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="home" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="second-hand" type="b2602c69:ProjectViewProjectNode" />
+              <item name="second-hand" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
+              <item name="product-detail" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1577529453708" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1577541927103" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../guiguhoutai" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.detected.package.standard" value="true" />
@@ -355,7 +415,8 @@
       <workItem from="1577265997888" duration="871000" />
       <workItem from="1577338242164" duration="33628000" />
       <workItem from="1577453237793" duration="66000" />
-      <workItem from="1577520810199" duration="8654000" />
+      <workItem from="1577520810199" duration="8711000" />
+      <workItem from="1577534465994" duration="7428000" />
     </task>
     <task id="LOCAL-00001" summary="fix product-update images">
       <created>1576648032105</created>
@@ -399,16 +460,24 @@
       <option name="project" value="LOCAL" />
       <updated>1577453281932</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="添加商品排序方式，修复BUG">
+      <created>1577529518868</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1577529518868</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="391149000" />
+    <option name="totallyTimeSpent" value="398634000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1295" height="735" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20048505" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20048505" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -423,7 +492,7 @@
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.34385383" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.3432836" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" weight="0.32890365" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="10" show_stripe_button="false" />
@@ -486,10 +555,10 @@
     <MESSAGE value="fix Menu" />
     <MESSAGE value="fix Product-detail images" />
     <MESSAGE value="2019-12-27" />
-    <option name="LAST_COMMIT_MESSAGE" value="2019-12-27" />
+    <MESSAGE value="添加商品排序方式，修复BUG" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加商品排序方式，修复BUG" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/pages/put-product/all-upload-image.jsx" />
     <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external/lib.es5.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
@@ -666,23 +735,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="363">
           <caret line="92" column="41" selection-start-line="92" selection-start-column="41" selection-end-line="92" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/product-detail/product-detail.less">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="306">
-          <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/product-detail/product-user-detail.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="243">
-          <caret line="33" column="42" selection-start-line="33" selection-start-column="42" selection-end-line="33" selection-end-column="42" />
         </state>
       </provider>
     </entry>
@@ -707,33 +759,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/user-detail/update-product.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1107">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/user-detail/PictureWall.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="309">
           <caret line="62" column="35" selection-start-line="62" selection-start-column="35" selection-end-line="62" selection-end-column="35" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/home/home.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="346">
-          <caret line="78" selection-start-line="78" selection-end-line="78" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -743,16 +772,6 @@
           <caret line="121" column="38" selection-start-line="121" selection-start-column="38" selection-end-line="121" selection-end-column="38" />
           <folding>
             <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/home/product.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="62" column="110" selection-start-line="62" selection-start-column="81" selection-end-line="62" selection-end-column="110" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -771,26 +790,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/put-product/put-product.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="471">
-          <caret line="137" column="34" lean-forward="true" selection-start-line="137" selection-start-column="34" selection-end-line="137" selection-end-column="34" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/pages/user-detail/user-datail.jsx">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
-          <folding>
-            <element signature="e#0#37#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/want-buy/want-buy.jsx">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-869">
@@ -798,10 +797,85 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/user-detail/update-product.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="70" column="68" selection-start-line="70" selection-start-column="68" selection-end-line="70" selection-end-column="68" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/put-product/put-product.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1134">
+          <caret line="132" column="50" selection-start-line="132" selection-start-column="50" selection-end-line="132" selection-end-column="50" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/product-detail/product-detail.less">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="282">
+          <caret line="23" column="19" selection-start-line="23" selection-start-column="19" selection-end-line="23" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/home/home.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1318">
+          <caret line="78" selection-start-line="78" selection-end-line="78" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/product-detail/product-user-detail.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="405">
+          <caret line="54" column="104" selection-start-line="54" selection-start-column="104" selection-end-line="54" selection-end-column="104" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/home/product.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="268">
+          <caret line="62" column="46" lean-forward="true" selection-start-line="62" selection-start-column="25" selection-end-line="62" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/pages/product-detail/product-detail.jsx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="143" column="46" selection-start-line="143" selection-start-column="46" selection-end-line="143" selection-end-column="46" />
+        <state relative-caret-position="916">
+          <caret line="158" column="47" selection-start-line="158" selection-start-column="47" selection-end-line="158" selection-end-column="47" />
+          <folding>
+            <element signature="e#0#37#0" expanded="true" />
+            <element signature="e#2265#5859#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/user-detail/user-datail.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="129" column="34" selection-start-line="129" selection-start-column="34" selection-end-line="129" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/pages/product-detail/product-comment.jsx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="216">
+          <caret line="32" column="42" lean-forward="true" selection-start-line="32" selection-start-column="42" selection-end-line="32" selection-end-column="43" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

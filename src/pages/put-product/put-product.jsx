@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Form, Input,Button,message,Cascader} from "antd";
+import {Form, Input,Button,message,Cascader,Icon} from "antd";
 
 import './put-product.less'
 import {reqAddProduct,reqFindOne} from '../../api/index'
@@ -36,7 +36,7 @@ class PutProduct extends Component{
                 product.userid = memoryUtils.user.id
                 product.intro = values.intro
                 product.price1 = values.price
-                product.phone = values.phone
+                product.weixin = values.weixin
                 product.images = a
                 if(this.state.valueId){
                     product.classify2_id = this.state.valueId
@@ -129,15 +129,12 @@ class PutProduct extends Component{
                             <Input placeholder='请输入商品价格' addonAfter='元'/>
                         )}
                     </Form.Item>
-                    <Form.Item label='手机号：' {...formItemLayout}>
-                        {getFieldDecorator('phone', {
-                            rules: [ {required: true,whiteSpace: true,message:'手机号必须输入'},
-                                {min:11,message:'手机号最少为11位'},
-                                {max:11,message:'手机号最多为11位'},
-                                {pattern:/^[0-9_]+$/,message:'手机号必须为数字'}
+                    <Form.Item label='微信号：' {...formItemLayout}>
+                        {getFieldDecorator('weixin', {
+                            rules: [ {required: true,whiteSpace: true,message:'微信号必须输入'},
                                 ],
                         })(
-                            <Input placeholder='请输入联系手机号' addonBefore= '+86'/>
+                            <Input placeholder='请输入微信号' addonBefore= {<Icon type='wechat'/>}/>
                         )}
                     </Form.Item>
                     <Form.Item label='产品分类' {...formItemLayout}>

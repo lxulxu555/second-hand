@@ -112,7 +112,7 @@ export default class UserDetail extends Component {
                 product.name = values.name
                 product.intro = values.intro
                 product.price1 = values.price1
-                product.phone = values.phone
+                product.weixin = values.weixin
                 product.images = images
                 const result = await reqUpdateProduct(product)
                 if (result.code === 0) {

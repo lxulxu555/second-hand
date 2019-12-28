@@ -66,12 +66,12 @@ class UpdateProduct extends Component{
                         <Input placeholder='请输入商品价格'/>
                     )}
                 </Form.Item>
-                <Form.Item label='手机号：' {...formItemLayout}>
-                    {getFieldDecorator('phone', {
-                        initialValue : this.props.sendProduct.phone,
-                        rules: [{ required: true, message: '请输入卖家手机号' }],
+                <Form.Item label='微信：' {...formItemLayout}>
+                    {getFieldDecorator('weixin', {
+                        initialValue : this.props.sendProduct.weixin,
+                        rules: [{ required: true, message: '请输入卖家微信号' }],
                     })(
-                        <Input placeholder='请输入联系手机号'/>
+                        <Input placeholder='请输入微信号'/>
                     )}
                 </Form.Item>
                 <Form.Item label='产品图片：' {...formItemLayout}>

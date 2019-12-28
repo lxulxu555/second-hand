@@ -1,11 +1,12 @@
 import React,{Component} from 'react'
 import {withRouter,Link} from 'react-router-dom'
 import './product-detail.less'
-import {Avatar,Icon,Modal} from 'antd'
+import {Avatar,Icon,Modal,Row,Col} from 'antd'
 
 import {reqFindIdProduct} from '../../api/index'
 import LinkButton from "../../components/link-button/link-button";
 import memoryUtils from "../../utils/memoryUtils";
+import ProductComment from './product-comment'
 
 class ProductDetail extends Component{
 
@@ -56,7 +57,8 @@ class ProductDetail extends Component{
     }
 
     render () {
-        const {BigImageUrl,UserInfo,visible,ProductDetail} = this.state
+        const {BigImageUrl,UserInfo,visible} = this.state
+        const ProductDetail = this.state.ProductDetail || {}
         const user = ProductDetail.user || {}
         const images = this.state.ProductDetail.images || ''
         const image = images.split(",")[0]
@@ -119,6 +121,7 @@ class ProductDetail extends Component{
                             style={{paddingTop:10,
                                 color:'#616776',
                                 fontSize:15,
+                                textAlign:'left'
                             }}>
                             {ProductDetail.intro}
                         </span>
@@ -148,6 +151,12 @@ class ProductDetail extends Component{
                         </span>
                     </span>
                 </span>
+                <Row>
+                <Col xs={24} md={24} xxl={24}>
+                <span style={{float:'left',marginTop:'10%',fontWeight:'bold',fontSize:25,marginLeft:20}}>评论墙</span>
+                </Col>
+                </Row>
+                <ProductComment ProductDetail={ProductDetail}/>
                 <Modal
                     visible={visible}
                     onCancel={() => {
