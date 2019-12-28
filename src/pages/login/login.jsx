@@ -27,8 +27,6 @@ class Login extends Component{
         this.props.form.validateFields(async (err, values) => {
             if (!err) {
                 const result = await reqLogin(values)
-                ///console.log(result.code)
-                //console.log(result)
                 if(result.code===0){
                     const user = result
                     memoryUtils.user = user.data

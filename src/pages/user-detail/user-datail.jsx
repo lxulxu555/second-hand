@@ -1,35 +1,33 @@
-import React,{Component} from 'react'
-import {Card, Icon, Modal, message, Pagination, BackTop,Row,Col} from 'antd'
+import React, {Component} from 'react'
+import {Card, Icon, Modal, message, Pagination, BackTop, Row, Col} from 'antd'
 
 import {reqAllProduct, reqUpdateProduct, reqDeleteProduct} from '../../api/index'
 import memoryUtils from "../../utils/memoryUtils";
 import UpdateProduct from './update-product'
 
-const { Meta } = Card;
+const {Meta} = Card;
 
-export default class UserDetail extends Component{
+export default class UserDetail extends Component {
 
     state = {
-        UserProduct : [],
-        ShowUpdate : false,
-        ImageUrl : '',
-        FileUrl : [],
-        ProductId : '',
-        product : {},
-        sendProduct : {},
+        UserProduct: [],
+        ShowUpdate: false,
+        ImageUrl: '',
+        FileUrl: [],
+        ProductId: '',
+        product: {},
+        sendProduct: {},
         defaultPageSize: 16,
-        total : 0,
+        total: 0,
     }
-
-
 
 
     getUserAllProduct = async (page) => {
         this.page = page
-        const result = await reqAllProduct('',page,this.state.defaultPageSize,memoryUtils.user.id,'create_time desc')
+        const result = await reqAllProduct('', page, this.state.defaultPageSize, memoryUtils.user.id, '')
         const total = result.total
         this.setState({
-            UserProduct : result.data,
+            UserProduct: result.data,
             total
         })
     }
@@ -39,9 +37,9 @@ export default class UserDetail extends Component{
         product.id = Item.id
         product.state = Item.state === 0 ? '1' : '0'
         const result = await reqUpdateProduct(product)
-        if(result.code===0){
+        if (result.code === 0) {
             message.success(Item.state === 0 ? '下架成功' : '上架成功')
-        }else{
+        } else {
             message.error(Item.state === 1 ? '下架失败' : '上架失败')
         }
         this.getUserAllProduct()
@@ -53,54 +51,60 @@ export default class UserDetail extends Component{
         return UserProduct.map(Item => {
                 const images = Item.images
                 const cover = images.split(",")[0]
-            return (
-                <Col  xs={12} md={6}  xxl={4} style={{height:350,width:240,margin:'0 30px 40px 30px'}}    key={Item.id}
-                >
-            <Card
-                    hoverable
-                cover = {<img alt="img" src={cover} onClick={() => this.setState({ShowUpdate : true,ProductId : Item.id,
-                    sendProduct : Item})}/> }
-                actions={[
-                    <Icon
-                        type="setting"
-                        key="setting"
-                        onClick = {() => this.setState({
-                            ShowUpdate : true,
-                            ProductId : Item.id,
-                            sendProduct : Item
-                        })}
-                    />,
-                    <span onClick={() => this.UpperAndLower(Item)}>
+                return (
+                    <Col xs={12} md={6} xxl={4} style={{height: 350, width: 220, margin: '10px 14px 40px 10px'}} key={Item.id}
+                    >
+                        <Card
+
+                            hoverable
+                            cover={<img alt="img" src={cover} onClick={() => this.setState({
+                                ShowUpdate: true, ProductId: Item.id,
+                                sendProduct: Item
+                            })}
+                                        style={{height: 218}}
+
+                            />}
+                            actions={[
+                                <Icon
+                                    type="setting"
+                                    key="setting"
+                                    onClick={() => this.setState({
+                                        ShowUpdate: true,
+                                        ProductId: Item.id,
+                                        sendProduct: Item
+                                    })}
+                                />,
+                                <span onClick={() => this.UpperAndLower(Item)}>
                         {
                             Item.state === 0 ? '下架' : '上架'
                         }
                     </span>,
-                    <Icon
-                        type="delete"
-                        key="delete"
-                        onClick = {() => this.deleteProduct(Item)}
-                    />
-                ]}
-            >
-                <Meta
-                    title={Item.name}
-                    description={Item.intro}
-                    style={{textOverflow:'ellipsis',whiteSpace:'nowrap',overflow:'hidden'}}
-                />
-            </Card>
-                </Col>
-            )
-        }
+                                <Icon
+                                    type="delete"
+                                    key="delete"
+                                    onClick={() => this.deleteProduct(Item)}
+                                />
+                            ]}
+                        >
+                            <Meta
+                                title={Item.name}
+                                description={Item.intro}
+                                style={{textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}
+                            />
+                        </Card>
+                    </Col>
+                )
+            }
         )
     }
 
     Updateproduct = () => {
 
-        this.form.validateFields(async (err,values) => {
+        this.form.validateFields(async (err, values) => {
             const images = this.state.FileUrl.toString()
-            if(!err){
+            if (!err) {
                 this.setState({
-                    ShowUpdate : false
+                    ShowUpdate: false
                 })
                 this.form.resetFields()
                 const product = this.state.product
@@ -111,10 +115,10 @@ export default class UserDetail extends Component{
                 product.phone = values.phone
                 product.images = images
                 const result = await reqUpdateProduct(product)
-                if(result.code===0){
+                if (result.code === 0) {
                     message.success('更新成功')
                     this.getUserAllProduct(1)
-                }else{
+                } else {
                     message.error('更新失败')
                 }
             }
@@ -123,32 +127,32 @@ export default class UserDetail extends Component{
     }
 
     getFileList = (fileList) => {
-        const filelist = fileList.reduce((pre,Item) => {
+        const filelist = fileList.reduce((pre, Item) => {
             pre.push(
                 Item.url
             )
             return pre
-        },[])
+        }, [])
         this.setState({
-            FileUrl : filelist
+            FileUrl: filelist
         })
     }
 
     getImageUrl = (url) => {
         this.setState({
-            ImageUrl : url
+            ImageUrl: url
         })
     }
 
     deleteProduct = async (Item) => {
 
-        Modal.confirm ({
+        Modal.confirm({
             title: `确认删除${Item.name}吗`,
-            onOk :async () => {
+            onOk: async () => {
                 const result = await reqDeleteProduct(Item.id)
-                if(result.code === -1){
+                if (result.code === -1) {
                     message.success('删除成功')
-                }else{
+                } else {
                     message.error('删除失败')
                 }
                 this.getUserAllProduct(1)
@@ -156,53 +160,57 @@ export default class UserDetail extends Component{
         })
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getUserAllProduct(1)
     }
 
-    render () {
-        const {ShowUpdate,UserProduct,sendProduct} = this.state
+    render() {
+        const {ShowUpdate, UserProduct, sendProduct} = this.state
 
         return (
             <div>
 
                 <Row>
-             <div style={{display:'flex', flexWrap:'wrap'}}>
-                { UserProduct ? this.getUserAllProductList() : (<span style={{margin:"5% 5% 0 30%"}}    >
+                    <div style={{display: 'flex', flexWrap: 'wrap'}}>
+                        {UserProduct ? this.getUserAllProductList() : (<span style={{margin: "5% 5% 0 30%"}}>
                <img src='https://www.youzixy.com/img/noGoods.cc45e087.png' alt='img'/>
            </span>)}
-            </div>
+                    </div>
                 </Row>
                 <Modal
+                    /*隐藏Modal时销毁Modal,让其重新渲染*/
+                    destroyOnClose
+                    keyboard={true}
                     title="更新商品信息"
                     visible={ShowUpdate}
                     onOk={this.Updateproduct}
                     onCancel={() => {
                         this.form.resetFields()
                         this.setState({
-                            ShowUpdate : false
+                            ShowUpdate: false
                         })
-                        //window.location.reload()
                     }}
                 >
                     <UpdateProduct
                         UserProduct={UserProduct}
-                        setForm = {(form) => {this.form = form}}
-                        PictureWall = {(fileList) => this.getFileList(fileList)}
-                        UpLoadImage = {(url) => this.getImageUrl(url)}
-                        sendProduct = {sendProduct}
+                        setForm={(form) => {
+                            this.form = form
+                        }}
+                        PictureWall={(fileList) => this.getFileList(fileList)}
+                        UpLoadImage={(url) => this.getImageUrl(url)}
+                        sendProduct={sendProduct}
                     />
                 </Modal>
                 {UserProduct ? (<Pagination
-                    current= {this.page}
-                    defaultPageSize= {this.state.defaultPageSize}
+                    current={this.page}
+                    defaultPageSize={this.state.defaultPageSize}
                     showQuickJumper
                     total={this.state.total}
                     onChange={this.getUserAllProduct}
-                    style={{textAlign:'center',marginTop:20}}
+                    style={{textAlign: 'center', marginTop: 20}}
                 />) : ''}
                 <div>
-                    <BackTop />
+                    <BackTop/>
                 </div>
             </div>
         )

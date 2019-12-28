@@ -56,7 +56,8 @@ class ProductDetail extends Component{
     }
 
     render () {
-        const {BigImageUrl,ProductDetail,UserInfo,visible} = this.state
+        const {BigImageUrl,UserInfo,visible,ProductDetail} = this.state
+        const user = ProductDetail.user || {}
         const images = this.state.ProductDetail.images || ''
         const image = images.split(",")[0]
 
@@ -135,9 +136,15 @@ class ProductDetail extends Component{
                         </span>
                         <span className='a'>
                             <Icon type="phone" theme="filled" style={{paddingRight: 15}}/>
-                            {memoryUtils.user ? ProductDetail.phone : <LinkButton onClick={() => this.props.history.replace('/login')}>
+                            {memoryUtils.user ? user.phone : <LinkButton onClick={() => this.props.history.replace('/login')}>
                                 登录查看联系方式
                             </LinkButton>}
+                        </span>
+                         <span className='a'>
+                            <Icon type="wechat" theme="filled" style={{paddingRight: 15}}/>
+                             {memoryUtils.user ? ProductDetail.weixin : <LinkButton onClick={() => this.props.history.replace('/login')}>
+                                 登录查看微信
+                             </LinkButton>}
                         </span>
                     </span>
                 </span>
@@ -150,7 +157,7 @@ class ProductDetail extends Component{
                     }}
                     footer = {null}
                 >
-                    {BigImageUrl ?   <img src={BigImageUrl} alt='img'/> : <img src={ProductDetail.cover}  alt='img'/>}
+                    {BigImageUrl ?   <img src={BigImageUrl} alt='img'/> : <img src={image}  alt='img'/>}
                 </Modal>
             </div>
         )

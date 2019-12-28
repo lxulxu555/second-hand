@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import {Carousel, Menu, Row, Col, Input, Icon,Button} from 'antd'
+import {Carousel, Menu, Row, Col, Input, Icon, Button} from 'antd'
 import {withRouter} from 'react-router-dom'
 
 
@@ -7,73 +7,78 @@ import './home.less'
 import {reqFindOne} from '../../api/index'
 import Product from './product'
 
-const { SubMenu } = Menu;
+const {SubMenu} = Menu;
 
 class Home extends Component {
 
 
-
     state = {
-        One : [],
-        success : false,
-        currentKey : '',
-        searchName:'',
-        searchname : '',
-        isSearchname: true
+        One: [],
+        success: false,
+        currentKey: '',
+        searchname: '',
+        money : 'price1',
+        time : 'create_time desc'
     }
 
-    getOne = async ()=> {
+    getOne = async () => {
         const result = await reqFindOne()
         const One = result
         this.setState({
             One,
-            success : true
+            success: true
         })
     }
 
     getOneList = () => {
         const One = this.state.One
-            return One.map(item => {
-                return (
-                    <SubMenu
-                        key={item.id}
-                        title={
+        return One.map(item => {
+            return (
+                <SubMenu
+                    key={item.id}
+                    title={
                         <span>
                           <span>{item.name}</span>
                         </span>}
-                    >
+                >
 
-                        <Menu.ItemGroup title="二级分类" >
-                                {item.classify2List.map(Citem => {
-                                   return  <Menu.Item key={Citem.id}>{Citem.name}</Menu.Item>
-                                })}
-                        </Menu.ItemGroup>
-                    </SubMenu>
-                )
-            })
-    }
-
-    handleClick = ({item,key}) => {
-        this.setState({
-            currentKey : item.key,
-            searchname: ''
+                    <Menu.ItemGroup title="二级分类">
+                        {item.classify2List.map(Citem => {
+                            return <Menu.Item key={Citem.id}>{Citem.name}</Menu.Item>
+                        })}
+                    </Menu.ItemGroup>
+                </SubMenu>
+            )
         })
     }
 
-    SearchName = () => {
-        const searchname = this.state.searchName
+    handleClick = ({item, key}) => {
+        this.setState({
+            currentKey: item.key,
+            searchname: ''
+        }, () => {
+            if (document.getElementById('input').value !== '') {
+                document.getElementById('input').value = ''
+            }
+        })
+    }
+
+    SearchName = (searchname) => {
         this.setState({
             searchname,
-            isSearchname: true,
-            searchName : ''
+        }, () => {
+            if (searchname) {
+                document.getElementById('input').value = ''
+            }
         })
     }
 
-    cleanSearchName = () => {
+    CleanOrderBy = () => {
         this.setState({
-            searchname : ''
+            money : '',
         })
     }
+
 
     componentDidMount() {
         this.getOne()
@@ -81,15 +86,15 @@ class Home extends Component {
 
     render() {
 
-        const {currentKey,searchname,searchName} = this.state
+        const {currentKey, searchname,money,time} = this.state
         return (
             <div>
             <span className="ParentFather">
                 <Row>
                     <Col xs={24} md={4} xxl={5}>
-            <div style={{marginBottom:10}} >
+            <div style={{marginBottom: 10}}>
                 <Menu
-                    onClick={(item,key) => this.handleClick({item,key})}
+                    onClick={(item, key) => this.handleClick({item, key})}
                     mode="vertical"
                     theme={"dark"}
                     className='menu'
@@ -99,7 +104,7 @@ class Home extends Component {
             </div>
                     </Col>
 
-                    <Col xs={24} md={20} xxl={19} style={{paddingLeft:10,display:'flex',flexDirection : 'column'}}>
+                    <Col xs={24} md={20} xxl={19} style={{paddingLeft: 10, display: 'flex', flexDirection: 'column'}}>
             <Carousel autoplay className='Carousel-image'>
                 <p>
                     <img data-v-7bfb6d44
@@ -124,31 +129,60 @@ class Home extends Component {
                 </p>
             </Carousel>
                         <div>
-
                            <Input
                                id='input'
-                               value={searchName}
                                placeholder='请输入关键字'
-                               style={{width:300,height:40,marginTop:12,marginLeft:'20%'}}
+                               style={{width: 400, height: 40, marginTop: 12, marginLeft: '20%'}}
                                addonBefore={<Icon type='search'/>}
-                               onChange={(event) => this.setState({
-                                   searchName : event.target.value
-                               })}
                            />
 
                         <Button
                             type='primary'
-                            style={{width:63,marginTop:13,height:30,textAlign:'center',borderRadius:0,borderBottomRightRadius:'5px',borderTopRightRadius:'5px'}}
-                            onClick={() => this.SearchName()}
+                            style={{
+                                width: 63,
+                                marginTop: 13,
+                                height: 30,
+                                textAlign: 'center',
+                                borderRadius: 0,
+                                borderBottomRightRadius: '5px',
+                                borderTopRightRadius: '5px'
+                            }}
+                            onClick={() => this.SearchName(document.getElementById('input').value)}
                         >
                             搜索
                         </Button>
+                        <span style={{float:'right',marginTop:15,marginRight:20}}>
+                            <Button onClick={() => this.setState({
+                                money : money === 'price1' ? 'price1 desc' : 'price1',
+                                time : ''
+                            })}>
+                                {
+                                    money === 'price1' ?   <Icon type="up" /> :  <Icon type="down" />
+                                }
+                                价格
+                            </Button>
+                            <Button onClick={() => this.setState({
+                                time : time === 'create_time desc' ? 'create_time' : 'create_time desc',
+                                money : ''
+                            })}>
+                                 {
+                                     time === 'create_time desc' ?   <Icon type="down" /> :  <Icon type="up" />
+                                 }
+                                时间
+                            </Button>
+                        </span>
                         </div>
                     </Col>
                 </Row>
             </span>
                 <span>
-                    <Product currentKey={currentKey} searchname={searchname} cleanSearchName={this.cleanSearchName}/>
+                    <Product
+                        currentKey={currentKey}
+                        searchname={searchname}
+                        money={money}
+                        time={time}
+                        CleanOrderBy={this.CleanOrderBy}
+                    />
                 </span>
             </div>
         )

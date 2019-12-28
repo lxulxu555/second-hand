@@ -117,7 +117,6 @@ export default class UserBuyDetail extends Component{
                 buyProduct.intro = values.intro
                 buyProduct.weixin = values.weixin
                 buyProduct.userid = memoryUtils.user.id
-                console.log(this.state.buyProduct)
                 const result = await reqUpdateBuyProduct(buyProduct)
                 if(result.code === 0){
                     message.success('更新成功')

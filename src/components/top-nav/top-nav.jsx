@@ -119,7 +119,7 @@ class TopNav extends Component{
                             }
                         </LinkButton>
                             <LinkButton style={{float:'right',marginRight:'15px',pointerEvents:'none'}} >
-                                  欢迎您{user.username}
+                                  欢迎您，{user.username}
                             </LinkButton>
                         <LinkButton
                             style={{float:'right',marginRight:'15px'}}

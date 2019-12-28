@@ -51,26 +51,6 @@ export class PictureWall extends React.Component {
          }
      }
 
-   /* componentWillReceiveProps(nextProps){
-        const image = nextProps.images
-        let fileList = []
-        const images = image.split(",")
-        if(images && images.length > 0){
-            console.log('1',name)
-            fileList = images.map((file, index) => ({
-                    uid: -index, // 每个file都有自己唯一的id
-                    status: 'done', // 图片状态: done-已上传, uploading: 正在上传中, removed: 已删除
-                    url:  file
-                })
-
-        )
-        }
-        this.setState({
-            fileList
-        })
-        console.log(fileList)
-    }
-*/
 
     handleCancel = () => this.setState({ previewVisible: false });
 

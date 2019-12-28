@@ -13,14 +13,15 @@ class Product extends Component {
     static propTypes = {
         currentKey: PropTypes.string.isRequired,
         searchname: PropTypes.string,
-        cleanSearchName: PropTypes.func
+        money:PropTypes.string,
+        time : PropTypes.string,
+        CleanOrderBy:PropTypes.func
     }
 
     state = {
         total: 0,
         AllProduct: [],
         currentKey: '',
-        searchnames: false,
         defaultPageSize: 30,
     }
 
@@ -30,10 +31,16 @@ class Product extends Component {
         let key = this.state.currentKey
         this.page = page
         let result
+        let money = this.props.money
+        let time = this.props.time
+        let ordeyBy = money ? money : time
             if (this.props.searchname) {
                 result = await reqLookUpProduct(this.props.searchname, page, this.state.defaultPageSize)
+                if(result.total===0){
+                    result = ''
+                }
             } else {
-                result = await reqAllProduct(key, page, this.state.defaultPageSize, '', 'create_time desc')
+                result = await reqAllProduct(key, page, this.state.defaultPageSize, '', ordeyBy)
             }
             const AllProduct = result.data
             const total = result.total
@@ -41,12 +48,12 @@ class Product extends Component {
                 total,
                 AllProduct
             })
+
     }
 
 
     getAllProductList = () => {
         const AllProduct = this.state.AllProduct
-        console.log(AllProduct)
         if (AllProduct) {
             return AllProduct.map(product => {
                 const images = product.images
@@ -74,22 +81,24 @@ class Product extends Component {
                     </Col>
                 )
             })
-        } else if (!AllProduct) {
+        } else {
             return <span style={{margin: "5% 5% 0 30%"}}>
                <img src='https://www.youzixy.com/img/noGoods.cc45e087.png' alt='img'/>
            </span>
         }
-
     }
 
 
     componentWillReceiveProps(nextProps) {
         this.setState({
             currentKey: nextProps.currentKey,
-            searchnames: true
         }, () => {
             this.getAllProduct(1)
         })
+    }
+
+    componentWillMount(){
+        this.props.CleanOrderBy()
     }
 
     render() {

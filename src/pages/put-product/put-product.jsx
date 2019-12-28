@@ -122,7 +122,9 @@ class PutProduct extends Component{
                     </Form.Item>
                     <Form.Item label='价格：' {...formItemLayout}>
                         {getFieldDecorator('price', {
-                            rules: [{ required: true, message: '请输入产品价格' }],
+                            rules: [{ required: true, message: '请输入产品价格' },
+                                {pattern:/^[0-9_]+$/,message:'价格必须为数字'}
+                            ],
                         })(
                             <Input placeholder='请输入商品价格' addonAfter='元'/>
                         )}
