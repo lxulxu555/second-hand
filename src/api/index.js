@@ -47,5 +47,11 @@ export const reqDeleteBuyProduct = (token,id) => ajax(BASE + '/token/buy/delete'
 export const reqLookUpProduct = (goodsName,page,rows) => ajax(BASE + '/goods/findByLike',{goodsName})
 //删除商品图片
 export const reqDeleteProductImage = (name) => ajax(BASE + '/goods/deleteFile',{name},'POST')
-
+//添加留言
+export const reqSaveComment = (content,userid,goodsid) =>
+    axios.post( BASE + '/token/comment/save', {content,userid,goodsid}, { params: {
+            token : memoryUtils.token
+        }})
+        .then(response => response.data)
+        .catch(err => console.warn(err));
 
