@@ -54,7 +54,7 @@ class UpdateUser extends Component{
                         rules: [
                             {required: true,whiteSpace: true,message:'密码必须输入'},
                             {min:4,message:'密码最少为四位'},
-                            {max:12,message:'密码最多为十二位'},
+                            {max:32,message:'密码最多为三十二位'},
                             {pattern: /^[a-zA-Z0-9_]+$/,message:'密码必须是英文字母数字下划线组成'}
                         ]
                     })(

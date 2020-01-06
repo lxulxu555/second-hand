@@ -54,4 +54,14 @@ export const reqSaveComment = (content,userid,goodsid) =>
         }})
         .then(response => response.data)
         .catch(err => console.warn(err));
-
+//回复一条留言
+export const reqReplayComment = (content,userid,commentid,goodsid,nameid,leaf,parentname) =>
+    axios.post( BASE + '/token/reply/save', {content,userid,commentid,goodsid,nameid,leaf,parentname}, { params: {
+            token : memoryUtils.token
+        }})
+        .then(response => response.data)
+        .catch(err => console.warn(err));
+//查看所有与自己相关的回复
+export const reqFindReplayByMe = (token,nameId) => ajax(BASE + '/token/reply/findAllByUser',{token,nameId})
+//查看用户未读信息数
+export const reqLookUserReplay = (id) => ajax(BASE + '/user/getMessage',{id})

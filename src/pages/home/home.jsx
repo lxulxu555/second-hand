@@ -6,6 +6,8 @@ import {withRouter} from 'react-router-dom'
 import './home.less'
 import {reqFindOne} from '../../api/index'
 import Product from './product'
+import memoryUtils from "../../utils/memoryUtils";
+import Scroll1 from '../../utils/scroll'
 
 const {SubMenu} = Menu;
 
@@ -18,7 +20,8 @@ class Home extends Component {
         currentKey: '',
         searchname: '',
         money : 'price1',
-        time : 'create_time desc'
+        time : 'create_time desc',
+        scrollY : ''
     }
 
     getOne = async () => {
@@ -82,6 +85,31 @@ class Home extends Component {
 
     componentDidMount() {
         this.getOne()
+       /* window.onscroll = () => {
+            if(window.onscroll){
+                this.scroll()
+            }
+        }*/
+        this.scroll()
+    }
+
+    scroll = () => {
+        const x = window.scrollX
+        const y = Scroll1.GetScroll()
+        window.scrollTo(x,y)
+        console.log('+++++++++++++++',y)
+    }
+
+    handleScroll = () =>{
+        const scroll = window.scrollY
+        memoryUtils.scroll = scroll
+        Scroll1.SaveScroll(scroll)
+        console.log('-------------',scroll)
+    }
+
+
+    componentWillUnmount(){
+        this.handleScroll()
     }
 
     render() {
@@ -134,6 +162,7 @@ class Home extends Component {
                                placeholder='请输入关键字'
                                style={{width: 400, height: 40, marginTop: 12, marginLeft: '20%'}}
                                addonBefore={<Icon type='search'/>}
+                               onPressEnter={() => this.SearchName(document.getElementById('input').value)}
                            />
 
                         <Button

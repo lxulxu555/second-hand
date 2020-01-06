@@ -1,6 +1,6 @@
-import React,{Component} from 'react'
-import {Menu,Avatar,Modal,message} from "antd"
-import {Link,withRouter} from 'react-router-dom'
+import React, {Component} from 'react'
+import {Menu, Avatar, Modal, message, Icon, Popover} from "antd"
+import {Link, withRouter} from 'react-router-dom'
 
 import './top-nav.less'
 import LinkButton from '../link-button/link-button'
@@ -8,16 +8,23 @@ import memoryUtils from '../../utils/memoryUtils'
 import storageUtils from '../../utils/storageUtils'
 import storageUtilsToken from '../../utils/storageUtils-token'
 import UpdateUser from '../../pages/update-user/update-user'
-import {reqUpdateUser} from '../../api/index'
+import {reqUpdateUser,reqLookUserReplay} from '../../api/index'
 
 const SubMenu = Menu.SubMenu
 
-class TopNav extends Component{
+class TopNav extends Component {
 
     state = {
-        ShowUpdate : false,
-        user : {},
-        image : '',
+        ShowUpdate: false,
+        image: '',
+        message : '',
+        user : {}
+    }
+
+    getLookUserReplay = async () => {
+        const id = memoryUtils.user ? memoryUtils.user.id : ''
+        const result = await reqLookUserReplay(id)
+        this.setState({message : result})
     }
 
 
@@ -26,9 +33,9 @@ class TopNav extends Component{
     }
 
     LoginOut = () => {
-        Modal.confirm ({
+        Modal.confirm({
             title: '确认退出吗',
-            onOk :() => {
+            onOk: () => {
                 //console.log('ok',this);
                 storageUtils.RemoveUser()
                 memoryUtils.user = {}
@@ -42,11 +49,10 @@ class TopNav extends Component{
     }
 
     UpdateUser = () => {
-
         this.form.validateFields(async (err, values) => {
             if (!err) {
                 this.setState({
-                    ShowUpdate : false
+                    ShowUpdate: false
                 })
                 const user = this.state.user
                 user.id = memoryUtils.user.id
@@ -57,11 +63,11 @@ class TopNav extends Component{
                 const result = await reqUpdateUser(user)
                 memoryUtils.user = user
                 storageUtils.SaveUser(user)
-                if(result.id){
+                if (result.id) {
                     message.success('更新成功')
                     this.props.history.replace('/home')
                     this.form.resetFields()
-                }else{
+                } else {
                     message.error(result.msg)
                 }
             }
@@ -69,36 +75,36 @@ class TopNav extends Component{
     }
 
 
-    getHeaderUrl(url){
+    getHeaderUrl(url) {
         this.setState({
-            image : url
+            image: url
         })
     }
 
 
-
-    render () {
+    render() {
+        this.getLookUserReplay()
         let path = this.props.location.pathname
         const user = memoryUtils.user
         const {ShowUpdate} = this.state
 
         return (
             <div>
-                <div className="logo" onClick={() => this.props.history.replace('/')} style={{cursor:'pointer'}}/>
+                <div className="logo" onClick={() => this.props.history.replace('/')} style={{cursor: 'pointer'}}/>
                 <Menu
                     theme="dark"
                     mode="horizontal"
                     selectedKeys={[path]}
-                    style={{ lineHeight: '64px' ,float:'left'}}
+                    style={{lineHeight: '64px', float: 'left'}}
                 >
                     <Menu.Item key="/home">
                         <Link to='/home'>
-                        首页
+                            首页
                         </Link>
                     </Menu.Item>
                     <Menu.Item key="/wantbuy">
                         <Link to='/wantbuy'>
-                        求购
+                            求购
                         </Link>
                     </Menu.Item>
                 </Menu>
@@ -107,22 +113,25 @@ class TopNav extends Component{
                     user ? (
                         <span>
                         <LinkButton
-                            style={{float:'right',marginRight:'15px'}}
-                            onClick = {() => {this.setState({
-                                ShowUpdate : true
-                            })}}
+                            style={{float: 'right', marginRight: '15px'}}
+                            onClick={() => {
+                                this.setState({
+                                    ShowUpdate: true
+                                })
+                            }}
                         >
                             {
                                 memoryUtils.user.img
-                                    ? <Avatar icon="user" className='avatar' src={memoryUtils.user.img}/>
-                                    : <Avatar icon="user" className='avatar' src='https://api.youzixy.com/public/uploads/avatar/default1.png'/>
+                                    ? <Popover content={<span>更新自己的个人信息</span>}><Avatar icon="user" className='avatar' src={memoryUtils.user.img}/></Popover>
+                                    : <Avatar icon="user" className='avatar'
+                                              src='https://api.youzixy.com/public/uploads/avatar/default1.png'/>
                             }
                         </LinkButton>
-                            <LinkButton style={{float:'right',marginRight:'15px',pointerEvents:'none'}} >
+                            <LinkButton style={{float: 'right', marginRight: '15px', pointerEvents: 'none'}}>
                                   欢迎您，{user.username}
                             </LinkButton>
                         <LinkButton
-                            style={{float:'right',marginRight:'15px'}}
+                            style={{float: 'right', marginRight: '15px'}}
                             onClick={this.LoginOut}
                         >
                             退出账户
@@ -132,7 +141,7 @@ class TopNav extends Component{
                     ) : (
                         <LinkButton
                             onClick={this.GoLogin}
-                            style={{float:'right',marginRight:'15px'}}
+                            style={{float: 'right', marginRight: '15px'}}
                         >
                             登录/注册
                         </LinkButton>
@@ -141,14 +150,14 @@ class TopNav extends Component{
 
                 {
                     memoryUtils.user
-                        ?    <Menu
+                        ? <Menu
                             theme="dark"
                             mode="horizontal"
-                            style={{ lineHeight: '64px' ,float:'right',marginRight:30}}
+                            style={{lineHeight: '64px', float: 'right', marginRight: 30}}
                             selectedKeys={[path]}
                         >
-                            <SubMenu key="/user" title="个人中心" >
-                                <Menu.Item key="/user-detail" >
+                            <SubMenu key="/user" title="个人中心">
+                                <Menu.Item key="/user-detail">
                                     <Link to='/user-detail'>
                                         我的商品
                                     </Link>
@@ -165,13 +174,13 @@ class TopNav extends Component{
 
                 {
                     memoryUtils.user
-                        ?    <Menu
+                        ? <Menu
                             theme="dark"
                             mode="horizontal"
-                            style={{ lineHeight: '64px' ,float:'right',marginRight:30}}
+                            style={{lineHeight: '64px', float: 'right', marginRight: 30}}
                             selectedKeys={[path]}
                         >
-                            <SubMenu key="/productHome" title="发布" >
+                            <SubMenu key="/productHome" title="发布">
                                 <Menu.Item key="/product">
                                     <Link to='/product'>
                                         发布商品
@@ -186,8 +195,44 @@ class TopNav extends Component{
                         </Menu> : ''
                 }
 
-
-
+                {
+                    memoryUtils.user ?
+                        <Popover
+                            content={<span>{user.username}，您拥有{this.state.message} 条未读信息，<Link to={{
+                                pathname: '/unread-information',
+                                state: memoryUtils.user.id
+                            }}  >点击查看</Link></span>}>
+                            {this.state.message > 0 ? <Icon type="mail"
+                                                      style={{
+                                                          float: 'right',
+                                                          color: '#FF0000',
+                                                          fontSize: 20,
+                                                          marginTop: 22,
+                                                          marginRight: 20
+                                                      }}
+                            /> : <Icon type="mail"
+                                       style={{
+                                           float: 'right',
+                                           color: '#808080',
+                                           fontSize: 20,
+                                           marginTop: 22,
+                                           marginRight: 20
+                                       }}
+                            />}
+                        </Popover>
+                        :
+                        <Popover content={<span>登陆后查看，<Link to='/login'>请登录</Link></span>}>
+                            <Icon type="mail"
+                                  style={{
+                                      float: 'right',
+                                      color: '#FFFFFF',
+                                      fontSize: 20,
+                                      marginTop: 22,
+                                      marginRight: 20
+                                  }}
+                            />
+                        </Popover>
+                }
 
 
                 <Modal
@@ -196,17 +241,18 @@ class TopNav extends Component{
                     onOk={this.UpdateUser}
                     onCancel={() => {
                         this.setState({
-                            ShowUpdate : false
+                            ShowUpdate: false
                         })
                         this.form.resetFields()
                     }}
                 >
 
 
-
                     <UpdateUser
-                        setForm = {(form) => {this.form = form}}
-                        callBack = {this.getHeaderUrl.bind(this)}
+                        setForm={(form) => {
+                            this.form = form
+                        }}
+                        callBack={this.getHeaderUrl.bind(this)}
                     />
                 </Modal>
             </div>

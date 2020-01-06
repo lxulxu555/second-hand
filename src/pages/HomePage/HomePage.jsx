@@ -12,6 +12,7 @@ import ProductDetail from '../../pages/product-detail/product-detail'
 import UserDetail from '../../pages/user-detail/user-datail'
 import ProductUserDetail from "../product-detail/product-user-detail";
 import UserBuyDetail from '../user-buy-detail/user-buy-detail'
+import UnreadInformation from '../user-detail/Unread-information'
 
 
 const { Header, Content, Footer } = Layout;
@@ -41,6 +42,7 @@ export default class HomePage extends Component {
                         <Route path = '/user-detail' component={UserDetail}/>
                         <Route path = '/product-user-detail' component={ProductUserDetail}/>
                         <Route path = '/user-buy-detail' component={UserBuyDetail}/>
+                        <Route path='/unread-information' component={UnreadInformation}/>
                         <Redirect to='/home'/>
                     </Switch>
                 </Content>

@@ -142,7 +142,7 @@ export default class UserBuyDetail extends Component{
             <div>
                 <div>
                     {
-                        BuyProduct.length !== 0 ?  this.getBuyProductList() : (<span style={{margin:"5% 5% 0 30%"}}>
+                        BuyProduct.length !== 0 ?  this.getBuyProductList() : (<span style={{margin: "5% 5% 0 30%"}}>
                <img src='https://www.youzixy.com/img/noGoods.cc45e087.png' alt='img'/>
            </span>)
                     }

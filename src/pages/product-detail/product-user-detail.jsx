@@ -17,7 +17,7 @@ class ProductUserDetail extends Component{
 
     getUserAllProduct = async (page) => {
         this.page = page
-        const result = await reqAllProduct('',page,this.state.defaultPageSize,this.props.location.state.id,'create_time desc')
+        const result = await reqAllProduct('',page,this.state.defaultPageSize,this.props.location.state,'create_time desc')
         const total = result.total
         this.setState({
             UserProduct : result.data,

@@ -1,7 +1,7 @@
 import React,{Component} from 'react'
 import {withRouter,Link} from 'react-router-dom'
 import './product-detail.less'
-import {Avatar,Icon,Modal,Row,Col} from 'antd'
+import {Avatar,Icon,Modal,Row,Col, BackTop} from 'antd'
 
 import {reqFindIdProduct} from '../../api/index'
 import LinkButton from "../../components/link-button/link-button";
@@ -54,7 +54,12 @@ class ProductDetail extends Component{
 
     componentDidMount(){
         this.getProductDetail()
+        document.getElementById('root').scrollIntoView(true);//为ture返回顶部，false为底部
     }
+
+
+
+
 
     render () {
         const {BigImageUrl,UserInfo,visible} = this.state
@@ -108,7 +113,7 @@ class ProductDetail extends Component{
                                 卖家账号：
                                 <Link to={{
                                     pathname : '/product-user-detail',
-                                    state : this.state.UserInfo
+                                    state : this.state.UserInfo.id
                                 }}>
                                 {UserInfo.username}
                                 </Link>
@@ -156,7 +161,7 @@ class ProductDetail extends Component{
                 <span style={{float:'left',marginTop:'10%',fontWeight:'bold',fontSize:25,marginLeft:20}}>评论墙</span>
                 </Col>
                 </Row>
-                <ProductComment ProductDetail={ProductDetail}/>
+                <ProductComment ProductDetail={ProductDetail} getProductDetail={this.getProductDetail}/>
                 <Modal
                     visible={visible}
                     onCancel={() => {
@@ -168,6 +173,7 @@ class ProductDetail extends Component{
                 >
                     {BigImageUrl ?   <img src={BigImageUrl} alt='img'/> : <img src={image}  alt='img'/>}
                 </Modal>
+                <BackTop/>
             </div>
         )
     }

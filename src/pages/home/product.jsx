@@ -73,7 +73,7 @@ class Product extends Component {
                                 hoverable={true}
                                 cover={<img alt={product.name} src={cover} style={{height: 218}}/>}
                             >
-                                <Meta title={product.name} description={"￥" + product.price1} style={{fontSize: 20}}/>
+                                <Meta title={product.name} description={<span style={{color:'#FF0000'}}>￥{product.price1}</span>} style={{fontSize: 20}}/>
                                 <Meta description={"于" + product.create_time + "发布"}/>
                             </Card>
                         </Link>
@@ -99,6 +99,11 @@ class Product extends Component {
     componentWillMount(){
         this.props.CleanOrderBy()
     }
+
+
+
+
+
 
     render() {
 
