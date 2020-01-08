@@ -3,11 +3,9 @@ import {Card, Pagination, Row, Col, BackTop} from 'antd'
 import {Link, withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
 import {connect} from 'react-redux'
-import {saveProductPage} from '../../redux/action'
 
 import {reqAllProduct, reqLookUpProduct} from '../../api/index'
 import Page from '../../utils/page'
-import Scroll from '../../utils/scroll'
 
 const {Meta} = Card;
 
@@ -33,7 +31,7 @@ class Product extends Component {
 
     //获取指定页码数据显示
     getAllProduct = async (page) => {
-        this.props.saveProductPage(page)
+        Page.SavePage(page)
         let key = this.state.currentKey
         this.page = page
         let result
@@ -54,7 +52,7 @@ class Product extends Component {
                 total,
                 AllProduct
             })
-
+        window.scrollTo(0,0)
     }
 
 
@@ -98,10 +96,7 @@ class Product extends Component {
         this.setState({
             currentKey: nextProps.currentKey,
         }, () => {
-            const page = Page.GetPage()
-            if(page){
-                window.scrollTo(0,0)
-            }
+            let page = Page.GetPage()
             this.getAllProduct(page)
         })
     }
@@ -140,8 +135,5 @@ class Product extends Component {
     }
 }
 
-export default connect(
-    state => ({page : state.page}),
-    {saveProductPage}
-)(withRouter(Product))
+export default withRouter(Product)
 

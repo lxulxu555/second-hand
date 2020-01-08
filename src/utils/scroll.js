@@ -2,7 +2,6 @@ import store from 'store'
 
 const SCROLL_KEY = 'scroll_key'
 export default {
-
     //保存scroll
     SaveScroll(scroll){
         store.set(SCROLL_KEY,scroll)

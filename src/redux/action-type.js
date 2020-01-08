@@ -1,1 +1,0 @@
-export const SAVE_PRODUCT_PAGE = 'save_product_page'    //获取商品分页
