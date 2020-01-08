@@ -7,14 +7,12 @@ import {
     Icon,
     message
 } from 'antd'
-
 import logo from './images/logo.png'
 import './login.less'
-import {reqLogin} from '../../api/index'
 import memoryUtils from '../../utils/memoryUtils'
 import storageUtils from '../../utils/storageUtils'
 import storageUtilsToken from '../../utils/storageUtils-token'
-
+import {reqLogin} from '../../api/index'
 
 class Login extends Component{
 
@@ -26,7 +24,9 @@ class Login extends Component{
         e.preventDefault();
         this.props.form.validateFields(async (err, values) => {
             if (!err) {
-                const result = await reqLogin(values)
+                const username = values.username
+                const password = values.password
+                const result = await reqLogin(username,password)
                 if(result.code===0){
                     const user = result
                     memoryUtils.user = user.data
@@ -48,8 +48,8 @@ class Login extends Component{
             wrapperCol: { span: 18 },
         };
         const { getFieldDecorator } = this.props.form;
-        const user = memoryUtils.user
-        if(user){
+        const user = this.props.user
+        if(user && user.id){
             return <Redirect to='/home'/>
         }
         return (
@@ -123,6 +123,7 @@ class Login extends Component{
 
 const WrapLogin = Form.create()(Login)
 export default withRouter(WrapLogin)
+
 
 
 

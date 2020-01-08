@@ -260,6 +260,6 @@ class TopNav extends Component {
     }
 }
 
-export default withRouter(TopNav)
+export default  withRouter(TopNav)
 
 

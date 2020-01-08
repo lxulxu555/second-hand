@@ -21,7 +21,6 @@ class Home extends Component {
         searchname: '',
         money : 'price1',
         time : 'create_time desc',
-        scrollY : ''
     }
 
     getOne = async () => {
@@ -44,7 +43,6 @@ class Home extends Component {
                           <span>{item.name}</span>
                         </span>}
                 >
-
                     <Menu.ItemGroup title="二级分类">
                         {item.classify2List.map(Citem => {
                             return <Menu.Item key={Citem.id}>{Citem.name}</Menu.Item>
@@ -85,26 +83,22 @@ class Home extends Component {
 
     componentDidMount() {
         this.getOne()
-       /* window.onscroll = () => {
-            if(window.onscroll){
-                this.scroll()
-            }
-        }*/
         this.scroll()
     }
 
     scroll = () => {
-        const x = window.scrollX
         const y = Scroll1.GetScroll()
-        window.scrollTo(x,y)
-        console.log('+++++++++++++++',y)
+        const x = window.scrollX
+        setTimeout(() => {
+            window.scrollTo(x,y)
+        },500)
+        Scroll1.RemoveScroll(y)
     }
 
     handleScroll = () =>{
-        const scroll = window.scrollY
+        const scroll = document.scrollingElement.scrollTop
         memoryUtils.scroll = scroll
         Scroll1.SaveScroll(scroll)
-        console.log('-------------',scroll)
     }
 
 
@@ -114,7 +108,7 @@ class Home extends Component {
 
     render() {
 
-        const {currentKey, searchname,money,time} = this.state
+        const {currentKey,searchname,money,time} = this.state
         return (
             <div>
             <span className="ParentFather">

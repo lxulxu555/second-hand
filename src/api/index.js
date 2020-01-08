@@ -3,7 +3,7 @@ import axios from 'axios'
 import memoryUtils from "../utils/memoryUtils";
 const BASE = '/api'
 //登录接口
-export const reqLogin = (user) => ajax(BASE+'/user/login',user,'POST')
+export const reqLogin = (username,password) => ajax(BASE+'/user/login',{username,password},'POST')
 //注册接口
 export const reqRegister = (user) => ajax(BASE+'/user/save',user,'POST')
 //更新用户接口
@@ -65,3 +65,4 @@ export const reqReplayComment = (content,userid,commentid,goodsid,nameid,leaf,pa
 export const reqFindReplayByMe = (token,nameId) => ajax(BASE + '/token/reply/findAllByUser',{token,nameId})
 //查看用户未读信息数
 export const reqLookUserReplay = (id) => ajax(BASE + '/user/getMessage',{id})
+//给留言点赞
