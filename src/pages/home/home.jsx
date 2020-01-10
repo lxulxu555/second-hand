@@ -106,6 +106,8 @@ class Home extends Component {
         this.handleScroll()
     }
 
+
+
     render() {
 
         const {currentKey,searchname,money,time} = this.state

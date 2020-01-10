@@ -9,6 +9,7 @@ import storageUtils from '../../utils/storageUtils'
 import storageUtilsToken from '../../utils/storageUtils-token'
 import UpdateUser from '../../pages/update-user/update-user'
 import {reqUpdateUser,reqLookUserReplay} from '../../api/index'
+import Page from '../../utils/page'
 
 const SubMenu = Menu.SubMenu
 
@@ -90,17 +91,21 @@ class TopNav extends Component {
 
         return (
             <div>
-                <div className="logo" onClick={() => this.props.history.replace('/')} style={{cursor: 'pointer'}}/>
+                <div className="logo" onClick={() => {
+                    this.props.history.replace('/')
+                    Page.SavePage(1)
+                }} style={{cursor: 'pointer'}}/>
                 <Menu
                     theme="dark"
                     mode="horizontal"
                     selectedKeys={[path]}
                     style={{lineHeight: '64px', float: 'left'}}
                 >
-                    <Menu.Item key="/home">
-                        <Link to='/home'>
+                    <Menu.Item key="/home" onClick={() => {
+                        this.props.history.replace('/home')
+                        Page.SavePage(1)
+                    }}>
                             首页
-                        </Link>
                     </Menu.Item>
                     <Menu.Item key="/wantbuy">
                         <Link to='/wantbuy'>

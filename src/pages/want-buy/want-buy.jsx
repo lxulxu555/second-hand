@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import {Card, Pagination, Icon,Avatar,message} from 'antd'
+import {Card, Pagination, Icon,Avatar,message,BackTop} from 'antd'
 
 import {reqBuyProduct} from '../../api/index'
 import memoryUtils from "../../utils/memoryUtils";
@@ -92,6 +92,7 @@ export default class WantBuy extends Component{
                     onChange={this.getBuyProduct}
                     style={{textAlign:'center',marginTop:20}}
                 />
+                <BackTop/>
             </div>
         )
     }

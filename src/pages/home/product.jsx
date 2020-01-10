@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import {Card, Pagination, Row, Col, BackTop} from 'antd'
 import {Link, withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
-import {connect} from 'react-redux'
 
 import {reqAllProduct, reqLookUpProduct} from '../../api/index'
 import Page from '../../utils/page'
@@ -31,6 +30,7 @@ class Product extends Component {
 
     //获取指定页码数据显示
     getAllProduct = async (page) => {
+        window.scrollTo(0,0)
         Page.SavePage(page)
         let key = this.state.currentKey
         this.page = page
@@ -50,9 +50,8 @@ class Product extends Component {
             const total = result.total
             this.setState({
                 total,
-                AllProduct
+                AllProduct,
             })
-        window.scrollTo(0,0)
     }
 
 
@@ -104,6 +103,8 @@ class Product extends Component {
     componentWillMount(){
         this.props.CleanOrderBy()
     }
+
+
 
 
     render() {

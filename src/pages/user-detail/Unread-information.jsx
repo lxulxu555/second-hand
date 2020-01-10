@@ -22,7 +22,7 @@ export default class UnreadInformation extends Component {
     getReplayByMeList = () => {
         const ReplayByMeList = this.state.ReplayByMe
         if (!ReplayByMeList) {
-            return <img src={noReplay} style={{margin: "5% 5% 0 30%"}}/>
+            return <img src={noReplay} style={{margin: "5% 5% 0 30%"}} alt='img'/>
         } else {
             return ReplayByMeList.map(item => {
                 const title = (
