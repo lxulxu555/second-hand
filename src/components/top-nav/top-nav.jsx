@@ -8,7 +8,7 @@ import memoryUtils from '../../utils/memoryUtils'
 import storageUtils from '../../utils/storageUtils'
 import storageUtilsToken from '../../utils/storageUtils-token'
 import UpdateUser from '../../pages/update-user/update-user'
-import {reqUpdateUser,reqLookUserReplay} from '../../api/index'
+import {reqUpdateUser, reqLookUserReplay} from '../../api/index'
 import Page from '../../utils/page'
 
 const SubMenu = Menu.SubMenu
@@ -18,14 +18,17 @@ class TopNav extends Component {
     state = {
         ShowUpdate: false,
         image: '',
-        message : '',
-        user : {}
+        message: '',
+        user: {}
     }
 
     getLookUserReplay = async () => {
         const id = memoryUtils.user ? memoryUtils.user.id : ''
         const result = await reqLookUserReplay(id)
-        this.setState({message : result})
+        if (result !== this.state.message) {
+            this.setState({message: result})
+
+        }
     }
 
 
@@ -82,9 +85,17 @@ class TopNav extends Component {
         })
     }
 
+    componentWillMount() {
+        this.getLookUserReplay()
+    }
+
+    componentDidUpdate() {
+        this.getLookUserReplay()
+    }
+
 
     render() {
-        this.getLookUserReplay()
+        const message = this.state.message
         let path = this.props.location.pathname
         const user = memoryUtils.user
         const {ShowUpdate} = this.state
@@ -105,7 +116,7 @@ class TopNav extends Component {
                         this.props.history.replace('/home')
                         Page.SavePage(1)
                     }}>
-                            首页
+                        首页
                     </Menu.Item>
                     <Menu.Item key="/wantbuy">
                         <Link to='/wantbuy'>
@@ -127,7 +138,8 @@ class TopNav extends Component {
                         >
                             {
                                 memoryUtils.user.img
-                                    ? <Popover content={<span>更新自己的个人信息</span>}><Avatar icon="user" className='avatar' src={memoryUtils.user.img}/></Popover>
+                                    ? <Popover content={<span>更新自己的个人信息</span>}><Avatar icon="user" className='avatar'
+                                                                                        src={memoryUtils.user.img}/></Popover>
                                     : <Avatar icon="user" className='avatar'
                                               src='https://api.youzixy.com/public/uploads/avatar/default1.png'/>
                             }
@@ -203,18 +215,21 @@ class TopNav extends Component {
                 {
                     memoryUtils.user ?
                         <Popover
-                            content={<span>{user.username}，您拥有{this.state.message} 条未读信息，<Link to={{
-                                pathname: '/unread-information',
-                                state: memoryUtils.user.id
-                            }}  >点击查看</Link></span>}>
+                            content={<span>{user.username}，您拥有{message} 条未读信息，<LinkButton onClick={() => {
+                                    this.props.history.replace('/unread-information')
+                                    this.setState({
+                                        message : 0
+                                    })
+                                }
+                                }>点击查看</LinkButton></span>}>
                             {this.state.message > 0 ? <Icon type="mail"
-                                                      style={{
-                                                          float: 'right',
-                                                          color: '#FF0000',
-                                                          fontSize: 20,
-                                                          marginTop: 22,
-                                                          marginRight: 20
-                                                      }}
+                                                            style={{
+                                                                float: 'right',
+                                                                color: '#FF0000',
+                                                                fontSize: 20,
+                                                                marginTop: 22,
+                                                                marginRight: 20
+                                                            }}
                             /> : <Icon type="mail"
                                        style={{
                                            float: 'right',
@@ -265,6 +280,6 @@ class TopNav extends Component {
     }
 }
 
-export default  withRouter(TopNav)
+export default withRouter(TopNav)
 
 

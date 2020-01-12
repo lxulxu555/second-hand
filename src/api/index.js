@@ -19,7 +19,7 @@ export const reqGetOneList = () => ajax(BASE + '/classify1/findClassify1')
 //根据一级分类ID获取二级分类
 export const reqGetTwoList = (id) => ajax(BASE + '/classify1/findChildById',{id})
 //根据商品ID查找商品信息
-export const reqFindIdProduct = (id) => ajax(BASE + '/goods/findById',{id})
+export const reqFindIdProduct = (id,userid) => ajax(BASE + '/goods/findById',{id,userid})
 //更新商品
 export const reqUpdateProduct = (product) => ajax(BASE + '/goods/update',product,'PUT')
 //分页展示所有求购信息
@@ -65,4 +65,12 @@ export const reqReplayComment = (content,userid,commentid,goodsid,nameid,leaf,pa
 export const reqFindReplayByMe = (token,nameId) => ajax(BASE + '/token/reply/findAllByUser',{token,nameId})
 //查看用户未读信息数
 export const reqLookUserReplay = (id) => ajax(BASE + '/user/getMessage',{id})
-//给留言点赞
+//根据名字搜索求购页面商品
+export const reqLookUpWantBuy = (token,title) => ajax(BASE + '/token/buy/findByLike',{token,title})
+//当前用户点赞留言回复
+export const reqLikeComment = (type,state) =>
+    axios.post(BASE + '/token/like/save',{type,state},{params:{
+            token : memoryUtils.token
+        }})
+        .then(response => response.data)
+        .catch(err => console.warn(err));

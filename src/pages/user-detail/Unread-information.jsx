@@ -35,7 +35,7 @@ export default class UnreadInformation extends Component {
                 </span>
                 )
                 return <Card title={title} bordered={false} style={{margin: '1% 10% 3% 10%'}}
-                             key={item.id}
+                             key={item.content}
                 >
                     <div style={{display: 'flex'}}>
                         <Link to={{
@@ -63,8 +63,11 @@ export default class UnreadInformation extends Component {
 
 
     componentDidMount() {
-        this.getFindReplayByMe(this.props.location.state)
+        const nameId = memoryUtils.user.id
+        this.getFindReplayByMe(nameId)
     }
+
+
 
     render() {
 
