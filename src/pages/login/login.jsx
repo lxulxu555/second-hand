@@ -5,7 +5,7 @@ import {
     Button,
     Form,
     Icon,
-    message
+    message,
 } from 'antd'
 import logo from './images/logo.png'
 import './login.less'
@@ -48,7 +48,7 @@ class Login extends Component{
             wrapperCol: { span: 18 },
         };
         const { getFieldDecorator } = this.props.form;
-        const user = this.props.user
+        const user = memoryUtils.user
         if(user && user.id){
             return <Redirect to='/home'/>
         }
@@ -80,40 +80,40 @@ class Login extends Component{
                                 )
                             }
                         </Form.Item>
-
                         <Form.Item  {...formItemLayout} label='密码'>
-                            {
-                                getFieldDecorator('password',{
-                                    rules: [
-                                        {required: true,whiteSpace: true,message:'密码必须输入'},
-                                        {min:2,message:'密码最少为四位'},
-                                        {max:12,message:'密码最多为十二位'},
-                                        {pattern: /^[a-zA-Z0-9_]+$/,message:'密码必须是英文字母数字下划线组成'}
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                        type="password"
-                                        placeholder="Password"
-                                    />,
-                                )
-                            }
+                                    {
+                                        getFieldDecorator('password',{
+                                            rules: [
+                                                {required: true,whiteSpace: true,message:'密码必须输入'},
+                                                {min:2,message:'密码最少为四位'},
+                                                {max:12,message:'密码最多为十二位'},
+                                                {pattern: /^[a-zA-Z0-9_]+$/,message:'密码必须是英文字母数字下划线组成'}
+                                            ]
+                                        })(
+                                            <span>
+                                            <Input.Password
+                                                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                                type="password"
+                                                placeholder="Password"
+                                            />
+                                            <a href='/forget'>忘记密码</a>
+                                            </span>
+                                        )
+                                    }
                         </Form.Item>
 
-                        <Form.Item>
-                            <Button type="primary" htmlType="submit" className="login-form-button" style={{width:100}}>
+                        <Form.Item style={{marginTop:-20}}>
+                            <Button type="primary" htmlType="submit"  style={{width:100}}>
                                 登录
                             </Button>
                             <Button
                                 type="primary"
-                                className="login-form-button"
                                 style={{marginLeft:100,width:100}}
                                 onClick={() => this.props.history.replace('/register')}
                             >
                                 注册
                             </Button>
                         </Form.Item>
-
                     </Form>
                 </div>
             </div>

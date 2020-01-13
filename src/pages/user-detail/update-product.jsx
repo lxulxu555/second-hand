@@ -61,7 +61,10 @@ class UpdateProduct extends Component{
                 <Form.Item label='价格：' {...formItemLayout}>
                     {getFieldDecorator('price1', {
                         initialValue : this.props.sendProduct.price1,
-                        rules: [{ required: true, message: '请输入产品价格' }],
+                        rules: [
+                            { required: true, message: '请输入产品价格' },
+                            {pattern:/^\+?((0|([1-9]+\d*))|((0\.\d+)|([1-9]+\d*\.\d+)))$/,message:'价格必须为数字,且不能为负数'}
+                        ],
                     })(
                         <Input placeholder='请输入商品价格'/>
                     )}

@@ -30,7 +30,7 @@ export default class UnreadInformation extends Component {
                 <Avatar src={item.user.img} style={{marginRight: 20}}/>
                     <span><Link to={{
                         pathname: '/product-user-detail',
-                        state: item.user.id
+                        state: item.user
                     }}>{item.user.username}</Link> 回复了您</span>
                 </span>
                 )

@@ -17,7 +17,8 @@ class ProductUserDetail extends Component{
 
     getUserAllProduct = async (page) => {
         this.page = page
-        const result = await reqAllProduct('',page,this.state.defaultPageSize,this.props.location.state,'create_time desc')
+        const id = this.props.location.state.id
+        const result = await reqAllProduct('',page,this.state.defaultPageSize,id,'create_time desc')
         const total = result.total
         this.setState({
             UserProduct : result.data,
@@ -27,39 +28,38 @@ class ProductUserDetail extends Component{
 
 
     getUserAllProductList = () => {
-        const UserProduct = this.state.UserProduct
-
-        return UserProduct.map(Item => {
-            const img = Item.images
-            const cover = img.split(",")[0]
-                return (
-                    <Col xs={12} md={6}  xxl={4} style={{height:350,width:220,margin: '10px 14px 40px 10px'}} >
-                    <Link to={{
-                        pathname : '/product-detail',
-                        state : Item.id
-                    }}>
-                    <Card
-                        hoverable
-                        cover={<img alt="img" src={cover} style={{height:218}} />}
-                        actions={[
-                    <span>
+        const UserProduct = this.state.UserProduct || []
+            return UserProduct.map(Item => {
+                    const img = Item.images
+                    const cover = img.split(",")[0]
+                    return (
+                        <Col xs={12} md={6} xxl={4} style={{height: 350, width: 220, margin: '10px 14px 40px 10px'}}>
+                            <Link to={{
+                                pathname: '/product-detail',
+                                state: Item.id
+                            }}>
+                                <Card
+                                    hoverable
+                                    cover={<img alt="img" src={cover} style={{height: 218}}/>}
+                                    actions={[
+                                        <span>
                         {
                             Item.state === 0 ? '正在出售' : '已被购买'
                         }
                     </span>
-                        ]}
-                    >
-                        <Meta
-                            title={Item.name}
-                            description={Item.intro}
-                            style={{textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}
-                        />
-                    </Card>
-                    </Link>
-                    </Col>
-                )
-            }
-        )
+                                    ]}
+                                >
+                                    <Meta
+                                        title={Item.name}
+                                        description={Item.intro}
+                                        style={{textOverflow: 'ellipsis', whiteSpace: 'nowrap', overflow: 'hidden'}}
+                                    />
+                                </Card>
+                            </Link>
+                        </Col>
+                    )
+                }
+            )
     }
 
     componentDidMount(){

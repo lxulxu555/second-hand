@@ -74,3 +74,9 @@ export const reqLikeComment = (type,state) =>
         }})
         .then(response => response.data)
         .catch(err => console.warn(err));
+//发送邮箱验证码
+export const reqSendVerification = (email,flag) => ajax(BASE + '/user/getEmailCode',{email,flag})
+//修改密码
+export const reqChangePassword = (username,password,email,code) => ajax(BASE + '/user/changePassword',{username,password,email,code},'POST')
+//根据username查询email
+export const reqFindEmailByName = (username) => ajax(BASE + '/user/findEmailByName',{username})

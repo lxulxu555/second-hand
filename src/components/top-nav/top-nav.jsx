@@ -25,9 +25,8 @@ class TopNav extends Component {
     getLookUserReplay = async () => {
         const id = memoryUtils.user ? memoryUtils.user.id : ''
         const result = await reqLookUserReplay(id)
-        if (result !== this.state.message) {
+        if (result !== this.state.message && result.code !== -1) {
             this.setState({message: result})
-
         }
     }
 
@@ -63,6 +62,7 @@ class TopNav extends Component {
                 user.img = this.state.image
                 user.password = values.password
                 user.username = values.username
+                user.email = values.email
                 user.phone = values.phone
                 const result = await reqUpdateUser(user)
                 memoryUtils.user = user
