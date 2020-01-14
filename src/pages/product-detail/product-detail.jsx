@@ -114,7 +114,7 @@ class ProductDetail extends Component{
                                 卖家账号：
                                 <Link to={{
                                     pathname : '/product-user-detail',
-                                    state : this.state.UserInfo.id
+                                    state : this.state.UserInfo
                                 }}>
                                 {UserInfo.username}
                                 </Link>

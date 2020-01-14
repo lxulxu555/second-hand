@@ -11,6 +11,8 @@ import logo from './images/logo.png'
 import './forget.less'
 import {reqChangePassword, reqSendVerification,reqFindEmailByName} from '../../api/index'
 import memoryUtils from "../../utils/memoryUtils";
+import storageUtils from "../../utils/storageUtils";
+import storageUtilsToken from "../../utils/storageUtils-token";
 
 class Login extends Component {
 
@@ -29,7 +31,13 @@ class Login extends Component {
                 const code = values.Verification
                 const result = await reqChangePassword(username,password,email,code)
                 if(result.code === 0){
-                    this.props.history.replace('/login')
+                    message.success('修改成功')
+                    storageUtils.RemoveUser()
+                    memoryUtils.user = {}
+                    storageUtilsToken.RemoveToken()
+                    memoryUtils.token = {}
+                    this.props.history.replace('/home')
+                    window.location.reload()
                 }else {
                     message.error(result.msg)
                 }
@@ -75,10 +83,6 @@ class Login extends Component {
             wrapperCol: {span: 18},
         };
         const {getFieldDecorator} = this.props.form;
-        const user = memoryUtils.user
-        if (user && user.id) {
-            return <Redirect to='/home'/>
-        }
         return (
             <div className="login">
                 <div className="login-header">

@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
-import {Form, Icon, Input} from "antd";
+import {Form, Icon, Input,Button} from "antd";
 import PropTypes from 'prop-types'
+import {withRouter} from 'react-router-dom'
 
 import UpdateImage from './upload-image'
 import memoryUtils from '../../utils/memoryUtils'
@@ -48,19 +49,6 @@ class UpdateUser extends Component{
                         <Input placeholder='UserName' disabled/>
                     )}
                 </Form.Item>
-                <Form.Item label='密码' {...formItemLayout}>
-                    {getFieldDecorator('password', {
-                        initialValue : memoryUtils.user.password,
-                        rules: [
-                            {required: true,whiteSpace: true,message:'密码必须输入'},
-                            {min:4,message:'密码最少为四位'},
-                            {max:32,message:'密码最多为三十二位'},
-                            {pattern: /^[a-zA-Z0-9_]+$/,message:'密码必须是英文字母数字下划线组成'}
-                        ]
-                    })(
-                        <Input type='password' placeholder='PassWord'/>
-                    )}
-                </Form.Item>
                 <Form.Item label="邮箱" {...formItemLayout}>
                     {
                         getFieldDecorator('email', {
@@ -92,10 +80,16 @@ class UpdateUser extends Component{
                         <Input placeholder='Phone' addonBefore='+86'/>
                     )}
                 </Form.Item>
+                <Form.Item label='修改密码' {...formItemLayout}>
+                    {getFieldDecorator('phone')(
+                        <Button type='dashed' onClick={() => this.props.history.replace('/forget')}>修改密码</Button>
+                    )}
+                </Form.Item>
             </Form>
             </div>
         )
     }
 }
 
-export default Form.create()(UpdateUser)
+const form =  Form.create()(UpdateUser)
+export default withRouter(form)

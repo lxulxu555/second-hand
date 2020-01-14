@@ -114,18 +114,18 @@ class ProductComment extends Component {
     }
 
     ClickLike = async (item) => {
-        if (item.state === null) {
-            document.getElementById(item.createtime).style.color = '#FF0000'
-            document.getElementById(item.leaf === null ? item.commentid : item.id).innerHTML = ++item.number
-            item.state = 1
-        } else {
-            document.getElementById(item.createtime).style.color = ''
-            document.getElementById(item.leaf === null ? item.commentid : item.id).innerHTML= --item.number
-            item.state = null
-        }
         if(!memoryUtils.user){
             message.error('请登录，享受更多惊喜')
         }else{
+            if (item.state === null) {
+                document.getElementById(item.createtime).style.color = '#FF0000'
+                document.getElementById(item.leaf === null ? item.commentid : item.id).innerHTML = ++item.number
+                item.state = 1
+            } else {
+                document.getElementById(item.createtime).style.color = ''
+                document.getElementById(item.leaf === null ? item.commentid : item.id).innerHTML= --item.number
+                item.state = null
+            }
             const type = item.leaf === null ? 'comment' + ':' + item.commentid + ':' + memoryUtils.user.id : 'reply' + ':' + item.id + ':' + memoryUtils.user.id
             const state = item.state === 1 ? '1' : '0'
             await reqLikeComment(type,state)
