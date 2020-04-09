@@ -6,7 +6,6 @@ import './top-nav.less'
 import LinkButton from '../link-button/link-button'
 import memoryUtils from '../../utils/memoryUtils'
 import storageUtils from '../../utils/storageUtils'
-import storageUtilsToken from '../../utils/storageUtils-token'
 import UpdateUser from '../../pages/update-user/update-user'
 import {reqUpdateUser, reqLookUserReplay} from '../../api/index'
 import Page from '../../utils/page'
@@ -23,7 +22,7 @@ class TopNav extends Component {
     }
 
     getLookUserReplay = async () => {
-        const id = memoryUtils.user ? memoryUtils.user.id : ''
+        const id = memoryUtils.user ? memoryUtils.user.user.id : ''
         const result = await reqLookUserReplay(id)
         if (result !== this.state.message && result.code !== -1) {
             this.setState({message: result})
@@ -42,8 +41,6 @@ class TopNav extends Component {
                 //console.log('ok',this);
                 storageUtils.RemoveUser()
                 memoryUtils.user = {}
-                storageUtilsToken.RemoveToken()
-                memoryUtils.token = {}
                 message.success('退出成功')
                 this.props.history.replace('/home')
                 window.location.reload()
@@ -58,10 +55,10 @@ class TopNav extends Component {
                     ShowUpdate: false
                 })
                 const user = this.state.user
-                user.id = memoryUtils.user.id
+                user.id = memoryUtils.user.user.id
                 user.img = this.state.image
                 user.password = values.password
-                user.username = values.username
+                user.nickname = values.nickname
                 user.email = values.email
                 user.phone = values.phone
                 const result = await reqUpdateUser(user)
@@ -97,7 +94,7 @@ class TopNav extends Component {
     render() {
         const message = this.state.message
         let path = this.props.location.pathname
-        const user = memoryUtils.user
+        const user = memoryUtils.user ? memoryUtils.user.user : ''
         const {ShowUpdate} = this.state
 
         return (
@@ -126,7 +123,7 @@ class TopNav extends Component {
                 </Menu>
 
                 {
-                    user ? (
+                    user !== '' ? (
                         <span>
                         <LinkButton
                             style={{float: 'right', marginRight: '15px'}}
@@ -137,15 +134,15 @@ class TopNav extends Component {
                             }}
                         >
                             {
-                                memoryUtils.user.img
+                                memoryUtils.user.user.img
                                     ? <Popover content={<span>更新自己的个人信息</span>}><Avatar icon="user" className='avatar'
-                                                                                        src={memoryUtils.user.img}/></Popover>
+                                                                                        src={memoryUtils.user.user.img}/></Popover>
                                     : <Avatar icon="user" className='avatar'
                                               src='https://api.youzixy.com/public/uploads/avatar/default1.png'/>
                             }
                         </LinkButton>
                             <LinkButton style={{float: 'right', marginRight: '15px', pointerEvents: 'none'}}>
-                                  欢迎您，{user.username}
+                                  欢迎您，{user.nickname}
                             </LinkButton>
                         <LinkButton
                             style={{float: 'right', marginRight: '15px'}}
@@ -166,7 +163,7 @@ class TopNav extends Component {
                 }
 
                 {
-                    memoryUtils.user
+                    user !== ''
                         ? <Menu
                             theme="dark"
                             mode="horizontal"
@@ -190,7 +187,7 @@ class TopNav extends Component {
 
 
                 {
-                    memoryUtils.user
+                    user !== ''
                         ? <Menu
                             theme="dark"
                             mode="horizontal"
@@ -213,9 +210,9 @@ class TopNav extends Component {
                 }
 
                 {
-                    memoryUtils.user ?
+                    user !== '' ?
                         <Popover
-                            content={<span>{user.username}，您拥有{message} 条未读信息，<LinkButton onClick={() => {
+                            content={<span>{user.nickname}，您拥有{message} 条未读信息，<LinkButton onClick={() => {
                                     this.props.history.replace('/unread-information')
                                     this.setState({
                                         message : 0

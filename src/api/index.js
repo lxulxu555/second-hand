@@ -11,7 +11,7 @@ export const reqUpdateUser = (user) => ajax(BASE + '/user/update',user,'PUT')
 //获取所有分类接口
 export const reqFindOne = () => ajax(BASE + '/classify1/findAll')
 //获取所有商品
-export const reqAllProduct = (id,page,rows,userid,orderBy) => ajax(BASE + '/goods/findByPage',{id,page,rows,userid,orderBy})
+export const reqAllProduct = (id,page,rows,userid,orderBy,goodsName) => ajax(BASE + '/goods/findByPage',{id,page,rows,userid,orderBy,goodsName})
 //添加商品
 export const reqAddProduct = (product) => ajax(BASE + '/goods/add',product,'POST')
 //获取所有一级分类
@@ -28,7 +28,7 @@ export const reqBuyProduct = (token,page,rows,userid) => ajax( BASE + '/token/bu
 //post请求设置Params请求头
 export const reqAddBuyProduct = (buyProduct) =>
     axios.post(BASE + '/token/buy/add', buyProduct, { params: {
-            token : memoryUtils.token
+            token : memoryUtils.user.token
         }})
         .then(response => response.data)
         .catch(err => console.warn(err));
@@ -37,27 +37,27 @@ export const reqDeleteProduct =(id) => ajax(BASE + '/goods/deleteGoods',{id})
 //更新求购信息
 export const reqUpdateBuyProduct = (buyProduct) =>
     axios.put( BASE + '/token/buy/update', buyProduct, { params: {
-            token : memoryUtils.token
+            token : memoryUtils.user.token
         }})
         .then(response => response.data)
         .catch(err => console.warn(err));
 //根据求购ID删除求购信息
 export const reqDeleteBuyProduct = (token,id) => ajax(BASE + '/token/buy/delete',{token,id},'DELETE')
 //根据商品名称查询商品
-export const reqLookUpProduct = (goodsName,page,rows) => ajax(BASE + '/goods/findByLike',{goodsName})
+export const reqLookUpProduct = (goodsName) => ajax(BASE + '/goods/findByLike',{goodsName})
 //删除商品图片
 export const reqDeleteProductImage = (name) => ajax(BASE + '/goods/deleteFile',{name},'POST')
 //添加留言
 export const reqSaveComment = (content,userid,goodsid) =>
     axios.post( BASE + '/token/comment/save', {content,userid,goodsid}, { params: {
-            token : memoryUtils.token
+            token : memoryUtils.user.token
         }})
         .then(response => response.data)
         .catch(err => console.warn(err));
 //回复一条留言
 export const reqReplayComment = (content,userid,commentid,goodsid,nameid,leaf,parentname) =>
     axios.post( BASE + '/token/reply/save', {content,userid,commentid,goodsid,nameid,leaf,parentname}, { params: {
-            token : memoryUtils.token
+            token : memoryUtils.user.token
         }})
         .then(response => response.data)
         .catch(err => console.warn(err));
@@ -70,7 +70,7 @@ export const reqLookUpWantBuy = (token,title) => ajax(BASE + '/token/buy/findByL
 //当前用户点赞留言回复
 export const reqLikeComment = (type,state) =>
     axios.post(BASE + '/token/like/save',{type,state},{params:{
-            token : memoryUtils.token
+            token : memoryUtils.user.token
         }})
         .then(response => response.data)
         .catch(err => console.warn(err));
@@ -80,3 +80,5 @@ export const reqSendVerification = (email,flag) => ajax(BASE + '/user/getEmailCo
 export const reqChangePassword = (username,password,email,code) => ajax(BASE + '/user/changePassword',{username,password,email,code},'POST')
 //根据username查询email
 export const reqFindEmailByName = (username) => ajax(BASE + '/user/findEmailByName',{username})
+//使用邮箱快速登录
+export const reqEmailLogin = (email,code) => ajax(BASE + '/user/registerAndLogin',{email,code})

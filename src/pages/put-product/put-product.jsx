@@ -33,7 +33,7 @@ class PutProduct extends Component{
             if (!err) {
                 const product = this.state.product
                 product.name = values.name
-                product.userid = memoryUtils.user.id
+                product.userid = memoryUtils.user.user.id
                 product.intro = values.intro
                 product.price1 = values.price
                 product.weixin = values.weixin
@@ -66,8 +66,8 @@ class PutProduct extends Component{
 
     loadData = async (selectedOptions) => {
         const result = await reqFindOne()
+        result.length = 9
         //alert(JSON.stringify(result))
-
         const a = result.map(Item => ({
             value : Item.id,
             label : Item.name,

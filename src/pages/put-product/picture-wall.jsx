@@ -45,16 +45,15 @@ export class PictureWall extends React.Component {
     fileList:所有已上传图片文件对象的数组
      */
     handleChange =  ({ fileList,file }) => {
-
         //一旦上传成功，将当前上传的file的信息修正(name,url)
         if(file.status==='done') {
             const result = file.response
-            if (result.url) {
+            if (result.code === 0) {
                 message.success('上传图片成功')
-                const {name, url} = result
+                const {thumbnailName, thumbnailUrl} = result.data
                 file = fileList[fileList.length - 1]
-                file.name = name
-                file.url = url
+                file.name = thumbnailName
+                file.url = thumbnailUrl
             } else {
                 message.error('上传图片失败')
             }
@@ -82,7 +81,7 @@ export class PictureWall extends React.Component {
         return (
             <div className="clearfix">
                 <Upload
-                    action="http://39.106.188.22:8800/api/goods/image"
+                    action="http://47.93.240.205:8800/api/goods/image"
                     listType="picture-card"
                     name='file'
                     accept='image/*'

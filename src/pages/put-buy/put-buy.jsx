@@ -23,8 +23,8 @@ class PutBuy extends Component{
                 buyProduct.title = values.title
                 buyProduct.intro = values.intro
                 buyProduct.weixin = values.weixin
-                buyProduct.userid = memoryUtils.user.id
-                buyProduct.token = memoryUtils.token
+                buyProduct.userid = memoryUtils.user.user.id
+                buyProduct.token = memoryUtils.user.token
                 const result = await reqAddBuyProduct(buyProduct)
                 if(result.code === 0){
                     message.success('添加成功')

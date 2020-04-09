@@ -3,7 +3,8 @@ import {Link} from 'react-router-dom'
 import {reqFindReplayByMe} from '../../api/index'
 import memoryUtils from "../../utils/memoryUtils";
 import noReplay from '../../utils/noGoods.cc45e087_副本.png'
-import {Card, Icon, Avatar, BackTop} from "antd";
+import {Card, Icon, Avatar, BackTop,message} from "antd";
+import storageUtils from "../../utils/storageUtils";
 
 export default class UnreadInformation extends Component {
 
@@ -12,11 +13,19 @@ export default class UnreadInformation extends Component {
     }
 
     getFindReplayByMe = async (nameId) => {
-        const token = memoryUtils.token
+        const token = memoryUtils.user.token
         const result = await reqFindReplayByMe(token, nameId)
-        this.setState({
-            ReplayByMe: result.data
-        })
+        if(result.code === 0){
+            this.setState({
+                ReplayByMe: result.data
+            })
+        }else{
+            message.error('请重新登录，您的身份信息已过期')
+            storageUtils.RemoveUser()
+            memoryUtils.user = {}
+            this.props.history.replace('/home')
+            window.location.reload()
+        }
     }
 
     getReplayByMeList = () => {
@@ -63,7 +72,7 @@ export default class UnreadInformation extends Component {
 
 
     componentDidMount() {
-        const nameId = memoryUtils.user.id
+        const nameId = memoryUtils.user.user.id
         this.getFindReplayByMe(nameId)
     }
 

@@ -34,6 +34,7 @@ class Home extends Component {
 
     getOneList = () => {
         const One = this.state.One
+        One.length = 9
         return One.map(item => {
             return (
                 <SubMenu

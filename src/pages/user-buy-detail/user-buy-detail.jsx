@@ -2,7 +2,6 @@ import React,{Component} from 'react'
 import memoryUtils from "../../utils/memoryUtils";
 import {reqBuyProduct,reqUpdateBuyProduct,reqDeleteBuyProduct} from "../../api";
 import storageUtils from "../../utils/storageUtils";
-import storageUtilsToken from "../../utils/storageUtils-token";
 import {Avatar, Card, Icon, message, Pagination, Button, Modal, BackTop} from "antd";
 import UpdateWantBuy from './update-want-buy'
 
@@ -21,15 +20,13 @@ export default class UserBuyDetail extends Component{
 
     getBuyProduct = async (page) => {
         this.page = page
-        const token = memoryUtils.token
+        const token = memoryUtils.user.token
         const rows = this.state.defaultPageSize
-        const userid = memoryUtils.user.id
+        const userid = memoryUtils.user.user.id
         const result = await reqBuyProduct(token,page,rows,userid)
         if(result.code === -1) {
             memoryUtils.user = ''
             storageUtils.RemoveUser()
-            memoryUtils.token = ''
-            storageUtilsToken.RemoveToken()
             this.props.history.replace('/login')
             message.error('您需要验证身份')
         }
@@ -92,7 +89,7 @@ export default class UserBuyDetail extends Component{
         Modal.confirm ({
             title: `确认删除${Item.title}吗`,
             onOk :async () => {
-                const token = memoryUtils.token
+                const token = memoryUtils.user.token
                 const id = Item.id
                 const result = await reqDeleteBuyProduct(token,id)
                 if(result.code === 0){
@@ -116,7 +113,7 @@ export default class UserBuyDetail extends Component{
                 buyProduct.title = values.title
                 buyProduct.intro = values.intro
                 buyProduct.weixin = values.weixin
-                buyProduct.userid = memoryUtils.user.id
+                buyProduct.userid = memoryUtils.user.user.id
                 const result = await reqUpdateBuyProduct(buyProduct)
                 if(result.code === 0){
                     message.success('更新成功')

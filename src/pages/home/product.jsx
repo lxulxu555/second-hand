@@ -3,7 +3,7 @@ import {Card, Pagination, Row, Col, BackTop} from 'antd'
 import {Link, withRouter} from 'react-router-dom'
 import PropTypes from 'prop-types'
 
-import {reqAllProduct, reqLookUpProduct} from '../../api/index'
+import {reqAllProduct} from '../../api/index'
 import Page from '../../utils/page'
 
 const {Meta} = Card;
@@ -13,9 +13,9 @@ class Product extends Component {
     static propTypes = {
         currentKey: PropTypes.string.isRequired,
         searchname: PropTypes.string,
-        money:PropTypes.string,
-        time : PropTypes.string,
-        CleanOrderBy:PropTypes.func
+        money: PropTypes.string,
+        time: PropTypes.string,
+        CleanOrderBy: PropTypes.func
     }
 
     state = {
@@ -26,32 +26,22 @@ class Product extends Component {
     }
 
 
-
-
     //获取指定页码数据显示
     getAllProduct = async (page) => {
-        window.scrollTo(0,0)
+        window.scrollTo(0, 0)
         Page.SavePage(page)
         let key = this.state.currentKey
         this.page = page
-        let result
         let money = this.props.money
         let time = this.props.time
         let ordeyBy = money ? money : time
-            if (this.props.searchname) {
-                result = await reqLookUpProduct(this.props.searchname, page, this.state.defaultPageSize)
-                if(result.total===0){
-                    result = ''
-                }
-            } else {
-                result = await reqAllProduct(key, page, this.state.defaultPageSize, '', ordeyBy)
-            }
-            const AllProduct = result.data
-            const total = result.total
-            this.setState({
-                total,
-                AllProduct,
-            })
+        const result = await reqAllProduct(key, page, this.state.defaultPageSize, '', ordeyBy,this.props.searchname)
+        const AllProduct = result.data
+        const total = result.total
+        this.setState({
+            total,
+            AllProduct,
+        })
     }
 
 
@@ -76,7 +66,9 @@ class Product extends Component {
                                 hoverable={true}
                                 cover={<img alt={product.name} src={cover} style={{height: 218}}/>}
                             >
-                                <Meta title={product.name} description={<span style={{color:'#FF0000'}}>￥{product.price1}</span>} style={{fontSize: 20}}/>
+                                <Meta title={product.name}
+                                      description={<span style={{color: '#FF0000'}}>￥{product.price1}</span>}
+                                      style={{fontSize: 20}}/>
                                 <Meta description={"于" + product.create_time + "发布"}/>
                             </Card>
                         </Link>
@@ -100,11 +92,9 @@ class Product extends Component {
         })
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.props.CleanOrderBy()
     }
-
-
 
 
     render() {

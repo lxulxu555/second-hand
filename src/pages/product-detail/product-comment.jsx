@@ -4,7 +4,6 @@ import PropTypes from 'prop-types'
 import {reqSaveComment, reqReplayComment, reqLikeComment} from '../../api/index'
 import memoryUtils from "../../utils/memoryUtils";
 import storageUtils from "../../utils/storageUtils";
-import storageUtilsToken from '../../utils/storageUtils-token'
 
 
 class ProductComment extends Component {
@@ -52,8 +51,8 @@ class ProductComment extends Component {
                                 />,
                                 <p id={item.leaf === null ? item.commentid : item.id}>{item.number}</p>
                             ]}
-                        author={item.leaf === null ? <span>{item.user.username}</span> :
-                            <span>{item.user.username} 回复了 {item.parentname}</span>}
+                        author={item.leaf === null ? <span>{item.user.nickname}</span> :
+                            <span>{item.user.nickname} 回复了 {item.parentname}</span>}
                         avatar={<Avatar src={item.user.img} style={{marginLeft: 20}}/>}
                         content={(
                             <p style={{float: 'left', marginTop: 10}}>
@@ -87,8 +86,8 @@ class ProductComment extends Component {
                                 />,
                                 <p id={item.leaf === null ? item.commentid : item.id}>{item.number}</p>
                             ]}
-                        author={item.leaf === null ? <span>{item.user.username}</span> :
-                            <span>{item.user.username} 回复了 {item.parentname}</span>}
+                        author={item.leaf === null ? <span>{item.user.nickname}</span> :
+                            <span>{item.user.nickname} 回复了 {item.parentname}</span>}
                         avatar={<Avatar src={item.user.img} style={{marginLeft: 20}}/>}
                         content={(
                             <p style={{float: 'left', marginTop: 10}}>
@@ -126,7 +125,7 @@ class ProductComment extends Component {
                 document.getElementById(item.leaf === null ? item.commentid : item.id).innerHTML= --item.number
                 item.state = null
             }
-            const type = item.leaf === null ? 'comment' + ':' + item.commentid + ':' + memoryUtils.user.id : 'reply' + ':' + item.id + ':' + memoryUtils.user.id
+            const type = item.leaf === null ? 'comment' + ':' + item.commentid + ':' + memoryUtils.user.user.id : 'reply' + ':' + item.id + ':' + memoryUtils.user.user.id
             const state = item.state === 1 ? '1' : '0'
             await reqLikeComment(type,state)
         }
@@ -137,7 +136,7 @@ class ProductComment extends Component {
         this.props.form.validateFields(async (err, values) => {
             if (!err) {
                 const content = values.content
-                const userid = memoryUtils.user ? memoryUtils.user.id : null
+                const userid = memoryUtils.user ? memoryUtils.user.user.id : null
                 const goodsid = this.props.ProductDetail.id
                 const result = await reqSaveComment(content, userid, goodsid)
                 if (result.code === 0) {
@@ -146,9 +145,7 @@ class ProductComment extends Component {
                     message.error(result.msg)
                     if (result.msg === '请登录') {
                         memoryUtils.user = ''
-                        memoryUtils.token = ''
                         storageUtils.RemoveUser()
-                        storageUtilsToken.RemoveToken()
                         this.props.history.replace('/home')
                     }
                 }
@@ -161,12 +158,12 @@ class ProductComment extends Component {
     ReplayComment = async () => {
         const comment = this.state.comment
         const content = document.getElementById('replayComment').value
-        const userid = memoryUtils.user ? memoryUtils.user.id : null
+        const userid = memoryUtils.user ? memoryUtils.user.user.id : null
         const commentid = comment.commentid
         const goodsid = comment.goodsid
         const nameid = comment.user.id
         const leaf = comment.leaf === null ? '0' : comment.id
-        const parentname = comment.user.username
+        const parentname = comment.user.nickname
         const result = await reqReplayComment(content, userid, commentid, goodsid, nameid, leaf, parentname)
         if (result.code === 0) {
             message.success('回复成功')
@@ -199,7 +196,7 @@ class ProductComment extends Component {
                 {this.getCommentsNodes(CommentAllList)}
                 <span style={{display: 'flex'}}>
                         <Avatar size='large'
-                                src={memoryUtils.user ? memoryUtils.user.img : 'https://api.youzixy.com/public/uploads/avatar/default1.png'}
+                                src={memoryUtils.user ? memoryUtils.user.user.img : 'https://api.youzixy.com/public/uploads/avatar/default1.png'}
                                 style={{margin: 20}}/>
                 <Form onSubmit={this.handleSubmit}>
                 <Form.Item>

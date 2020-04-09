@@ -8,8 +8,8 @@ import {
     message, Row, Col,
 } from 'antd'
 import logo from './images/logo.png'
-import './forget.less'
-import {reqChangePassword, reqSendVerification,reqFindEmailByName} from '../../api/index'
+import './email-login.less'
+import {reqEmailLogin, reqSendVerification} from '../../api/index'
 import memoryUtils from "../../utils/memoryUtils";
 import storageUtils from "../../utils/storageUtils";
 
@@ -24,18 +24,16 @@ class Login extends Component {
         e.preventDefault();
         this.props.form.validateFields(async (err, values) => {
             if (!err) {
-                const username = values.username
-                const password = values.password
                 const email = values.email
                 const code = values.Verification
-                const result = await reqChangePassword(username,password,email,code)
-                if(result.code === 0){
-                    message.success('修改成功')
-                    storageUtils.RemoveUser()
-                    memoryUtils.user = {}
+                const result = await reqEmailLogin(email, code)
+                if (result.code === 0) {
+                    const user = result.data
+                    memoryUtils.user = user
+                    storageUtils.SaveUser(user)
+                    message.success('登录成功')
                     this.props.history.replace('/home')
-                    window.location.reload()
-                }else {
+                } else {
                     message.error(result.msg)
                 }
             }
@@ -46,31 +44,24 @@ class Login extends Component {
         clearInterval(this.timer)
         let maxTime = 60
         let email = document.getElementById('email').value
-        let flag = 'change'
-        let username = document.getElementById('username').value
-        const result1 = await reqFindEmailByName(username)
-        if(result1 === email){
-            const result = await reqSendVerification(email,flag)
-            if(result.code === 0){
-                this.timer = setInterval(() => {
-                    if (maxTime > 0) {
-                        --maxTime
-                        this.setState({
-                            btnText: '重新获取' + maxTime,
-                            btnBool: true
-                        })
-                    } else {
-                        this.setState({
-                            btnText: '邮箱发送验证码',
-                            btnBool: false
-                        })
-                    }
-                }, 1000)
-            }else{
-                message.error(result.msg)
-            }
-        }else{
-            message.error('用户没有绑定该邮箱')
+        const result = await reqSendVerification(email)
+        if (result.code === 0) {
+            this.timer = setInterval(() => {
+                if (maxTime > 0) {
+                    --maxTime
+                    this.setState({
+                        btnText: '重新获取' + maxTime,
+                        btnBool: true
+                    })
+                } else {
+                    this.setState({
+                        btnText: '邮箱发送验证码',
+                        btnBool: false
+                    })
+                }
+            }, 1000)
+        } else {
+            message.error(result.msg)
         }
     }
 
@@ -88,45 +79,8 @@ class Login extends Component {
                     </Link>
                 </div>
                 <div className="login-content1">
-                    <h2>Eurasia二手交易平台</h2>
+                    <h2>Eurasia快速登录</h2>
                     <Form onSubmit={this.handleSubmit} className="login-form">
-                        <Form.Item  {...formItemLayout} label='用户名'>
-                            {
-                                getFieldDecorator('username', {
-                                    initialValue: '',
-                                    rules: [
-                                        {required: true, whiteSpace: true, message: '用户名必须输入'},
-                                        {min: 2, message: '用户名最少为4位'},
-                                        {max: 12, message: '用户名最多为12位'},
-                                        {pattern: /^[a-zA-Z0-9_]+$/, message: '用户名必须是英文数字和下划线组成'}
-                                    ]
-                                })(
-                                    <Input
-                                        prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                        placeholder="Username"
-                                    />,
-                                )
-                            }
-                        </Form.Item>
-                        <Form.Item  {...formItemLayout} label='新密码'>
-                            {
-                                getFieldDecorator('password', {
-                                    rules: [
-                                        {required: true, whiteSpace: true, message: '密码必须输入'},
-                                        {min: 2, message: '密码最少为四位'},
-                                        {max: 12, message: '密码最多为十二位'},
-                                        {pattern: /^[a-zA-Z0-9_]+$/, message: '密码必须是英文字母数字下划线组成'}
-                                    ]
-                                })(
-                                    <Input.Password
-                                        prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                                        type="password"
-                                        placeholder="Password"
-                                    />
-                                )
-                            }
-                        </Form.Item>
-
                         <Form.Item label="邮箱" {...formItemLayout}>
                             {
                                 getFieldDecorator('email', {

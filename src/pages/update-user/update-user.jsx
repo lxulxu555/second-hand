@@ -26,6 +26,7 @@ class UpdateUser extends Component{
         this.props.callBack(url)
     }
 
+
     render () {
 
         const formItemLayout = {
@@ -43,8 +44,8 @@ class UpdateUser extends Component{
                     />
                 </Form.Item>
                 <Form.Item label='用户名' {...formItemLayout}>
-                    {getFieldDecorator('username', {
-                        initialValue : memoryUtils.user.username,
+                    {getFieldDecorator('nickname', {
+                        initialValue : memoryUtils.user.user.nickname,
                     })(
                         <Input placeholder='UserName' disabled/>
                     )}
@@ -52,7 +53,7 @@ class UpdateUser extends Component{
                 <Form.Item label="邮箱" {...formItemLayout}>
                     {
                         getFieldDecorator('email', {
-                            initialValue : memoryUtils.user.email,
+                            initialValue : memoryUtils.user.user.email,
                             rules: [
                                 {
                                     pattern: /[0-9a-zA-Z_.-]+[@][0-9a-zA-Z_.-]+([.][a-zA-Z]+){1,2}/,
@@ -70,7 +71,7 @@ class UpdateUser extends Component{
                 </Form.Item>
                 <Form.Item label='手机号' {...formItemLayout}>
                     {getFieldDecorator('phone', {
-                        initialValue : memoryUtils.user.phone,
+                        initialValue : memoryUtils.user.user.phone,
                         rules : [
                             {min:11,message:'手机号最少为11位'},
                             {max:11,message:'手机号最多为11位'},
@@ -81,9 +82,7 @@ class UpdateUser extends Component{
                     )}
                 </Form.Item>
                 <Form.Item label='修改密码' {...formItemLayout}>
-                    {getFieldDecorator('phone')(
                         <Button type='dashed' onClick={() => this.props.history.replace('/forget')}>修改密码</Button>
-                    )}
                 </Form.Item>
             </Form>
             </div>

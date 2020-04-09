@@ -19,7 +19,7 @@ class ProductDetail extends Component{
     }
 
     getProductDetail = async () => {
-        const userid = memoryUtils.user ? memoryUtils.user.id : ''
+        const userid = memoryUtils.user ? memoryUtils.user.user.id : ''
         const result = await reqFindIdProduct(this.props.location.state,userid)
         const UserInfo = result.user
         this.setState({

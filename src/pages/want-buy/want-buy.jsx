@@ -4,7 +4,6 @@ import {Card, Pagination, Icon, Avatar, message, BackTop, Input,Button} from 'an
 import {reqBuyProduct,reqLookUpWantBuy} from '../../api/index'
 import memoryUtils from "../../utils/memoryUtils";
 import storageUtils from "../../utils/storageUtils";
-import storageUtilsToken from '../../utils/storageUtils-token'
 
 export default class WantBuy extends Component{
 
@@ -18,7 +17,7 @@ export default class WantBuy extends Component{
     getBuyProduct = async (page) => {
         this.page = page
         let title = this.state.title
-        let token = memoryUtils.token
+        let token = memoryUtils.user.token
         let rows = this.state.defaultPageSize
         let result
         if(title !== ''){
@@ -29,8 +28,6 @@ export default class WantBuy extends Component{
         if(result.code === -1) {
             memoryUtils.user = ''
             storageUtils.RemoveUser()
-            memoryUtils.token = ''
-            storageUtilsToken.RemoveToken()
             this.props.history.replace('/login')
             message.error('您需要验证身份')
         }

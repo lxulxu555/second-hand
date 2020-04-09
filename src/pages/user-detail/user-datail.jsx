@@ -24,7 +24,7 @@ export default class UserDetail extends Component {
 
     getUserAllProduct = async (page) => {
         this.page = page
-        const result = await reqAllProduct('', page, this.state.defaultPageSize, memoryUtils.user.id, '')
+        const result = await reqAllProduct('', page, this.state.defaultPageSize, memoryUtils.user.user.id, '')
         const total = result.total
         this.setState({
             UserProduct: result.data,
@@ -145,7 +145,6 @@ export default class UserDetail extends Component {
     }
 
     deleteProduct = async (Item) => {
-
         Modal.confirm({
             title: `确认删除${Item.name}吗`,
             onOk: async () => {

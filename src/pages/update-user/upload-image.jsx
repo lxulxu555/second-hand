@@ -1,6 +1,5 @@
 /*
 upload-image.jsx  ->  update-user.jsx  -> top-nav.jsx
-BUG:用户更新头像，若不选择新的图像则会默认为空
  */
 
 import React,{Component} from 'react'
@@ -13,7 +12,7 @@ export default class App extends Component{
 
     state = {
         loading: false,
-        imageUrl:memoryUtils.user.img, //存放图片地址
+        imageUrl:memoryUtils.user.user.img, //存放图片地址
        // imageUrl : ''
     };
 
@@ -34,10 +33,11 @@ export default class App extends Component{
         }
         if (info.file.status === 'done') {
             const result = info.file.response
-            if(result.url){
+            console.log(result)
+            if(result.code === 0){
                 message.success('上传图片成功')
-                const {name} = result
-                const url = result.url
+                const name = result.data.thumbnailName
+                const url = result.data.thumbnailUrl
                 info.file.name = name
                 info.file.url = url
                 this.setState({
@@ -60,8 +60,8 @@ export default class App extends Component{
     // }
 
     render () {
-        const uploadButton = memoryUtils.user.img? (
-            <img src={memoryUtils.user.img} alt="avatar" style={{ width: '100%' }} />
+        const uploadButton = memoryUtils.user.user.img? (
+            <img src={memoryUtils.user.user.img} alt="avatar" style={{ width: '100%' }} />
         )
             :
             (
@@ -72,7 +72,7 @@ export default class App extends Component{
             )
         return (
             <Upload
-                action= 'http://39.106.188.22:8800/api/upload/image'
+                action= 'http://47.93.240.205:8800/api/upload/image'
                 listType="picture-card"
                 name="file"
                 accept='image/*'
