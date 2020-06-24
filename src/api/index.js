@@ -2,6 +2,7 @@ import {ajax} from './ajax'
 import axios from 'axios'
 import memoryUtils from "../utils/memoryUtils";
 const BASE = '/api'
+//const url = 'http://localhost:4000/api/'
 //登录接口
 export const reqLogin = (username,password) => ajax(BASE+'/user/login',{username,password},'POST')
 //注册接口
