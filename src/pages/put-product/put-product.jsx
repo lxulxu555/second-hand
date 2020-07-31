@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Form, Input,Button,message,Cascader,Icon} from "antd";
 
 import './put-product.less'
-import {reqAddProduct,reqFindOne} from '../../api/index'
+import {reqAddProduct,reqFindClassAll} from '../../api/index'
 import {PictureWall} from "./picture-wall";
 import memoryUtils from "../../utils/memoryUtils";
 
@@ -65,7 +65,7 @@ class PutProduct extends Component{
 
 
     loadData = async (selectedOptions) => {
-        const result = await reqFindOne()
+        const result = await reqFindClassAll()
         result.length = 9
         //alert(JSON.stringify(result))
         const a = result.map(Item => ({

@@ -2,15 +2,15 @@ import {ajax} from './ajax'
 import axios from 'axios'
 import memoryUtils from "../utils/memoryUtils";
 const BASE = '/api'
-//const url = 'http://localhost:4000/api/'
+//const url = 'http://localhost:4000/api'
 //登录接口
-export const reqLogin = (username,password) => ajax(BASE+'/user/login',{username,password},'POST')
+export const reqLogin = (user) => ajax(BASE+'/user/login',user,'POST')
 //注册接口
 export const reqRegister = (user) => ajax(BASE+'/user/save',user,'POST')
 //更新用户接口
 export const reqUpdateUser = (user) => ajax(BASE + '/user/update',user,'PUT')
 //获取所有分类接口
-export const reqFindOne = () => ajax(BASE + '/classify1/findAll')
+export const reqFindClassAll = () => ajax(BASE + '/classify1/findAll')
 //获取所有商品
 export const reqAllProduct = (id,page,rows,userid,orderBy,goodsName) => ajax(BASE + '/goods/findByPage',{id,page,rows,userid,orderBy,goodsName})
 //添加商品
@@ -78,8 +78,10 @@ export const reqLikeComment = (type,state) =>
 //发送邮箱验证码
 export const reqSendVerification = (email,flag) => ajax(BASE + '/user/getEmailCode',{email,flag})
 //修改密码
-export const reqChangePassword = (username,password,email,code) => ajax(BASE + '/user/changePassword',{username,password,email,code},'POST')
+export const reqChangePassword = (user) => ajax(BASE + '/user/changePassword',user,'POST')
 //根据username查询email
 export const reqFindEmailByName = (username) => ajax(BASE + '/user/findEmailByName',{username})
 //使用邮箱快速登录
-export const reqEmailLogin = (email,code) => ajax(BASE + '/user/registerAndLogin',{email,code})
+export const reqEmailLogin = (emailUser) => ajax(BASE + '/user/registerAndLogin',emailUser)
+//验证token是否过期
+export const reqInit = (token) => ajax(BASE + '/user/init',{token},'POST')

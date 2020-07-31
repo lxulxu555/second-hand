@@ -18,9 +18,19 @@ export  function ajax(url,data={},type='GET') {
             })
         }
         promise.then(response => {
-            resolve(response.data)
+            const result = response.data
+            resolve(result)
+            if(result.code === 0){
+                message.success(result.msg)
+            }else if(result.code === -1){
+                message.error(result.msg)
+            }
         }).catch(error => {
-            message.error('请求出错了' + error.message)
+            if(error.response.status === 401){
+                resolve(error.response.data)
+            }else{
+                message.error('请求出错了' + error.message)
+            }
         })
     })
 }

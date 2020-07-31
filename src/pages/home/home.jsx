@@ -1,13 +1,14 @@
 import React, {Component} from 'react'
 import {Carousel, Menu, Row, Col, Input, Icon, Button} from 'antd'
 import {withRouter} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 
 import './home.less'
-import {reqFindOne} from '../../api/index'
 import Product from './product'
 import memoryUtils from "../../utils/memoryUtils";
 import Scroll1 from '../../utils/scroll'
+import {GetAllClass} from '../../redux/action/product'
 
 const {SubMenu} = Menu;
 
@@ -19,21 +20,14 @@ class Home extends Component {
         success: false,
         currentKey: '',
         searchname: '',
-        money : 'price1',
-        time : 'create_time desc',
+        create_time : 'create_time desc',
+        money :'price1 desc'
     }
 
-    getOne = async () => {
-        const result = await reqFindOne()
-        const One = result
-        this.setState({
-            One,
-            success: true
-        })
-    }
 
     getOneList = () => {
-        const One = this.state.One
+
+        const One = this.props.productAllClass.allClass
         One.length = 9
         return One.map(item => {
             return (
@@ -65,53 +59,61 @@ class Home extends Component {
         })
     }
 
-    SearchName = (searchname) => {
+    SearchName = () => {
+        const searchname = this.textInput.state.value
         this.setState({
             searchname,
-        }, () => {
-            if (searchname) {
-                document.getElementById('input').value = ''
-            }
         })
     }
 
-    CleanOrderBy = () => {
-        this.setState({
-            money : '',
-        })
-    }
 
+
+    ClickOrderBy = (type) => {
+        const {money,create_time} = this.state
+        if(type === 'price'){
+            this.setState({
+                money : money === 'price1' ? 'price1 desc' : 'price1'
+            })
+        }else{
+            this.setState({
+                create_time: create_time === 'create_time' ? 'create_time desc' : 'create_time'
+            })
+        }
+    }
 
     componentDidMount() {
-        this.getOne()
         this.scroll()
+        this.props.getAllClass()
     }
 
     scroll = () => {
         const y = Scroll1.GetScroll()
         const x = window.scrollX
         setTimeout(() => {
-            window.scrollTo(x,y)
-        },500)
+            window.scrollTo(x, y)
+        }, 500)
         Scroll1.RemoveScroll(y)
     }
 
-    handleScroll = () =>{
+    handleScroll = () => {
         const scroll = document.scrollingElement.scrollTop
         memoryUtils.scroll = scroll
         Scroll1.SaveScroll(scroll)
     }
 
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.handleScroll()
     }
 
 
-
     render() {
+        const {create_time,money, currentKey, searchname} = this.state
+        const condition
 
-        const {currentKey,searchname,money,time} = this.state
+
+            = {create_time,money, currentKey, searchname}
+
         return (
             <div>
             <span className="ParentFather">
@@ -129,7 +131,7 @@ class Home extends Component {
             </div>
                     </Col>
 
-                    <Col xs={24} md={20} xxl={19} style={{paddingLeft: 10, display: 'flex', flexDirection: 'column'}}>
+                    <Col xs={24} md={20} xxl={19}>
             <Carousel autoplay className='Carousel-image'>
                 <p>
                     <img data-v-7bfb6d44
@@ -157,42 +159,29 @@ class Home extends Component {
                            <Input
                                id='input'
                                placeholder='请输入关键字'
-                               style={{width: 400, height: 40, marginTop: 12, marginLeft: '20%'}}
+                               className='search'
                                addonBefore={<Icon type='search'/>}
-                               onPressEnter={() => this.SearchName(document.getElementById('input').value)}
+                               ref={(input) => this.textInput = input}
+                               onPressEnter={() => this.SearchName()}
                            />
 
                         <Button
                             type='primary'
-                            style={{
-                                width: 63,
-                                marginTop: 13,
-                                height: 30,
-                                textAlign: 'center',
-                                borderRadius: 0,
-                                borderBottomRightRadius: '5px',
-                                borderTopRightRadius: '5px'
-                            }}
-                            onClick={() => this.SearchName(document.getElementById('input').value)}
+                            className='button'
+                            onClick={() => this.SearchName()}
                         >
                             搜索
                         </Button>
-                        <span style={{float:'right',marginTop:15,marginRight:20}}>
-                            <Button onClick={() => this.setState({
-                                money : money === 'price1' ? 'price1 desc' : 'price1',
-                                time : ''
-                            })}>
+                        <span style={{float: 'right', marginTop: 15, marginRight: 20}}>
+                            <Button onClick={() => this.ClickOrderBy('price')}>
                                 {
-                                    money === 'price1' ?   <Icon type="up" /> :  <Icon type="down" />
+                                    money === 'price1' ? <Icon type="up"/> : <Icon type="down"/>
                                 }
                                 价格
                             </Button>
-                            <Button onClick={() => this.setState({
-                                time : time === 'create_time desc' ? 'create_time' : 'create_time desc',
-                                money : ''
-                            })}>
+                            <Button onClick={() => this.ClickOrderBy('time')}>
                                  {
-                                     time === 'create_time desc' ?   <Icon type="down" /> :  <Icon type="up" />
+                                     create_time === 'create_time' ? <Icon type="up"/> : <Icon type="down"/>
                                  }
                                 时间
                             </Button>
@@ -203,11 +192,7 @@ class Home extends Component {
             </span>
                 <span>
                     <Product
-                        currentKey={currentKey}
-                        searchname={searchname}
-                        money={money}
-                        time={time}
-                        CleanOrderBy={this.CleanOrderBy}
+                        condition = {condition}
                     />
                 </span>
             </div>
@@ -215,4 +200,12 @@ class Home extends Component {
     }
 }
 
-export default withRouter(Home)
+const mapStateToProps = ({user, productAllClass}) => ({
+    user, productAllClass
+})
+
+const maoDispatchToProps = (dispatch) => ({
+    getAllClass: () => dispatch(GetAllClass()),
+})
+
+export default withRouter(connect(mapStateToProps, maoDispatchToProps)(Home))

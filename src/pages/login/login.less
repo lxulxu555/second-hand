@@ -3,6 +3,7 @@
   height: 100%;
   background-size: 100% 100%;
   background-image: url(./images/背景.png);
+  display: flex;
   .login-header{
     img{
       height: 80px;
@@ -10,12 +11,24 @@
       margin: 10px;
     }
   }
+  .content{
+    width: 70%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
+  .left-icon-father{
+    position: relative;
+    right: 60px;
+    font-size: 20px;
+    cursor: pointer;
+  }
   .login-content{
     background: rgba(244,244,244,0.6);
     width: 500px;
     height: 300px;
-    margin: 70px auto;
     padding: 20px 90px;
     border-radius: 15px;
     h2{

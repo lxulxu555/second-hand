@@ -21,10 +21,6 @@ const { Header, Content, Footer } = Layout;
 export default class HomePage extends Component {
 
 
-
-
-
-
     render() {
         return (
             <Layout className="layout"  style={{minHeight:'100%'}}>
