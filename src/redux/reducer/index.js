@@ -5,6 +5,8 @@ import uploadImage from './upload-image'
 import productAllClass from './product-allclass'
 import productAll from './product-all'
 import productPage from './product-page'
+import productScroll from './product-scroll'
+import productDetail from './product-detail'
 
 export default combineReducers({
     user,
@@ -12,5 +14,7 @@ export default combineReducers({
     uploadImage,
     productAllClass,
     productAll,
-    productPage
+    productPage,
+    productScroll,
+    productDetail
 })

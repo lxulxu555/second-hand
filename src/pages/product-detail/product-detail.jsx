@@ -1,31 +1,22 @@
-import React,{Component} from 'react'
-import {withRouter,Link} from 'react-router-dom'
+import React, {Component} from 'react'
+import {withRouter, Link} from 'react-router-dom'
 import './product-detail.less'
-import {Avatar,Icon,Modal,Row,Col, BackTop} from 'antd'
-
-import {reqFindIdProduct} from '../../api/index'
+import {Avatar, Icon, Modal, Row, Col, BackTop} from 'antd'
+import {connect} from 'react-redux'
 import LinkButton from "../../components/link-button/link-button";
-import memoryUtils from "../../utils/memoryUtils";
 import ProductComment from './product-comment'
+import {GetProductDetail} from '../../redux/action/product'
 
-class ProductDetail extends Component{
+class ProductDetail extends Component {
 
 
     state = {
-        ProductDetail : '',
-        UserInfo : '',
-        BigImageUrl : '',
-        visible : false
+        BigImageUrl: '',
+        visible: false
     }
 
     getProductDetail = async () => {
-        const userid = memoryUtils.user ? memoryUtils.user.user.id : ''
-        const result = await reqFindIdProduct(this.props.location.state,userid)
-        const UserInfo = result.user
-        this.setState({
-            ProductDetail : result,
-            UserInfo,
-        })
+        this.props.GetProductDetail(this.props.location.state)
     }
 
     BigImage = (url) => {
@@ -36,104 +27,102 @@ class ProductDetail extends Component{
     }
 
     imageList = () => {
-        const images = this.state.ProductDetail.images || ''
+        const {detail} = this.props.productDetail
+        const {images} = detail
         const image = images.split(",")
-            if(image && image.length>0){
-                return image.map(Item => {
-                    return (
-                        <img src={Item}
-                             onClick={() => this.BigImage(Item)}
-                             style={{width:100,height:80,marginLeft:5}}
-                             alt='img'
-                             key={Item}
-                        />
-                    )
-                })
-            }
+        if (image && image.length > 0) {
+            return image.map(Item => {
+                return (
+                    <img src={Item}
+                         onClick={() => this.BigImage(Item)}
+                         style={{width: 100, height: 80, marginLeft: 5}}
+                         alt='img'
+                         key={Item}
+                    />
+                )
+            })
+        }
     }
 
 
-    componentDidMount(){
+    componentDidMount() {
         this.getProductDetail()
         document.getElementById('root').scrollIntoView(true);//为ture返回顶部，false为底部
     }
 
 
+    render() {
+        const {BigImageUrl, visible} = this.state
 
-
-
-    render () {
-        const {BigImageUrl,UserInfo,visible} = this.state
-        const ProductDetail = this.state.ProductDetail || {}
-        const user = ProductDetail.user || {}
-        const images = this.state.ProductDetail.images || ''
+        const {detail} = this.props.productDetail
+        const {user, images} = detail
         const image = images.split(",")[0]
+
 
         return (
             <div className='small-background'>
-
-                 <span style={{float:'left'}}>
+                 <span style={{float: 'left'}}>
                     <LinkButton>
                     <Icon
                         type='arrow-left'
-                        style={{fontSize: 25, marginRight: 10,marginLeft:10}}
+                        className='arrow-left'
                         onClick={() => this.props.history.goBack()}
                     />
                     </LinkButton>
-                     <span style={{fontSize:15}}>商品详情</span>
+                     <span style={{fontSize: 15}}>商品详情</span>
                 </span>
 
                 <span className='detail'>
                     <span className='image-wall'>
                         {
-                        <span onClick={() => this.setState({
-                            visible : true
-                        })}
-                        style={{cursor: 'pointer'}}>
-                            {BigImageUrl  ?    <img src={BigImageUrl}  style={{width:300,height:300,border:'1px solid'}}  alt='img' />
+                            <span onClick={() => this.setState({
+                                visible: true
+                            })}
+                                  style={{cursor: 'pointer'}}>
+                            {BigImageUrl ?
+                                <img src={BigImageUrl} style={{width: 300, maxHeight: 500, border: '1px solid'}}
+                                     alt='img'/>
                                 :
                                 <img src={image}
-                                     style={{width:300,height:300,border:'1px solid'}}
+                                     style={{width: 300, maxHeight: 500, border: '1px solid'}}
                                      alt='img'
                                 />
                             }
                         </span>
                         }
 
-                <span className='image-small'>
+                        <span className='image-small'>
                     {this.imageList()}
                 </span>
                     </span>
-                    <span className='right-detail'>
+
+                    <div className='right-detail'>
                         <span style={{display: 'flex'}}>
                         <Avatar
                             size={"large"}
-                            src={UserInfo.img}
+                            src={user.img}
                         />
                             <span className='sell-username'>
                                 卖家账号：
                                 <Link to={{
-                                    pathname : '/product-user-detail',
-                                    state : this.state.UserInfo
+                                    pathname: '/product-user-detail',
+                                    state: user
                                 }}>
-                                {UserInfo.username}
+                                {user.username}
                                 </Link>
                                 </span>
                         </span>
                         <span className='detail-title'>
-                            {ProductDetail.name}
+                            {detail.name}
                         </span>
                         <span
-                            style={{paddingTop:10,
-                                color:'#616776',
-                                fontSize:15,
-                                textAlign:'left'
-                            }}>
-                            {ProductDetail.intro}
+                            className='detailIntro'
+                        >
+                          {detail.intro}
                         </span>
                         <span className='a'>
                             <Icon type="dollar-circle" theme="filled" style={{paddingRight: 15}}/>
-                            {ProductDetail.price1}元
+                            {detail.price1}元
                         </span>
                         <span className='a'>
                             <Icon type="bank" theme="filled" style={{paddingRight: 15}}/>
@@ -141,38 +130,40 @@ class ProductDetail extends Component{
                         </span>
                         <span className='a'>
                            <Icon type="notification" theme="filled" style={{paddingRight: 15}}/>
-                            {ProductDetail.create_time}
+                            {detail.create_time}
                         </span>
                         <span className='a'>
                             <Icon type="phone" theme="filled" style={{paddingRight: 15}}/>
-                            {memoryUtils.user ? user.phone : <LinkButton onClick={() => this.props.history.replace('/login')}>
-                                登录查看联系方式
-                            </LinkButton>}
+                            {this.props.user ? user.phone :
+                                <LinkButton onClick={() => this.props.history.replace('/login')}>
+                                    登录查看联系方式
+                                </LinkButton>}
                         </span>
                          <span className='a'>
                             <Icon type="wechat" theme="filled" style={{paddingRight: 15}}/>
-                             {memoryUtils.user ? ProductDetail.weixin : <LinkButton onClick={() => this.props.history.replace('/login')}>
-                                 登录查看微信
-                             </LinkButton>}
+                             {this.props.user ? detail.weixin :
+                                 <LinkButton onClick={() => this.props.history.replace('/login')}>
+                                     登录查看微信
+                                 </LinkButton>}
                         </span>
-                    </span>
+                    </div>
                 </span>
                 <Row>
-                <Col xs={24} md={24} xxl={24}>
-                <span style={{float:'left',marginTop:'10%',fontWeight:'bold',fontSize:25,marginLeft:20}}>评论墙</span>
-                </Col>
+                    <Col xs={24} md={24} xxl={24}>
+                        <span className='comment-wall'>评论墙</span>
+                    </Col>
                 </Row>
-                <ProductComment ProductDetail={ProductDetail} getProductDetail={this.getProductDetail}/>
+                <ProductComment  getProductDetail={this.getProductDetail}/>
                 <Modal
                     visible={visible}
                     onCancel={() => {
                         this.setState({
-                            visible : false
+                            visible: false
                         })
                     }}
-                    footer = {null}
+                    footer={null}
                 >
-                    {BigImageUrl ?   <img src={BigImageUrl} alt='img'/> : <img src={image}  alt='img'/>}
+                    {BigImageUrl ? <img src={BigImageUrl} alt='img'/> : <img src={image} alt='img'/>}
                 </Modal>
                 <BackTop/>
             </div>
@@ -180,5 +171,13 @@ class ProductDetail extends Component{
     }
 }
 
-export default withRouter(ProductDetail)
+const mapStateToProps = ({productDetail, user}) => ({
+    productDetail, user
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    GetProductDetail: (id) => dispatch(GetProductDetail(id))
+})
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(ProductDetail))
 

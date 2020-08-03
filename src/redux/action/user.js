@@ -1,14 +1,32 @@
-import {reqEmailLogin, reqLogin, reqLookUserReplay, reqUpdateUser,reqChangePassword,reqRegister} from '../../api'
+import {
+    reqEmailLogin,
+    reqLogin,
+    reqLookUserReplay,
+    reqUpdateUser,
+    reqChangePassword,
+    reqRegister,
+    reqInit
+} from '../../api'
 
+export const initUser = () => {
+    return async (dispatch) => {
+        const token = window.localStorage.getItem('Token')
+        const res = await reqInit(token)
+        if (res.code === 0) {  //token自动续期
+            window.localStorage.setItem('Token', res.data)
+        }
+    }
 
-export const LoginUser = (user, callback,emailUser) => {
+}
+
+export const LoginUser = (user, callback, emailUser) => {
     return (dispatch) => {
         (async function () {
-            const res = user !== '' ? await reqLogin(user) :  await reqEmailLogin(emailUser)
+            const res = user !== '' ? await reqLogin(user) : await reqEmailLogin(emailUser)
             if (res.code === 0) {
                 const {user, token} = res.data
                 window.localStorage.setItem('Token', token)
-                window.localStorage.setItem('User',JSON.stringify(user))
+                window.localStorage.setItem('User', JSON.stringify(user))
                 callback()
                 dispatch({
                     type: 'USER_LOGIN',
@@ -19,11 +37,11 @@ export const LoginUser = (user, callback,emailUser) => {
     }
 }
 
-export const ForgetUser = (user,callback) => {
+export const ForgetUser = (user, callback) => {
     return (dispatch) => {
         (async function () {
             const res = await reqChangePassword(user)
-            if(res.code === 0){
+            if (res.code === 0) {
                 callback()
             }
         })()
@@ -40,10 +58,10 @@ export const QQLogin = (callback) => {
             // 通过监听，父页面可以拿到子页面传递的token，父(前端页面)，子(小窗)
             window.addEventListener('message', function (e) {
                 const data = JSON.parse(e.data)
-                const {user,token} = data.data
+                const {user, token} = data.data
                 user.user["img"] = user.user.img.replace(/amp;/g, "")
                 window.localStorage.setItem('Token', token)
-                window.localStorage.setItem('User',JSON.stringify(user))
+                window.localStorage.setItem('User', JSON.stringify(user))
                 callback()
                 dispatch({
                     type: 'USER_LOGIN',
@@ -54,11 +72,11 @@ export const QQLogin = (callback) => {
     }
 }
 
-export const register = (user,callback) => {
+export const register = (user, callback) => {
     return (dispatch) => {
         (async function () {
             const res = await reqRegister(user)
-            if(res.code === 0){
+            if (res.code === 0) {
                 callback()
             }
         })()
@@ -70,21 +88,21 @@ export const UserMessage = (id) => {
         (async function () {
             const res = await reqLookUserReplay(id)
             dispatch({
-                type : 'USER_MESSAGE',
-                message : res
+                type: 'USER_MESSAGE',
+                message: res
             })
         })()
     }
 }
 
-export const updateUser = (user,callback) => {
+export const updateUser = (user, callback) => {
     return (dispatch) => {
         (async function () {
             const res = await reqUpdateUser(user)
-            if(res.code === 0){
+            if (res.code === 0) {
                 const {user} = res.data
                 callback()
-                window.localStorage.setItem('User',JSON.stringify(user))
+                window.localStorage.setItem('User', JSON.stringify(user))
                 dispatch({
                     type: 'USER_LOGIN',
                     user

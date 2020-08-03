@@ -6,9 +6,7 @@ import {connect} from 'react-redux'
 
 import './home.less'
 import Product from './product'
-import memoryUtils from "../../utils/memoryUtils";
-import Scroll1 from '../../utils/scroll'
-import {GetAllClass} from '../../redux/action/product'
+import {GetAllClass,SaveScroll} from '../../redux/action/product'
 
 const {SubMenu} = Menu;
 
@@ -81,26 +79,25 @@ class Home extends Component {
         }
     }
 
-    componentDidMount() {
-        this.scroll()
-        this.props.getAllClass()
-    }
+
 
     scroll = () => {
-        const y = Scroll1.GetScroll()
+        const y = this.props.productScroll.scroll
         const x = window.scrollX
         setTimeout(() => {
             window.scrollTo(x, y)
         }, 500)
-        Scroll1.RemoveScroll(y)
     }
 
     handleScroll = () => {
         const scroll = document.scrollingElement.scrollTop
-        memoryUtils.scroll = scroll
-        Scroll1.SaveScroll(scroll)
+        this.props.SaveScroll(scroll)
     }
 
+    componentDidMount() {
+        this.scroll()
+        this.props.getAllClass()
+    }
 
     componentWillUnmount() {
         this.handleScroll()
@@ -109,10 +106,7 @@ class Home extends Component {
 
     render() {
         const {create_time,money, currentKey, searchname} = this.state
-        const condition
-
-
-            = {create_time,money, currentKey, searchname}
+        const condition = {create_time,money, currentKey, searchname}
 
         return (
             <div>
@@ -200,12 +194,13 @@ class Home extends Component {
     }
 }
 
-const mapStateToProps = ({user, productAllClass}) => ({
-    user, productAllClass
+const mapStateToProps = ({user, productAllClass,productScroll}) => ({
+    user, productAllClass,productScroll
 })
 
-const maoDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = (dispatch) => ({
     getAllClass: () => dispatch(GetAllClass()),
+    SaveScroll : (scroll) => dispatch(SaveScroll(scroll))
 })
 
-export default withRouter(connect(mapStateToProps, maoDispatchToProps)(Home))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home))

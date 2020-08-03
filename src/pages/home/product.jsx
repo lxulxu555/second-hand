@@ -94,6 +94,7 @@ class Product extends Component {
 
 
 
+
     render() {
         const {allProduct} = this.props.productAll
         const {total} = allProduct
@@ -131,7 +132,7 @@ const mapStateToProps = ({productAll, productPage}) => ({
 
 const mapDispatchToProps = (dispatch) => ({
     getAllProduct: (condition) => dispatch(GetAllProduct(condition)),
-    saveProductPage: (page) => dispatch(SaveProductPage(page))
+    saveProductPage: (page) => dispatch(SaveProductPage(page)),
 })
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Product))

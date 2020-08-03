@@ -1,7 +1,8 @@
 import React,{Component} from 'react'
 import {BackTop, Card, Icon, Pagination,Col,Row} from "antd";
 import {withRouter,Link} from 'react-router-dom'
-
+import {connect} from 'react-redux'
+import {GetAllProduct} from '../../redux/action/product'
 import {reqAllProduct} from '../../api/index'
 import LinkButton from "../../components/link-button/link-button";
 
@@ -18,6 +19,7 @@ class ProductUserDetail extends Component{
     getUserAllProduct = async (page) => {
         this.page = page
         const id = this.props.location.state.id
+        const ordeyBy = 'create_time desc'
         const result = await reqAllProduct('',page,this.state.defaultPageSize,id,'create_time desc')
         const total = result.total
         this.setState({
@@ -33,7 +35,7 @@ class ProductUserDetail extends Component{
                     const img = Item.images
                     const cover = img.split(",")[0]
                     return (
-                        <Col xs={12} md={6} xxl={4} style={{height: 350, width: 220, margin: '10px 14px 40px 10px'}}>
+                        <Col xs={12} md={6} xxl={4} style={{height: 350, width: 220, margin: '10px 14px 40px 10px'}} key={Item.id}>
                             <Link to={{
                                 pathname: '/product-detail',
                                 state: Item.id
@@ -84,9 +86,9 @@ class ProductUserDetail extends Component{
                      </span>
                 </span>
 
-            <div style={{display:'flex', flexWrap:'wrap',marginTop:50}}>
-                {this.getUserAllProductList()}
-            </div>
+                    <div style={{display:'flex', flexWrap:'wrap',marginTop:50}}>
+                        {this.getUserAllProductList()}
+                    </div>
                 </Row>
                 <Pagination
                     current= {this.page}
@@ -101,9 +103,18 @@ class ProductUserDetail extends Component{
                     <BackTop />
                 </div>
             </div>
+
         )
     }
 }
 
-export default withRouter(ProductUserDetail)
+const mapStateToProps = ({}) => {
+
+}
+
+const mapDispatchToProps = (dispatch) => ({
+    getAllProduct : (condition) => dispatch(GetAllProduct(condition))
+})
+
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(ProductUserDetail))
 

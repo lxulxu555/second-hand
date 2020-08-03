@@ -1,109 +1,71 @@
 import React, {Component} from 'react'
 import {Comment, Modal, Form, Button, Input, Avatar, message, Icon} from 'antd';
 import PropTypes from 'prop-types'
-import {reqSaveComment, reqReplayComment, reqLikeComment} from '../../api/index'
+import {reqReplayComment, reqLikeComment} from '../../api/index'
+import {connect} from 'react-redux'
 import memoryUtils from "../../utils/memoryUtils";
-import storageUtils from "../../utils/storageUtils";
+import {SendComment,ReplyComment,LikeComment} from '../../redux/action/product'
 
 
 class ProductComment extends Component {
 
     state = {
-        CommentAllList: [],
         visible: false,
         comment: {},
         like: '',
     }
 
     static propTypes = {
-        ProductDetail: PropTypes.object.isRequired,
         getProductDetail: PropTypes.func
     }
 
 
-    getCommentsNodes = (CommentAllList) => {
-        return CommentAllList.map(item => {
-            //如果没有children
-            if (!item.replyList) {
-                return (
-                    <Comment
-                        key={item.commentid}
-                        actions={item.state === null ?
-                            [
-                                <span
-                                    onClick={() => this.ClickReplay(item)}
-                                    style={{marginRight: 15}}>回复
+    getCommentsNodes = (commentList) => {
+        return commentList.map(item => {
+            return (
+                <Comment
+                    key={item.leaf === null ? item.commentid : item.id}
+                    actions={item.state === null ?
+                        [
+                            <span
+                                onClick={() => this.ClickReplay(item)}
+                                style={{marginRight: 15}}>回复
                                 </span>,
-                                <Icon
-                                    id={item.createtime}
-                                    type="like"
-                                    style={{marginRight: 15, cursor: 'pointer'}}
-                                    onClick={() => this.ClickLike(item)}
-                                />,
-                                <p id={item.leaf === null ? item.commentid : item.id}>{item.number}</p>
-                            ] : [
-                                <span onClick={() => this.ClickReplay(item)} style={{marginRight: 15}}>回复</span>,
-                                <Icon
-                                    id={item.createtime}
-                                    type="like"
-                                    style={{marginRight: 15, color: '#FF0000', cursor: 'pointer'}}
-                                    onClick={() => this.ClickLike(item)}
-                                />,
-                                <p id={item.leaf === null ? item.commentid : item.id}>{item.number}</p>
-                            ]}
-                        author={item.leaf === null ? <span>{item.user.nickname}</span> :
-                            <span>{item.user.nickname} 回复了 {item.parentname}</span>}
-                        avatar={<Avatar src={item.user.img} style={{marginLeft: 20}}/>}
-                        content={(
-                            <p style={{float: 'left', marginTop: 10}}>
-                                {item.content}
-                            </p>
-                        )}
-                        datetime={item.createtime}
-                    />
-                )
-            } else {
-                return (
-                    <Comment
-                        key={item.leaf === null ? item.commentid : item.id}
-                        actions={item.state === null ?
-                            [
-                                <span onClick={() => this.ClickReplay(item)} style={{marginRight: 15}}>回复</span>,
-                                <Icon
-                                    id={item.createtime}
-                                    type="like"
-                                    style={{marginRight: 15, cursor: 'pointer'}}
-                                    onClick={() => this.ClickLike(item)}
-                                />,
-                                <p id={item.leaf === null ? item.commentid : item.id}>{item.number}</p>
-                            ] : [
-                                <span onClick={() => this.ClickReplay(item)} style={{marginRight: 15}}>回复</span>,
-                                <Icon
-                                    id={item.createtime}
-                                    type="like"
-                                    style={{marginRight: 15, color: '#FF0000', cursor: 'pointer'}}
-                                    onClick={() => this.ClickLike(item)}
-                                />,
-                                <p id={item.leaf === null ? item.commentid : item.id}>{item.number}</p>
-                            ]}
-                        author={item.leaf === null ? <span>{item.user.nickname}</span> :
-                            <span>{item.user.nickname} 回复了 {item.parentname}</span>}
-                        avatar={<Avatar src={item.user.img} style={{marginLeft: 20}}/>}
-                        content={(
-                            <p style={{float: 'left', marginTop: 10}}>
-                                {item.content}
-                            </p>
-                        )}
-                        datetime={item.createtime}
-                    >
-                        {
-                            this.getCommentsNodes(item.replyList)
-                        }
-                    </Comment>
-                )
-            }
+                            <Icon
+                                id={item.createtime}
+                                type="like"
+                                style={{marginRight: 15, cursor: 'pointer'}}
+                                onClick={() => this.ClickLike(item)}
+                            />,
+                            <p id={item.leaf === null ? item.commentid : item.id}>{item.number}</p>
+                        ] : [
+                            <span onClick={() => this.ClickReplay(item)} style={{marginRight: 15}}>回复</span>,
+                            <Icon
+                                id={item.createtime}
+                                type="like"
+                                style={{marginRight: 15, color: '#FF0000', cursor: 'pointer'}}
+                                onClick={() => this.ClickLike(item)}
+                            />,
+                            <p id={item.leaf === null ? item.commentid : item.id}>{item.number}</p>
+                        ]}
+                    author={item.leaf === null ? <span>{item.user.nickname}</span> :
+                        <span>{item.user.nickname} 回复了 {item.parentname}</span>}
+                    avatar={<Avatar src={item.user.img} style={{marginLeft: 20}}/>}
+                    content={(
+                        <p style={{float: 'left', marginTop: 10}}>
+                            {item.content}
+                        </p>
+                    )}
+                    datetime={item.createtime}
+                >
+                    {
+                        !item.replyList ? <div/> : this.getCommentsNodes(item.replyList)
+                    }
+                </Comment>
+            )
         })
     }
+
 
     ClickReplay = (comment) => {
         this.setState({
@@ -112,91 +74,73 @@ class ProductComment extends Component {
         })
     }
 
-    ClickLike = async (item) => {
-        if(!memoryUtils.user){
+    ClickLike = async (item,index) => {
+        const {user} = this.props
+        if (!user) {
             message.error('请登录，享受更多惊喜')
-        }else{
+        } else {
             if (item.state === null) {
                 document.getElementById(item.createtime).style.color = '#FF0000'
                 document.getElementById(item.leaf === null ? item.commentid : item.id).innerHTML = ++item.number
                 item.state = 1
             } else {
                 document.getElementById(item.createtime).style.color = ''
-                document.getElementById(item.leaf === null ? item.commentid : item.id).innerHTML= --item.number
+                document.getElementById(item.leaf === null ? item.commentid : item.id).innerHTML = --item.number
                 item.state = null
             }
             const type = item.leaf === null ? 'comment' + ':' + item.commentid + ':' + memoryUtils.user.user.id : 'reply' + ':' + item.id + ':' + memoryUtils.user.user.id
             const state = item.state === 1 ? '1' : '0'
-            await reqLikeComment(type,state)
+            this.props.LikeComment(type, state)
         }
     }
 
-    handleSubmit = async (e) => {
+    handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields(async (err, values) => {
             if (!err) {
                 const content = values.content
-                const userid = memoryUtils.user ? memoryUtils.user.user.id : null
-                const goodsid = this.props.ProductDetail.id
-                const result = await reqSaveComment(content, userid, goodsid)
-                if (result.code === 0) {
-                    message.success('评论成功')
-                } else {
-                    message.error(result.msg)
-                    if (result.msg === '请登录') {
-                        memoryUtils.user = ''
-                        storageUtils.RemoveUser()
-                        this.props.history.replace('/home')
-                    }
-                }
-                this.props.form.resetFields()
-                this.props.getProductDetail()
+                const userid = this.props.user ? this.props.user.id : null
+                const goodsid = this.props.productDetail.detail.id
+                this.props.SendComment(content, userid, goodsid,() => {
+                    this.props.form.resetFields()
+                    this.props.getProductDetail()
+                })
             }
         });
     }
 
     ReplayComment = async () => {
-        const comment = this.state.comment
+        const {user} = this.props
+        const {comment} = this.state
         const content = document.getElementById('replayComment').value
-        const userid = memoryUtils.user ? memoryUtils.user.user.id : null
+        const userid = user ? user.id : null
         const commentid = comment.commentid
         const goodsid = comment.goodsid
         const nameid = comment.user.id
         const leaf = comment.leaf === null ? '0' : comment.id
         const parentname = comment.user.nickname
-        const result = await reqReplayComment(content, userid, commentid, goodsid, nameid, leaf, parentname)
-        if (result.code === 0) {
-            message.success('回复成功')
-        } else {
-            message.error(result.msg)
-        }
-        this.setState({
-            visible: false
-        })
-        this.props.getProductDetail()
-    }
-
-
-
-    componentWillReceiveProps(nextProps) {
-        const CommentAllList = nextProps.ProductDetail.commentList
-        if (nextProps.ProductDetail !== this.state.ProductDetail) {
+        const reply = {content,userid,commentid,goodsid,nameid,leaf,parentname}
+        this.props.ReplyComment(reply,() => {
             this.setState({
-                CommentAllList
-           })
-        }
+                visible: false
+            })
+            this.props.getProductDetail()
+        })
     }
 
 
     render() {
         const {getFieldDecorator} = this.props.form;
-        const {CommentAllList, visible} = this.state
+        const {user} = this.props
+        const {detail} = this.props.productDetail
+        const {commentList} = detail
+        const {visible} = this.state
         return (
             <div>
-                {this.getCommentsNodes(CommentAllList)}
+                {this.getCommentsNodes(commentList)}
                 <span style={{display: 'flex'}}>
                         <Avatar size='large'
-                                src={memoryUtils.user ? memoryUtils.user.user.img : 'https://api.youzixy.com/public/uploads/avatar/default1.png'}
+                                src={user.id !== '' ? user.img : 'https://api.youzixy.com/public/uploads/avatar/default1.png'}
                                 style={{margin: 20}}/>
                 <Form onSubmit={this.handleSubmit}>
                 <Form.Item>
@@ -231,5 +175,15 @@ class ProductComment extends Component {
     }
 }
 
-export default Form.create()(ProductComment)
+const mapStateToProps = ({productDetail, user}) => ({
+    productDetail, user
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    SendComment : (content,userid,goodsid,callback) => SendComment(content,userid,goodsid,callback),
+    ReplyComment : (reply,callback) => ReplyComment(reply,callback),
+    LikeComment : (type,state) => LikeComment(type,state)
+})
+
+export default Form.create()(connect(mapStateToProps, mapDispatchToProps)(ProductComment))
 
