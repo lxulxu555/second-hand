@@ -1,9 +1,7 @@
 import React, {Component} from 'react'
 import {Comment, Modal, Form, Button, Input, Avatar, message, Icon} from 'antd';
 import PropTypes from 'prop-types'
-import {reqReplayComment, reqLikeComment} from '../../api/index'
 import {connect} from 'react-redux'
-import memoryUtils from "../../utils/memoryUtils";
 import {SendComment,ReplyComment,LikeComment} from '../../redux/action/product'
 
 
@@ -88,7 +86,7 @@ class ProductComment extends Component {
                 document.getElementById(item.leaf === null ? item.commentid : item.id).innerHTML = --item.number
                 item.state = null
             }
-            const type = item.leaf === null ? 'comment' + ':' + item.commentid + ':' + memoryUtils.user.user.id : 'reply' + ':' + item.id + ':' + memoryUtils.user.user.id
+            const type = item.leaf === null ? 'comment' + ':' + item.commentid + ':' + user.id : 'reply' + ':' + item.id + ':' + user.id
             const state = item.state === 1 ? '1' : '0'
             this.props.LikeComment(type, state)
         }

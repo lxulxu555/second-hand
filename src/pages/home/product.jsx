@@ -18,6 +18,7 @@ class Product extends Component {
         const {condition} = this.state
         window.scrollTo(0, 0)
         this.props.saveProductPage(page)
+        condition.page = page
         this.props.getAllProduct(condition)
 
     }

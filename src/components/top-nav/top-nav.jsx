@@ -5,7 +5,6 @@ import {connect} from 'react-redux'
 import './top-nav.less'
 import LinkButton from '../link-button/link-button'
 import UpdateUser from '../../pages/update-user/update-user'
-import Page from '../../utils/page'
 import {UserMessage,updateUser} from '../../redux/action/user'
 
 const SubMenu = Menu.SubMenu
@@ -43,7 +42,7 @@ class TopNav extends Component {
                 this.setState({
                     ShowUpdate: false
                 },() => {
-                    values.img = this.props.uploadImage.image
+                    values.img = this.props.uploadAvatarImage.image
                     values.id = this.props.user.id
                     this.props.updateUser(values,() => {
                         this.props.history.replace('/home')
@@ -56,7 +55,7 @@ class TopNav extends Component {
 
     goInitHome = () => {
         this.props.history.replace('/')
-        Page.SavePage(1)
+       // Page.SavePage(1)
     }
 
     isLogin = () => {
@@ -214,8 +213,8 @@ class TopNav extends Component {
     }
 }
 
-const mapStateToProps = ({user,userMessage,uploadImage}) => ({
-    user,userMessage,uploadImage
+const mapStateToProps = ({user,userMessage,uploadAvatarImage}) => ({
+    user,userMessage,uploadAvatarImage
 })
 
 const mapDispatchToProps = (dispatch) => ({

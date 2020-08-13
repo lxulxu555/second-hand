@@ -1,39 +1,28 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-import {reqFindReplayByMe} from '../../api/index'
-import memoryUtils from "../../utils/memoryUtils";
 import noReplay from '../../utils/noGoods.cc45e087_副本.png'
-import {Card, Icon, Avatar, BackTop,message} from "antd";
-import storageUtils from "../../utils/storageUtils";
+import {Card, Icon, Avatar, BackTop} from "antd";
+import {connect} from 'react-redux'
+import {ReplayByMe} from '../../redux/action/user'
 
-export default class UnreadInformation extends Component {
+class UnreadInformation extends Component {
 
-    state = {
-        ReplayByMe: [],
-    }
-
-    getFindReplayByMe = async (nameId) => {
-        const token = memoryUtils.user.token
-        const result = await reqFindReplayByMe(token, nameId)
-        if(result.code === 0){
-            this.setState({
-                ReplayByMe: result.data
-            })
-        }else{
-            message.error('请重新登录，您的身份信息已过期')
-            storageUtils.RemoveUser()
-            memoryUtils.user = {}
-            this.props.history.replace('/home')
-            window.location.reload()
-        }
-    }
 
     getReplayByMeList = () => {
-        const ReplayByMeList = this.state.ReplayByMe
-        if (!ReplayByMeList) {
-            return <img src={noReplay} style={{margin: "5% 5% 0 30%"}} alt='img'/>
+        const {userReplayByMe} = this.props || []
+        if (userReplayByMe.length === 0) {
+            return (
+            <div style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                margin: 20
+            }}>
+                <img src={noReplay}
+                         alt='img'/>
+            </div>)
         } else {
-            return ReplayByMeList.map(item => {
+            return userReplayByMe.map(item => {
                 const title = (
                     <span>
                 <Avatar src={item.user.img} style={{marginRight: 20}}/>
@@ -72,10 +61,8 @@ export default class UnreadInformation extends Component {
 
 
     componentDidMount() {
-        const nameId = memoryUtils.user.user.id
-        this.getFindReplayByMe(nameId)
+        this.props.ReplayByMe()
     }
-
 
 
     render() {
@@ -86,8 +73,17 @@ export default class UnreadInformation extends Component {
                     this.getReplayByMeList()
                 }
                 <BackTop/>
-             </div>
+            </div>
         )
     }
 }
 
+const mapStateToProps = ({userReplayByMe}) => ({
+    userReplayByMe
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    ReplayByMe: () => dispatch(ReplayByMe())
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(UnreadInformation)

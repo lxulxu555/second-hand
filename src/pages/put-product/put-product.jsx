@@ -1,10 +1,10 @@
 import React, {Component} from 'react'
-import {Form, Input,Button,message,Cascader,Icon} from "antd";
+import {Form, Input,Button,Cascader,Icon} from "antd";
 
 import './put-product.less'
-import {reqAddProduct,reqFindClassAll} from '../../api/index'
-import {PictureWall} from "./picture-wall";
-import memoryUtils from "../../utils/memoryUtils";
+import PictureWall from "../../utils/upload-image";
+import {connect} from 'react-redux'
+import {PutNewProduct} from '../../redux/action/product'
 
 const {TextArea} = Input
 
@@ -12,63 +12,26 @@ class PutProduct extends Component{
 
 
     state = {
-        product : {},
-        cover : '',
         options : [],
         valueId : ''
     }
 
-    constructor(props){
-        super(props)
-        this.pw = React.createRef()
-    }
-
-
-
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields(async (err, values) => {
-            let image = this.pw.current.GetImgs()
-            const a = image.toString()
-            if (!err) {
-                const product = this.state.product
-                product.name = values.name
-                product.userid = memoryUtils.user.user.id
-                product.intro = values.intro
-                product.price1 = values.price
-                product.weixin = values.weixin
-                product.images = a
-                if(this.state.valueId){
-                    product.classify2_id = this.state.valueId
-                    const result = await reqAddProduct(product)
-                    if(result.code===0){
-                        message.success('添加成功')
-                        this.props.history.replace('/home')
-                    }else{
-                        message.error(result.msg)
-                    }
-                }else{
-                   if(!this.state.valueId){
-                        message.error('请选择二级分类')
-                    }
-                }
-            }
+            values.classify2_id = this.state.valueId
+            this.props.PutNewProduct(values,() => {
+                this.props.history.replace('/home')
+            })
         });
     };
 
-    getImageUrl = (url) =>  {
-        this.setState({
-            cover : url
-        })
-    }
 
 
-
-    loadData = async (selectedOptions) => {
-        const result = await reqFindClassAll()
-        result.length = 9
-        //alert(JSON.stringify(result))
-        const a = result.map(Item => ({
+    loadData = async () => {
+        const {allClass} = this.props.productAllClass
+        allClass.length = 9
+        const allclass = allClass.map(Item => ({
             value : Item.id,
             label : Item.name,
             children : Item.classify2List.map(Item1 => ({
@@ -77,7 +40,7 @@ class PutProduct extends Component{
             }))
         }))
         this.setState({
-            options : a
+            options : allclass
         })
     }
 
@@ -121,7 +84,7 @@ class PutProduct extends Component{
                         )}
                     </Form.Item>
                     <Form.Item label='价格：' {...formItemLayout}>
-                        {getFieldDecorator('price', {
+                        {getFieldDecorator('price1', {
                             rules: [{ required: true, message: '请输入产品价格' },
                                 {pattern:/^\+?((0|([1-9]+\d*))|((0\.\d+)|([1-9]+\d*\.\d+)))$/,message:'价格必须为数字,且不能为负数'}
                             ],
@@ -157,4 +120,12 @@ class PutProduct extends Component{
     }
 }
 
-export default Form.create()(PutProduct)
+const mapStateToProps = ({user,productImage,productAllClass}) => ({
+    user,productImage,productAllClass
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    PutNewProduct : (values,callback) => dispatch(PutNewProduct(values,callback))
+})
+
+export default Form.create()(connect(mapStateToProps,mapDispatchToProps)(PutProduct))

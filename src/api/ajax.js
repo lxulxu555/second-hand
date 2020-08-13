@@ -7,6 +7,7 @@ import {message} from 'antd'
 
 axios.defaults.timeout = 5000
 axios.defaults.baseURL = '/api'
+axios.defaults.withCredentials = true;
 
 // 请求拦截器
 axios.interceptors.request.use(config => {

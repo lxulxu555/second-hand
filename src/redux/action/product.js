@@ -4,7 +4,10 @@ import {
     reqFindIdProduct,
     reqSaveComment,
     reqReplayComment,
-    reqLikeComment
+    reqLikeComment,
+    reqAddProduct,
+    reqUpdateProduct,
+    reqDeleteProduct
 } from '../../api'
 import {message} from 'antd'
 import store from "../store";
@@ -24,11 +27,9 @@ export const GetAllClass = () => {
 export const GetAllProduct = (condition) => {
     return (dispatch) => {
         (async function () {
-            const {create_time, money, currentKey, searchname} = condition
-            const page = store.getState().productPage.page
-            localStorage.setItem('page', page)
+            const {create_time, money, currentKey, searchname,page,userid} = condition
             let ordeyBy = money ? money : create_time
-            const res = await reqAllProduct(currentKey, page, 30, '', ordeyBy, searchname)
+            const res = await reqAllProduct(currentKey, page, 30, userid, ordeyBy, searchname)
             dispatch({
                 type: 'PRODUCT_ALL',
                 allProduct: res
@@ -68,6 +69,72 @@ export const LikeComment = async () => {
     await reqLikeComment
 }
 
-export const SaveProductPage = (page) => ({type: 'SAVE_PRODUCT_PAGE', page})
+export const PutNewProduct = (values,callback) => {
+    return (dispatch) => {
+        (async () => {
+            const list = []
+            const {user,productImage} = store.getState()
+            const {imageList} = productImage
+            list.push(imageList.map(item => (item.url)))
+            values.userid = user.id
+            values.images = list.toString()
+            if(values.classify2_id){
+                const res = await reqAddProduct(values)
+                console.log(res)
+                if(res.code === 0){
+                    message.success('添加成功')
+                    callback()
+                }else{
+                    message.error(res.msg)
+                }
+            }else{
+                message.error('请选择二级分类')
+            }
+        })()
+    }
+}
+
+export const SaveProductPage = (page) => {
+    return (dispatch) => {
+        (async() => {
+            localStorage.setItem('page',page)
+            dispatch({
+                type: 'SAVE_PRODUCT_PAGE',
+                page
+            })
+        })()
+    }
+}
+
+export const UpdateProductInfo = (condition,callback) => {
+    return (dispatch) => {
+        (async() => {
+           const res =  await reqUpdateProduct(condition)
+            if(res.code === 0){
+                message.success('更新成功')
+                callback()
+            }else{
+                message.error(res.msg)
+            }
+        })()
+    }
+}
+
+
+export const DeleteProduct = (id,callback) => {
+    return (dispatch) => {
+        (async() => {
+            const res = await reqDeleteProduct(id)
+            if(res.code === 0){
+                message.success('删除成功')
+                callback()
+            }else{
+                message.error(res.msg)
+            }
+        })()
+    }
+}
 
 export const SaveScroll = (scroll) => ({type: 'SAVE_PRODUCT_SCROLL', scroll})
+
+export const SaveProductImage = (imageList) => ({type: 'SAVE_PRODUCT_IMAGE',imageList})

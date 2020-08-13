@@ -3,7 +3,7 @@ import {Form, Icon, Input, Button} from "antd";
 import PropTypes from 'prop-types'
 import {withRouter} from 'react-router-dom'
 
-import UpdateImage from './upload-image'
+import UpdateAvatarImage from '../../utils/upload-image'
 
 class UpdateUser extends Component {
 
@@ -29,9 +29,7 @@ class UpdateUser extends Component {
             <div>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Item label='我的头像: ' {...formItemLayout}>
-                        <UpdateImage
-                            user={user}
-                        />
+                        <UpdateAvatarImage type='avatar'/>
                     </Form.Item>
                     <Form.Item label='用户名' {...formItemLayout}>
                         {getFieldDecorator('nickname', {

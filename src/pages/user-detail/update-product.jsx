@@ -1,7 +1,8 @@
 import React,{Component} from 'react'
 import PropTypes from 'prop-types'
 import { Form, Input} from 'antd'
-import {PictureWall} from "./PictureWall";
+import {connect} from 'react-redux'
+import UpdateImage from '../../utils/upload-image'
 
 const {TextArea} = Input
 
@@ -13,16 +14,8 @@ class UpdateProduct extends Component{
 
     static propTypes = {
         setForm : PropTypes.func.isRequired,
-        sendProduct : PropTypes.object.isRequired
+        ProductInfo : PropTypes.object.isRequired
     }
-
-
-
-    getFileList = (fileList) => {
-        this.props.PictureWall(fileList)
-    }
-
-
 
     componentWillMount () {
         this.props.setForm(this.props.form)
@@ -37,14 +30,15 @@ class UpdateProduct extends Component{
         };
 
         const { getFieldDecorator } = this.props.form;
-
+        const {ProductInfo} = this.props
+        const {name,intro,price1,weixin,images} = ProductInfo
 
 
         return (
             <Form onSubmit={this.handleSubmit}>
                 <Form.Item label='产品名称：' {...formItemLayout} style={{paddingTop:30}}>
                     {getFieldDecorator('name', {
-                        initialValue : this.props.sendProduct.name,
+                        initialValue : name,
                         rules: [{ required: true, message: '请输入产品名称' }],
                     })(
                         <Input placeholder='请输入产品名称'/>
@@ -52,7 +46,7 @@ class UpdateProduct extends Component{
                 </Form.Item>
                 <Form.Item label='产品介绍：' {...formItemLayout}>
                     {getFieldDecorator('intro', {
-                        initialValue : this.props.sendProduct.intro,
+                        initialValue : intro,
                         rules: [{ required: true, message: '请输入产品介绍' }],
                     })(
                         <TextArea placeholder='请输入产品介绍'/>
@@ -60,7 +54,7 @@ class UpdateProduct extends Component{
                 </Form.Item>
                 <Form.Item label='价格：' {...formItemLayout}>
                     {getFieldDecorator('price1', {
-                        initialValue : this.props.sendProduct.price1,
+                        initialValue : price1,
                         rules: [
                             { required: true, message: '请输入产品价格' },
                             {pattern:/^\+?((0|([1-9]+\d*))|((0\.\d+)|([1-9]+\d*\.\d+)))$/,message:'价格必须为数字,且不能为负数'}
@@ -71,16 +65,15 @@ class UpdateProduct extends Component{
                 </Form.Item>
                 <Form.Item label='微信：' {...formItemLayout}>
                     {getFieldDecorator('weixin', {
-                        initialValue : this.props.sendProduct.weixin,
+                        initialValue : weixin,
                         rules: [{ required: true, message: '请输入卖家微信号' }],
                     })(
                         <Input placeholder='请输入微信号'/>
                     )}
                 </Form.Item>
                 <Form.Item label='产品图片：' {...formItemLayout}>
-                    <PictureWall
-                        PictureWall = {(fileList) => this.getFileList(fileList)}
-                        images = {this.props.sendProduct.images}
+                    <UpdateImage
+                        images = {images}
                     />
                 </Form.Item>
             </Form>
@@ -88,6 +81,14 @@ class UpdateProduct extends Component{
     }
 }
 
+const mapStateToProps = ({productAll}) => ({
+    productAll
+})
+
+const mapDispatchToProps = (dispatch) => ({
+
+})
+
 const WrapLogin = Form.create()(UpdateProduct)
-export default WrapLogin
+export default connect(mapStateToProps,mapDispatchToProps)(WrapLogin)
 

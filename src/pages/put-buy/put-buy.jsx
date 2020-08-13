@@ -1,11 +1,10 @@
 import React,{Component} from 'react'
-import {Button, Form, Input, message} from 'antd'
+import {Button, Form, Input} from 'antd'
 
-import {reqAddBuyProduct} from '../../api/index'
 
 import './put-buy.less'
-import memoryUtils from "../../utils/memoryUtils";
-
+import {PutNewBuy} from '../../redux/action/buy'
+import {connect} from 'react-redux'
 const {TextArea} = Input
 
 class PutBuy extends Component{
@@ -15,23 +14,13 @@ class PutBuy extends Component{
     }
 
     handleSubmit = (e) => {
-        //debugger
         e.preventDefault();
         this.props.form.validateFields( async (err, values) => {
             if (!err) {
-                const buyProduct = this.state.buyProduct
-                buyProduct.title = values.title
-                buyProduct.intro = values.intro
-                buyProduct.weixin = values.weixin
-                buyProduct.userid = memoryUtils.user.user.id
-                buyProduct.token = memoryUtils.user.token
-                const result = await reqAddBuyProduct(buyProduct)
-                if(result.code === 0){
-                    message.success('添加成功')
+                values.userid = this.props.user.id
+                this.props.PutNewBuy(values,() => {
                     this.props.history.replace('/wantbuy')
-                }else{
-                    message.error('添加失败')
-                }
+                })
             }
         });
     };
@@ -76,7 +65,14 @@ class PutBuy extends Component{
     }
 }
 
+const mapStateToProps = ({user}) => ({
+    user
+})
 
-export default   Form.create()(PutBuy)
+const mapDispatchToProps = (dispatch) => ({
+    PutNewBuy : (condition,callback) => dispatch(PutNewBuy(condition,callback))
+})
+
+export default Form.create()(connect(mapDispatchToProps,mapStateToProps)(PutBuy))
 
 

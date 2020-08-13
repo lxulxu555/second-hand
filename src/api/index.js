@@ -28,7 +28,7 @@ export const reqFindIdProduct = (id, userid) => get('/goods/findById', {id, user
 //更新商品
 export const reqUpdateProduct = (product) => put('/goods/update', product,)
 //分页展示所有求购信息
-export const reqBuyProduct = (token, page, rows, userid) => get('/token/buy/findByPage', {token, page, rows, userid})
+export const reqBuyProduct = (condition) => get('/token/buy/findByPage', condition)
 //添加求购信息
 //post请求设置Params请求头
 export const reqAddBuyProduct = (buyProduct) => post('/token/buy/add', buyProduct)
@@ -47,11 +47,11 @@ export const reqSaveComment = (content, userid, goodsid) => post('/token/comment
 //回复一条留言
 export const reqReplayComment = (reply) => post('/token/reply/save', reply)
 //查看所有与自己相关的回复
-export const reqFindReplayByMe = (token, nameId) => get('/token/reply/findAllByUser', {token, nameId})
+export const reqFindReplayByMe = ( nameId) => get('/token/reply/findAllByUser', { nameId})
 //查看用户未读信息数
 export const reqLookUserReplay = (id) => get('/user/getMessage', {id})
 //根据名字搜索求购页面商品
-export const reqLookUpWantBuy = (token, title) => get('/token/buy/findByLike', {token, title})
+export const reqLookUpWantBuy = (title) => get('/token/buy/findByLike', {title})
 //当前用户点赞留言回复
 export const reqLikeComment = (type, state) => post('/token/like/save', {type, state})
 //发送邮箱验证码

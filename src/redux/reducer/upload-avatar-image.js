@@ -6,7 +6,7 @@ const init = {
 
 export default(state = init,action) => {
     switch (action.type) {
-        case 'UPLOAD_IMAGE' :
+        case 'UPLOAD_AVATAR_IMAGE' :
             return {...init,image : action.image}
         default:
             return state

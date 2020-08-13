@@ -5,8 +5,10 @@ import {
     reqUpdateUser,
     reqChangePassword,
     reqRegister,
-    reqInit
+    reqInit,
+    reqFindReplayByMe
 } from '../../api'
+import store from "../store";
 
 export const initUser = () => {
     return async (dispatch) => {
@@ -112,6 +114,21 @@ export const updateUser = (user, callback) => {
     }
 }
 
-export const UploadImage = (url) => ({type: 'UPLOAD_IMAGE', image: url})
+export const ReplayByMe = () => {
+    return (dispatch) => {
+        (async () => {
+            const id = store.getState().user.id
+            const res = reqFindReplayByMe(id)
+            if(res.code === 0){
+                dispatch({
+                    type : 'USER_REPLAY_BY_ME',
+                    replay:res.data
+                })
+            }
+        })()
+    }
+}
+
+export const UploadAvatarImage = (url) => ({type: 'UPLOAD_AVATAR_IMAGE', image: url})
 
 

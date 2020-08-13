@@ -1,68 +1,48 @@
-import React,{Component} from 'react'
-import {Card, Pagination, Icon, Avatar, message, BackTop, Input,Button} from 'antd'
+import React, {Component} from 'react'
+import {Card, Pagination, Icon, Avatar,BackTop, Input, Button} from 'antd'
 
-import {reqBuyProduct,reqLookUpWantBuy} from '../../api/index'
-import memoryUtils from "../../utils/memoryUtils";
-import storageUtils from "../../utils/storageUtils";
+import {connect} from 'react-redux'
+import {AllBuy} from '../../redux/action/buy'
 
-export default class WantBuy extends Component{
+class WantBuy extends Component {
 
     state = {
-        defaultPageSize: 10,
-        total : 0,
-        BuyProduct : [],
-        title:''
+        rows: 10,
+        title: ''
     }
 
     getBuyProduct = async (page) => {
         this.page = page
-        let title = this.state.title
-        let token = memoryUtils.user.token
-        let rows = this.state.defaultPageSize
-        let result
-        if(title !== ''){
-            result = await reqLookUpWantBuy(token,title)
-        }else{
-            result = await reqBuyProduct(token,page,rows)
-        }
-        if(result.code === -1) {
-            memoryUtils.user = ''
-            storageUtils.RemoveUser()
-            this.props.history.replace('/login')
-            message.error('您需要验证身份')
-        }
-        const total = result.total
-        this.setState({
-            BuyProduct : result.data,
-            total
-        })
+        let {title, rows} = this.state
+        const condition = {title, rows, page}
+        this.props.AllBuy(condition)
     }
 
     getBuyProductList = () => {
-        const BuyProduct = this.state.BuyProduct
-        if(BuyProduct.length!==0){
+        const BuyProduct = this.props.buyAll.data
+        if (BuyProduct.length !== 0) {
             return BuyProduct.map(Item => {
                 const title = (
                     <span>
                 <Avatar
                     size="large"
                     src={Item.user.img}
-                    style={{marginRight:20}}
+                    style={{marginRight: 20}}
                 />
-                    <span style={{marginRight:20}}>
+                    <span style={{marginRight: 20}}>
                         {Item.user.username}
                     </span>
                     <span>发布于{Item.create_time}</span>
                 </span>
                 )
                 return (
-                    <Card title={title} bordered={false} style={{margin : '1% 10% 3% 10%'}}
+                    <Card title={title} bordered={false} style={{margin: '1% 10% 3% 10%'}}
                           key={Item.id}
                     >
-                        <p style={{fontWeight:'bold',fontSize : '20px'}}>{Item.title}</p>
+                        <p style={{fontWeight: 'bold', fontSize: '20px'}}>{Item.title}</p>
                         <p>{Item.intro}</p>
                         <p>
-                            <Icon type="wechat" theme="filled" style={{fontSize: 25,paddingRight:10}}/>
+                            <Icon type="wechat" theme="filled" style={{fontSize: 25, paddingRight: 10}}/>
                             微信&nbsp;:&nbsp;&nbsp;&nbsp;{Item.weixin}
                         </p>
                     </Card>
@@ -77,29 +57,28 @@ export default class WantBuy extends Component{
         })
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.getBuyProduct(1)
     }
 
 
-
-    componentDidUpdate(){
-        window.scrollTo(0,0)
+    componentDidUpdate() {
+        window.scrollTo(0, 0)
         const title = this.state.title
-        if(title !== ''){
+        if (title !== '') {
             this.getBuyProduct(1)
             this.setState({
-                title : ''
+                title: ''
             })
         }
     }
 
 
-    render () {
-        const BuyProduct = this.state.BuyProduct
+    render() {
+        const BuyProduct = this.props.buyAll.data || []
         return (
             <div>
-                <span style={{marginLeft:'30%'}}>
+                <span style={{marginLeft: '30%'}}>
                     <Input
                         id='input'
                         placeholder='请输入关键字'
@@ -125,19 +104,25 @@ export default class WantBuy extends Component{
                 </span>
                 <div>
                     {
-                        BuyProduct.length !== 0 ?  this.getBuyProductList() : (<span style={{margin: "5% 5% 0 30%"}}>
+                        BuyProduct.length !== 0 ? this.getBuyProductList() :
+                            (<span style={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    margin: 20
+                                }}>
                <img src='https://www.youzixy.com/img/noGoods.cc45e087.png' alt='img'/>
-           </span>)
+                             </span>)
                     }
                 </div>
                 {
                     BuyProduct.length !== 0 ? <Pagination
-                        current= {this.page}
-                        defaultPageSize= {this.state.defaultPageSize}
+                        current={this.page}
+                        defaultPageSize={this.state.rows}
                         showQuickJumper
-                        total={this.state.total}
+                        total={this.props.buyAll.total}
                         onChange={this.getBuyProduct}
-                        style={{textAlign:'center',marginTop:20}}
+                        style={{textAlign: 'center', marginTop: 20}}
                     /> : ''
                 }
 
@@ -147,3 +132,12 @@ export default class WantBuy extends Component{
     }
 }
 
+const mapStateToProps = ({user, buyAll}) => ({
+    user, buyAll
+})
+
+const mapDispatchToProps = (dispatch) => ({
+    AllBuy: (condition) => dispatch(AllBuy(condition))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(WantBuy)

@@ -1,39 +1,33 @@
 import React, {Component} from 'react'
 import {Card, Icon, Modal, message, Pagination, BackTop, Row, Col} from 'antd'
 
-import {reqAllProduct, reqUpdateProduct, reqDeleteProduct} from '../../api/index'
-import memoryUtils from "../../utils/memoryUtils";
+import { reqUpdateProduct} from '../../api/index'
 import UpdateProduct from './update-product'
+import {connect} from 'react-redux'
+import {GetAllProduct, UpdateProductInfo, DeleteProduct} from '../../redux/action/product'
+
 
 const {Meta} = Card;
 
-export default class UserDetail extends Component {
+class UserDetail extends Component {
 
     state = {
-        UserProduct: [],
         ShowUpdate: false,
-        ImageUrl: '',
-        FileUrl: [],
-        ProductId: '',
-        product: {},
-        sendProduct: {},
-        defaultPageSize: 16,
-        total: 0,
+        ProductInfo: {},
+        defaultPageSize: 30,
     }
 
 
-    getUserAllProduct = async (page) => {
-        this.page = page
-        const result = await reqAllProduct('', page, this.state.defaultPageSize, memoryUtils.user.user.id, '')
-        const total = result.total
-        this.setState({
-            UserProduct: result.data,
-            total
-        })
+    getUserAllProduct = async (Page) => {
+        const {user} = this.props
+        this.page = Page
+        const {page, userid} = {page: Page, userid: user.id}
+        const condition = {page, userid}
+        this.props.GetAllProduct(condition)
     }
 
     UpperAndLower = async (Item) => {
-        const product = this.state.product
+        const product = {}
         product.id = Item.id
         product.state = Item.state === 0 ? '1' : '0'
         const result = await reqUpdateProduct(product)
@@ -45,34 +39,30 @@ export default class UserDetail extends Component {
         this.getUserAllProduct()
     }
 
-
     getUserAllProductList = () => {
-        const UserProduct = this.state.UserProduct
+        const {productAll} = this.props
+        const UserProduct = productAll.allProduct.data || []
+
         return UserProduct.map(Item => {
                 const images = Item.images
                 const cover = images.split(",")[0]
                 return (
-                    <Col xs={12} md={6} xxl={4} style={{height: 350, width: 220, margin: '10px 14px 40px 10px'}} key={Item.id}
+                    <Col xs={12} md={6} xxl={4} style={{height: 350, width: 220, margin: '10px 14px 40px 10px'}}
+                         key={Item.id}
                     >
                         <Card
-
                             hoverable
-                            cover={<img alt="img" src={cover} onClick={() => this.setState({
-                                ShowUpdate: true, ProductId: Item.id,
-                                sendProduct: Item
-                            })}
-                                        style={{height: 218}}
-
-                            />}
+                            cover={
+                                <img alt="img" src={cover}
+                                     onClick={() => this.showModal(Item)}
+                                     style={{height: 218}}
+                                />
+                            }
                             actions={[
                                 <Icon
                                     type="setting"
                                     key="setting"
-                                    onClick={() => this.setState({
-                                        ShowUpdate: true,
-                                        ProductId: Item.id,
-                                        sendProduct: Item
-                                    })}
+                                    onClick={() => this.showModal(Item)}
                                 />,
                                 <span onClick={() => this.UpperAndLower(Item)}>
                         {
@@ -98,63 +88,47 @@ export default class UserDetail extends Component {
         )
     }
 
-    Updateproduct = () => {
-
-        this.form.validateFields(async (err, values) => {
-            const images = this.state.FileUrl.toString()
-            if (!err) {
-                this.setState({
-                    ShowUpdate: false
-                })
-                this.form.resetFields()
-                const product = this.state.product
-                product.id = this.state.ProductId
-                product.name = values.name
-                product.intro = values.intro
-                product.price1 = values.price1
-                product.weixin = values.weixin
-                product.images = images
-                const result = await reqUpdateProduct(product)
-                if (result.code === 0) {
-                    message.success('更新成功')
-                    this.getUserAllProduct(1)
-                } else {
-                    message.error('更新失败')
-                }
-            }
+    showModal = (Item) => {
+        this.setState({
+            ShowUpdate: true,
+            ProductInfo: Item
         })
-
     }
 
-    getFileList = (fileList) => {
-        const filelist = fileList.reduce((pre, Item) => {
+    Updateproduct = () => {
+        const filelist = this.props.productImage.imageList
+        const image = filelist.reduce((pre, Item) => {
             pre.push(
                 Item.url
             )
             return pre
         }, [])
-        this.setState({
-            FileUrl: filelist
+        this.form.validateFields(async (err, values) => {
+            const images = image.toString()
+            if (!err) {
+                this.setState({
+                    ShowUpdate: false
+                })
+                this.form.resetFields()
+                const product = values
+                product.id = this.state.ProductInfo.id
+                product.images = images
+                this.props.UpdateProductInfo(product, () => {
+                    this.getUserAllProduct(1)
+                })
+            }
         })
+
     }
 
-    getImageUrl = (url) => {
-        this.setState({
-            ImageUrl: url
-        })
-    }
 
     deleteProduct = async (Item) => {
         Modal.confirm({
             title: `确认删除${Item.name}吗`,
             onOk: async () => {
-                const result = await reqDeleteProduct(Item.id)
-                if (result.code === -1) {
-                    message.success('删除成功')
-                } else {
-                    message.error('删除失败')
-                }
-                this.getUserAllProduct(1)
+                this.props.DeleteProduct(Item.id, () => {
+                    this.getUserAllProduct(1)
+                })
             },
         })
     }
@@ -164,14 +138,20 @@ export default class UserDetail extends Component {
     }
 
     render() {
-        const {ShowUpdate, UserProduct, sendProduct} = this.state
+        const {ShowUpdate,  ProductInfo} = this.state
+        const {productAll} = this.props
+        const {allProduct} = productAll
+        const {data, total} = allProduct
 
         return (
             <div>
 
                 <Row>
                     <div style={{display: 'flex', flexWrap: 'wrap'}}>
-                        {UserProduct ? this.getUserAllProductList() : (<span style={{margin: "5% 5% 0 30%"}}>
+                        {data ? this.getUserAllProductList() : (<span style={{display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            margin: 20}}>
                <img src='https://www.youzixy.com/img/noGoods.cc45e087.png' alt='img'/>
            </span>)}
                     </div>
@@ -191,20 +171,17 @@ export default class UserDetail extends Component {
                     }}
                 >
                     <UpdateProduct
-                        UserProduct={UserProduct}
                         setForm={(form) => {
                             this.form = form
                         }}
-                        PictureWall={(fileList) => this.getFileList(fileList)}
-                        UpLoadImage={(url) => this.getImageUrl(url)}
-                        sendProduct={sendProduct}
+                        ProductInfo={ProductInfo}
                     />
                 </Modal>
-                {UserProduct ? (<Pagination
+                {data ? (<Pagination
                     current={this.page}
                     defaultPageSize={this.state.defaultPageSize}
                     showQuickJumper
-                    total={this.state.total}
+                    total={total}
                     onChange={this.getUserAllProduct}
                     style={{textAlign: 'center', marginTop: 20}}
                 />) : ''}
@@ -216,5 +193,15 @@ export default class UserDetail extends Component {
     }
 }
 
+const mapStateToProps = ({user, productAll, productImage}) => ({
+    user, productAll, productImage
+})
 
+const mapDispatchToProps = (dispatch) => ({
+    GetAllProduct: (condition) => dispatch(GetAllProduct(condition)),
+    UpdateProductInfo: (condition, callback) => dispatch(UpdateProductInfo(condition, callback)),
+    DeleteProduct: (id, callback) => dispatch(DeleteProduct(id, callback))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(UserDetail)
 
